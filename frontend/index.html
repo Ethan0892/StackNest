@@ -776,6 +776,32 @@
 
 <body>
 
+  <!-- -- Shutdown notice --------------------------------------------------- -->
+  <div id="sn-shutdown-banner" style="
+    background: linear-gradient(90deg, #1a1020 0%, #1c1030 50%, #1a1020 100%);
+    border-bottom: 1px solid #7c3aed55;
+    padding: 14px 24px;
+    text-align: center;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    color: #e8eaf6;
+    position: relative;
+  ">
+    <span style="font-size:18px; margin-right:8px;">🌙</span>
+    <strong style="color:#c4b5fd;">StackNest is shutting down on 25 June 2026.</strong>
+    &nbsp;We set out with one goal: <em>raise the bar against other Minecraft plugin generators</em> — and we did.
+    &nbsp;Thank you to everyone who generated, shared, and improved.&nbsp;
+    <a href="https://github.com/Ethan0892/StackNest" target="_blank" rel="noopener"
+       style="color:#a78bfa; text-decoration:underline; text-underline-offset:3px;">
+      The code is now open source.
+    </a>
+    <button onclick="document.getElementById('sn-shutdown-banner').remove()" aria-label="Dismiss" style="
+      position:absolute; right:16px; top:50%; transform:translateY(-50%);
+      background:none; border:none; color:#8891b4; font-size:20px; cursor:pointer; line-height:1; padding:4px 8px;
+    ">&times;</button>
+  </div>
+
   <!-- -- Navbar ------------------------------------------------------------ -->
   <nav class="navbar" id="navbar">
     <div class="container">
