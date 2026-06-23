@@ -157,6 +157,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
+      --banner-h:  0px;
       --bg:        #0f1117;
       --bg2:       #080a0f;
       --surface:   #1a1d26;
@@ -206,7 +207,7 @@
     /* -- Navbar ---------------------------------------------------------- */
     .navbar {
       position: fixed;
-      top: 0; left: 0; right: 0;
+      top: var(--banner-h); left: 0; right: 0;
       z-index: 100;
       height: 64px;
       display: flex;
@@ -780,7 +781,7 @@
   <div id="sn-shutdown-banner" style="
     background: linear-gradient(90deg, #1a1020 0%, #1c1030 50%, #1a1020 100%);
     border-bottom: 1px solid #7c3aed55;
-    padding: 14px 24px;
+    padding: 14px 48px;
     text-align: center;
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 15px;
@@ -796,11 +797,21 @@
        style="color:#a78bfa; text-decoration:underline; text-underline-offset:3px;">
       The code is now open source.
     </a>
-    <button onclick="document.getElementById('sn-shutdown-banner').remove()" aria-label="Dismiss" style="
+    <button onclick="(function(){
+      var b=document.getElementById('sn-shutdown-banner');
+      b.remove();
+      document.documentElement.style.setProperty('--banner-h','0px');
+    })()" aria-label="Dismiss" style="
       position:absolute; right:16px; top:50%; transform:translateY(-50%);
       background:none; border:none; color:#8891b4; font-size:20px; cursor:pointer; line-height:1; padding:4px 8px;
     ">&times;</button>
   </div>
+  <script>
+    (function(){
+      var b = document.getElementById('sn-shutdown-banner');
+      if(b) document.documentElement.style.setProperty('--banner-h', b.offsetHeight + 'px');
+    })();
+  </script>
 
   <!-- -- Navbar ------------------------------------------------------------ -->
   <nav class="navbar" id="navbar">
