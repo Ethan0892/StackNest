@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minecraft Mod Generator AI — Fabric, Forge &amp; NeoForge (2026) — StackNest</title>
+  <meta name="description" content="Generate complete Minecraft mods with AI in seconds. Supports Fabric, Forge, and NeoForge. Describe your mod idea and get compilable Java code with fabric.mod.json, build.gradle, and all required classes." />
+  <meta name="keywords" content="minecraft mod generator, AI minecraft mod generator, fabric mod generator, forge mod generator, neoforge mod generator, ai minecraft mod, fabric mod ai, forge mod ai, create minecraft mod, how to make a fabric mod, minecraft modding ai, forge mod creator, neoforge mod creator, fabric api mod, AI plugin builder, paper plugin generator, spigot plugin generator, folia plugin generator, Paper Spigot Folia AI, auto-fixing compile errors, auto compile minecraft mod, minecraft mod compiler, no code minecraft mod, free minecraft mod generator, compile minecraft mod online, AI code auto-fix minecraft, minecraft coding assistant, AI java code generator, best mod generator 2026, paper 1.21 mod ai" />
+  <link rel="canonical" href="https://stacknests.com/minecraft-mod-generator" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="Minecraft Mod Generator AI — Fabric, Forge &amp; NeoForge (2026)" />
+  <meta property="og:description" content="Generate complete Fabric, Forge, and NeoForge mods with AI. Get compilable Java code, fabric.mod.json, build.gradle, and all classes — instantly." />
+  <meta property="og:url" content="https://stacknests.com/minecraft-mod-generator" />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://stacknests.com/og-image.png" />
+  <meta property="og:site_name" content="StackNest" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Minecraft Mod Generator AI — Fabric, Forge &amp; NeoForge (2026)" />
+  <meta name="twitter:description" content="Generate Fabric, Forge, and NeoForge mods with AI. Compilable Java, fabric.mod.json, build.gradle — no boilerplate." />
+  <meta name="twitter:image" content="https://stacknests.com/og-image.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Minecraft Mod Generator AI — Fabric, Forge &amp; NeoForge (2026)",
+    "description": "How to generate complete Minecraft mods using AI. Covers Fabric mod generator, Forge mod generator, and NeoForge mod generator with StackNest.",
+    "author": { "@type": "Organization", "name": "StackNest" },
+    "publisher": { "@type": "Organization", "name": "StackNest", "url": "https://stacknests.com" },
+    "datePublished": "2026-04-12",
+    "dateModified": "2026-04-12",
+    "mainEntityOfPage": "https://stacknests.com/minecraft-mod-generator"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Can AI generate a complete Fabric mod?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. StackNest generates complete Fabric mods including the main ModInitializer class, fabric.mod.json, build.gradle.kts with Fabric Loom, and any additional classes needed. Just describe your mod and it produces compilable code targeting Fabric API for Minecraft 1.21." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between a Minecraft plugin and a Minecraft mod?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Minecraft plugins run server-side only and use server platforms like Paper or Spigot (which don't require mods to be installed by players). Mods run via mod loaders like Fabric or Forge — they can add new blocks, items, entities, and mechanics on both client and server, but players must have the mod loader and mod installed. StackNest supports both: plugins (Paper, Spigot, Folia, Velocity) and mods (Fabric, Forge, NeoForge)." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does StackNest support Forge mod generation?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. StackNest generates Forge mods (Minecraft Forge 1.21+) including the @Mod main class, META-INF/mods.toml, and build.gradle with ForgeGradle. It uses the correct Forge event bus APIs and avoids deprecated patterns." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does StackNest support NeoForge mod generation?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. StackNest supports NeoForge (NeoForge 21.x+) with the correct NeoGradle build setup, neoforge.mods.toml, and NeoForge event bus registration using net.neoforged.* imports." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is there a free Minecraft mod generator?",
+        "acceptedAnswer": { "@type": "Answer", "text": "StackNest offers a free tier with 3 generations per month. This covers mod generation as well as plugin generation. No credit card required to start." }
+      }
+    ]
+  }
+  </script>
+  <style>
+    :root {
+      --bg: #0a0c12; --surface: #111420; --surface2: #181c2a;
+      --border: #1e2235; --text: #e2e6f3; --muted: #8891aa;
+      --accent: #5c6fff; --accent-h: #7b8fff; --green: #34d47a;
+      --yellow: #c9a227; --red: #e05252; --fabric: #b8d5f0; --forge: #e8a04a; --neo: #80d4a0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.7; }
+    a { color: var(--accent-h); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(10,12,18,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 58px; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .nav-logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 17px; color: var(--text); }
+    .nav-logo-icon { width: 28px; height: 28px; background: var(--accent); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { color: var(--muted); font-size: 14px; font-weight: 500; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .btn-primary { background: var(--accent); color: #fff; padding: 8px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-primary:hover { background: var(--accent-h); text-decoration: none; }
+    .article-hero { padding: 64px 0 40px; border-bottom: 1px solid var(--border); }
+    .article-tag { display: inline-block; background: rgba(92,111,255,0.1); color: var(--accent-h); border: 1px solid rgba(92,111,255,0.22); border-radius: 999px; font-size: 12px; font-weight: 600; padding: 4px 12px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 16px; }
+    .article-hero h1 { font-size: clamp(28px,4vw,42px); font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+    .article-hero p { font-size: 18px; color: var(--muted); max-width: 680px; }
+    .article-meta { margin-top: 20px; font-size: 13px; color: var(--muted); }
+    .article-body { padding: 48px 0 80px; }
+    .article-body h2 { font-size: 24px; font-weight: 700; margin: 48px 0 16px; color: var(--text); }
+    .article-body h3 { font-size: 18px; font-weight: 600; margin: 32px 0 12px; }
+    .article-body p { margin-bottom: 16px; color: #c8cde0; }
+    .article-body ul, .article-body ol { padding-left: 24px; margin-bottom: 16px; color: #c8cde0; }
+    .article-body li { margin-bottom: 8px; }
+    .article-body strong { color: var(--text); }
+    code { font-family: 'JetBrains Mono', monospace; background: var(--surface2); padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+    /* Loader cards */
+    .loader-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin: 28px 0; }
+    .loader-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 20px; }
+    .loader-card h3 { font-size: 17px; font-weight: 700; margin: 0 0 8px; }
+    .loader-card p { font-size: 14px; color: var(--muted); margin: 0; }
+    .loader-card .loader-badge { display: inline-block; border-radius: 6px; font-size: 11px; font-weight: 700; padding: 3px 9px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: .04em; }
+    .badge-fabric { background: rgba(184,213,240,0.12); color: var(--fabric); }
+    .badge-forge  { background: rgba(232,160,74,0.12);  color: var(--forge);  }
+    .badge-neo    { background: rgba(128,212,160,0.12); color: var(--neo);    }
+    /* Comparison table */
+    .compare-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; }
+    .compare-table th { background: var(--surface2); padding: 10px 14px; text-align: left; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--border); }
+    .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .yes { color: var(--green); font-weight: 600; }
+    .callout { background: rgba(92,111,255,0.08); border: 1px solid rgba(92,111,255,0.2); border-radius: 12px; padding: 20px 24px; margin: 28px 0; }
+    .callout p { margin: 0; }
+    .cta-strip { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; text-align: center; margin: 48px 0; }
+    .cta-strip h3 { font-size: 22px; margin-bottom: 10px; }
+    .cta-strip p { color: var(--muted); margin-bottom: 20px; }
+    .steps { counter-reset: step; list-style: none; padding: 0; margin: 24px 0; }
+    .steps li { counter-increment: step; display: flex; gap: 16px; margin-bottom: 20px; }
+    .steps li::before { content: counter(step); min-width: 32px; height: 32px; background: rgba(92,111,255,0.15); border: 1px solid rgba(92,111,255,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: var(--accent-h); flex-shrink: 0; margin-top: 2px; }
+    .steps li > div strong { display: block; color: var(--text); font-size: 15px; margin-bottom: 4px; }
+    .steps li > div p { margin: 0; font-size: 14px; color: var(--muted); }
+    .related { border-top: 1px solid var(--border); padding-top: 36px; margin-top: 48px; }
+    .related h3 { font-size: 12px; font-weight: 600; margin-bottom: 16px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+    .related-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .related-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+    .related-card a { color: var(--text); font-weight: 600; font-size: 15px; }
+    .related-card p { font-size: 13px; color: var(--muted); margin-top: 6px; margin-bottom: 0; }
+    @media (max-width: 700px) { .nav-links { display: none; } .loader-grid { grid-template-columns: 1fr; } .related-grid { grid-template-columns: 1fr; } }
+    footer { border-top: 1px solid var(--border); padding: 28px 0; text-align: center; font-size: 13px; color: var(--muted); }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      StackNest
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/gallery">Gallery</a>
+      <a href="/docs">Docs</a>
+    </div>
+    <a href="/app" class="btn-primary">Try free <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></a>
+  </div>
+</nav>
+
+<main>
+
+<div class="article-hero">
+  <div class="container">
+    <div class="article-tag">Mod Generator</div>
+    <h1>Minecraft Mod Generator AI<br><span style="color:var(--accent-h)">Fabric · Forge · NeoForge</span></h1>
+    <p>Describe your mod idea in plain English. Get complete, compilable Java code with fabric.mod.json, build.gradle, and all required classes — in seconds.</p>
+    <div class="article-meta">Updated April 2026 &nbsp;·&nbsp; 8 min read &nbsp;·&nbsp; StackNest Team</div>
+  </div>
+</div>
+
+<div class="article-body">
+<div class="container">
+
+  <p>Creating a Minecraft mod from scratch means navigating mod loader APIs, Gradle build setups, and rapidly-changing version requirements. StackNest's <strong>AI mod generator</strong> handles all of that — you describe what you want, and it produces a fully-structured mod project ready to open in your IDE.</p>
+
+  <h2>Supported Mod Loaders</h2>
+
+  <div class="loader-grid">
+    <div class="loader-card">
+      <span class="loader-badge badge-fabric">Fabric</span>
+      <h3>Fabric Mod Generator</h3>
+      <p>Generates <code>ModInitializer</code> class, <code>fabric.mod.json</code>, and <code>build.gradle.kts</code> with Fabric Loom. Uses correct Fabric API event hooks, registries, and SLF4J logging.</p>
+    </div>
+    <div class="loader-card">
+      <span class="loader-badge badge-forge">Forge</span>
+      <h3>Forge Mod Generator</h3>
+      <p>Generates <code>@Mod</code> main class, <code>META-INF/mods.toml</code>, and <code>build.gradle</code> with ForgeGradle. Registers events on the correct Forge and Mod event buses.</p>
+    </div>
+    <div class="loader-card">
+      <span class="loader-badge badge-neo">NeoForge</span>
+      <h3>NeoForge Mod Generator</h3>
+      <p>Generates NeoForge 21.x+ compatible mods using <code>net.neoforged.*</code> imports, <code>neoforge.mods.toml</code>, and NeoGradle build setup.</p>
+    </div>
+  </div>
+
+  <h2>What the Generator Produces</h2>
+
+  <p>Unlike asking a general AI chatbot for mod code, StackNest generates a <strong>complete, project-ready output</strong> for each mod:</p>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>File</th>
+        <th>Fabric</th>
+        <th>Forge</th>
+        <th>NeoForge</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Main mod class</td>
+        <td class="yes">ModInitializer</td>
+        <td class="yes">@Mod class</td>
+        <td class="yes">@Mod class</td>
+      </tr>
+      <tr>
+        <td>Mod manifest</td>
+        <td class="yes">fabric.mod.json</td>
+        <td class="yes">mods.toml</td>
+        <td class="yes">neoforge.mods.toml</td>
+      </tr>
+      <tr>
+        <td>Build file</td>
+        <td class="yes">build.gradle.kts (Loom)</td>
+        <td class="yes">build.gradle (ForgeGradle)</td>
+        <td class="yes">build.gradle.kts (NeoGradle)</td>
+      </tr>
+      <tr>
+        <td>Additional classes</td>
+        <td class="yes">&#10003;</td>
+        <td class="yes">&#10003;</td>
+        <td class="yes">&#10003;</td>
+      </tr>
+      <tr>
+        <td>Minecraft version</td>
+        <td>1.21.x</td>
+        <td>1.21+</td>
+        <td>21.x (NeoForge)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>How to Generate a Minecraft Mod with AI</h2>
+
+  <ol class="steps">
+    <li>
+      <div>
+        <strong>Open the generator at <a href="/app">stacknests.com/app</a></strong>
+        <p>Log in with Google or use the free tier with no account required.</p>
+      </div>
+    </li>
+    <li>
+      <div>
+        <strong>Switch to Mod mode</strong>
+        <p>Click the mode toggle in the generator header and select <strong>Fabric</strong>, <strong>Forge</strong>, or <strong>NeoForge</strong>.</p>
+      </div>
+    </li>
+    <li>
+      <div>
+        <strong>Describe your mod</strong>
+        <p>Write a plain-English description: e.g. <em>"A Fabric 1.21 mod that adds a backpack item with 18 slots and a keybind to open it"</em> or <em>"Forge mod that adds a new ore, ingot, and pickaxe with a Fortune-like bonus on all ores"</em>.</p>
+      </div>
+    </li>
+    <li>
+      <div>
+        <strong>Generate and download</strong>
+        <p>StackNest builds the mod code, validates structure, and lets you copy or download a ZIP. Open the project in IntelliJ IDEA or VS Code with the Gradle plugin, run <code>./gradlew build</code> and find the JAR in <code>build/libs/</code>.</p>
+      </div>
+    </li>
+  </ol>
+
+  <h2>Fabric vs Forge vs NeoForge: Which Should You Choose?</h2>
+
+  <p>Choosing the right mod loader affects what code StackNest generates for you:</p>
+
+  <h3 style="color:var(--fabric)">Fabric</h3>
+  <p><strong>Best for:</strong> performance mods, client-side mods, and mods that need to stay up-to-date with the latest Minecraft releases quickly. Fabric updates much faster than Forge after Minecraft version releases. The Fabric API is lightweight and modular. Most popular mods like Sodium, Iris, and Lithium are Fabric-only.</p>
+
+  <h3 style="color:var(--forge)">Minecraft Forge</h3>
+  <p><strong>Best for:</strong> large content mods (new biomes, dimensions, complex crafting) and modpacks that include many mods from the traditional Forge ecosystem. Forge has the deepest library of existing mods and the most extension points into vanilla game systems. It also takes longer to update after Minecraft releases.</p>
+
+  <h3 style="color:var(--neo)">NeoForge</h3>
+  <p><strong>Best for:</strong> new mods or ports where you want Forge-style APIs with faster updates and a more actively maintained codebase. NeoForge is a community-driven fork of Forge with cleaner APIs and faster MC version support. Most newer Forge-style mods are moving to NeoForge.</p>
+
+  <div class="callout">
+    <p>💡 <strong>Not sure which loader to pick?</strong> If you're making a new mod from scratch with no existing ecosystem constraints, start with <strong>Fabric</strong> for lightweight mods or <strong>NeoForge</strong> for content-heavy mods. StackNest generates correct code for all three — just select the loader and describe your mod.</p>
+  </div>
+
+  <h2>Mod Generator vs Plugin Generator: What's the Difference?</h2>
+
+  <p>StackNest supports both <strong>server plugins</strong> and <strong>mods</strong>. Here's when to use each:</p>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Minecraft Plugin (Paper/Spigot)</th>
+        <th>Minecraft Mod (Fabric/Forge)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Installation</strong></td>
+        <td>Server-only, no client install</td>
+        <td>Server + client (or client-only)</td>
+      </tr>
+      <tr>
+        <td><strong>Best for</strong></td>
+        <td>Custom server gameplay, economy, commands, admin tools</td>
+        <td>New items, blocks, mobs, world gen, client rendering</td>
+      </tr>
+      <tr>
+        <td><strong>Technical complexity</strong></td>
+        <td>Lower — Bukkit/Paper API is stable</td>
+        <td>Higher — loader APIs change per MC version</td>
+      </tr>
+      <tr>
+        <td><strong>Works on vanilla/modded clients?</strong></td>
+        <td>Vanilla clients (no mod needed)</td>
+        <td>Clients need mod loader + mod installed</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>If you're running a public server and don't want to require players to install anything, use the <a href="/minecraft-plugin-generator">plugin generator</a>. If you're building a custom modpack or adding new content to the game, use the mod generator.</p>
+
+  <h2>Examples of Mods You Can Generate</h2>
+
+  <ul>
+    <li><strong>Custom items and tools</strong> — new swords, pickaxes, or magic staffs with unique NBT stats</li>
+    <li><strong>New blocks and ores</strong> — generate the full registration pipeline for custom blocks, items, and world generation</li>
+    <li><strong>Keybind-driven mechanics</strong> — client-side Fabric mods with custom key bindings and HUD overlays</li>
+    <li><strong>Command mods</strong> — Brigadier command registration for both Fabric and Forge</li>
+    <li><strong>Backpacks and inventories</strong> — custom container blocks and item inventories with GUI screens</li>
+    <li><strong>Passive abilities</strong> — event-driven mechanics like speed on low health, bonus drops, or special attack effects</li>
+    <li><strong>Config-driven mods</strong> — mods that read Cloth Config or TOML configuration files</li>
+  </ul>
+
+  <h2>Why StackNest Instead of ChatGPT for Mod Code?</h2>
+
+  <p>General AI assistants like ChatGPT can produce Fabric or Forge code, but they generate it in isolation without understanding the complete project structure. Common problems:</p>
+
+  <ul>
+    <li>Missing or wrong <code>fabric.mod.json</code> schema version or entrypoint class names</li>
+    <li>Outdated Gradle configurations that don't compile with current Loom or ForgeGradle versions</li>
+    <li>Incorrect import paths — Forge, NeoForge, and Fabric each have different class locations</li>
+    <li>Missing registry calls for items/blocks that compile but have no effect in-game</li>
+    <li>Incomplete code — ChatGPT often truncates complex mods before all classes are written</li>
+  </ul>
+
+  <p>StackNest is purpose-built around mod and plugin Java generation. It knows the correct entrypoint structures, current Loom and ForgeGradle configurations, and NeoForge's <code>net.neoforged.*</code> import paths — and it produces the complete project, not just a snippet.</p>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>Can AI generate a complete Fabric mod?</h3>
+  <p>Yes. StackNest generates complete Fabric mods including the <code>ModInitializer</code> class, <code>fabric.mod.json</code>, <code>build.gradle.kts</code> with Fabric Loom, and any extra classes. It targets Fabric API for Minecraft 1.21 and uses the correct SLF4J logger, Block/Item registries, and server event hooks.</p>
+
+  <h3>Does StackNest support Forge mod generation?</h3>
+  <p>Yes. It generates the <code>@Mod</code> class with constructor-level event bus registration, <code>META-INF/mods.toml</code> with the correct <code>[[dependencies]]</code> sections, and <code>build.gradle</code> with ForgeGradle. It avoids common mistakes like using the wrong event bus for mod lifecycle vs. server events.</p>
+
+  <h3>Does StackNest support NeoForge?</h3>
+  <p>Yes. NeoForge 21.x is fully supported. The generator uses <code>net.neoforged.*</code> APIs (never <code>net.minecraftforge.*</code>), the NeoGradle plugin for build, and the correct <code>neoforge.mods.toml</code> format.</p>
+
+  <h3>Is the generated mod code compilable immediately?</h3>
+  <p>The code is generated to compile correctly. For Fabric/Forge/NeoForge, open the project in IntelliJ IDEA, run <code>./gradlew genSources</code> (Forge/NeoForge) or just <code>./gradlew build</code> (Fabric), and the mod JAR will be produced. Large mods may need minor adjustments for specific gameplay balance or additional registration steps.</p>
+
+  <h3>Is there a free Minecraft mod generator?</h3>
+  <p>StackNest offers a free tier with 3 generations per month. This applies to mod generation as well as plugin generation. No credit card is required to start.</p>
+
+  <div class="cta-strip">
+    <h3>Generate your Minecraft mod now</h3>
+    <p>Fabric, Forge, or NeoForge — describe what you want and get compilable mod code in seconds.</p>
+    <a href="/app" class="btn-primary">Start generating free &rarr;</a>
+  </div>
+
+  <div class="related">
+    <h3>Related guides</h3>
+    <div class="related-grid">
+      <div class="related-card">
+        <a href="/minecraft-plugin-generator">Minecraft Plugin Generator</a>
+        <p>Generate Paper, Spigot, Folia, and Velocity plugins with AI.</p>
+      </div>
+      <div class="related-card">
+        <a href="/how-to-make-minecraft-plugins">How to Make a Minecraft Plugin</a>
+        <p>Step-by-step guide: Paper API, Maven setup, commands, and events.</p>
+      </div>
+      <div class="related-card">
+        <a href="/ai-code-generators">AI Code Generator Comparison</a>
+        <p>StackNest vs GitHub Copilot vs ChatGPT for Minecraft Java code.</p>
+      </div>
+      <div class="related-card">
+        <a href="/best-ai-tools">Best AI Tools for Minecraft</a>
+        <p>The full AI toolkit for Minecraft server owners in 2026.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2026 StackNest &nbsp;·&nbsp; <a href="/terms">Terms</a> &nbsp;·&nbsp; <a href="/privacy">Privacy</a> &nbsp;·&nbsp; <a href="/pricing">Pricing</a> &nbsp;·&nbsp; <a href="/gallery">Gallery</a></p>
+    <p style="margin-top:8px;font-size:11px;color:#8891b4">StackNest is not affiliated with or endorsed by Mojang Studios, Microsoft, or CurseForge. Minecraft is a trademark of Mojang Studios.</p>
+  </div>
+</footer>
+
+</body>
+</html>

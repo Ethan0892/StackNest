@@ -1,0 +1,20 @@
+[Unit]
+Description=StackNest weekly API docs updater
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/opt/stacknest
+EnvironmentFile=-/opt/stacknest/.env
+# After updating api_notes.md, restart the app so workers pick up the new SYSTEM_PROMPT
+ExecStart=/opt/stacknest/.venv/bin/python3 -m scripts.update_api_notes
+ExecStartPost=/bin/systemctl restart stacknest
+StandardOutput=journal
+StandardError=journal
+# Allow up to 5 minutes for fetching + Gemini summarisation
+TimeoutStartSec=300
+
+[Install]
+WantedBy=multi-user.target

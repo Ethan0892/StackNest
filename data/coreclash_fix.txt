@@ -1,0 +1,463 @@
+```java
+package net.coredClash;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.bossbar.BossBarViewer;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+public final class CoreClash extends JavaPlugin implements Listener {
+
+    // Data
+    private final Map<UUID, Clan> clans = new ConcurrentHashMap<>();
+    private final Map<Location, Core> cores = new ConcurrentHashMap<>();
+    private final Map<UUID, UUID> playerClan = new ConcurrentHashMap<>();
+    private final Map<UUID, Long> lastCombat = new ConcurrentHashMap<>();
+    private final Map<Location, BossBar> shieldBars = new HashMap<>();
+
+    // Config
+    private int maxChunksPerCore;
+    private double baseExpansionCost;
+    private double costScaleFactor;
+    private int shieldRegenDelayTicks;
+    private int shieldRegenAmount;
+    private int shieldRegenIntervalTicks;
+    private int combatTagSeconds;
+    private int coreHP;
+    private int shieldHP;
+    private Material coreMaterial;
+    private Material shieldMaterial;
+
+    // Tasks
+    private BukkitTask shieldRegenTask;
+    private BukkitTask combatTagTask;
+
+    // Keys
+    private final NamespacedKey coreKey = new NamespacedKey(this, "core");
+    private final NamespacedKey clanKey = new NamespacedKey(this, "clan");
+
+    @Override
+    public void onEnable() {
+        saveDefaultConfig();
+        loadConfig();
+        getServer().getPluginManager().registerEvents(this, this);
+        registerCommands();
+        startTasks();
+        getLogger().info("CoreClash enabled");
+    }
+
+    @Override
+    public void onDisable() {
+        if (shieldRegenTask != null) shieldRegenTask.cancel();
+        if (combatTagTask != null) combatTagTask.cancel();
+        shieldBars.values().forEach(bar -> {
+            Set<Player> copy = new HashSet<>();
+            for (BossBarViewer v : bar.viewers()) {
+                if (v instanceof Player player) copy.add(player);
+            }
+            copy.forEach(bar::removeViewer);
+        });
+        getLogger().info("CoreClash disabled");
+    }
+
+    private void loadConfig() {
+        FileConfiguration c = getConfig();
+        maxChunksPerCore = c.getInt("max-chunks-per-core", 50);
+        baseExpansionCost = c.getDouble("base-expansion-cost", 1000.0);
+        costScaleFactor = c.getDouble("cost-scale-factor", 1.5);
+        shieldRegenDelayTicks = c.getInt("shield-regen-delay-ticks", 20 * 60 * 5);
+        shieldRegenAmount = c.getInt("shield-regen-amount", 1);
+        shieldRegenIntervalTicks = c.getInt("shield-regen-interval-ticks", 20 * 10);
+        combatTagSeconds = c.getInt("combat-tag-seconds", 30);
+        coreHP = c.getInt("core-hp", 20);
+        shieldHP = c.getInt("shield-hp", 50);
+        coreMaterial = Material.valueOf(c.getString("core-material", "DIAMOND_BLOCK"));
+        shieldMaterial = Material.valueOf(c.getString("shield-material", "EMERALD_BLOCK"));
+    }
+
+    private void registerCommands() {
+        PluginCommand cc = getCommand("coreclash");
+        if (cc != null) cc.setExecutor(this);
+    }
+
+    private void startTasks() {
+        shieldRegenTask = new BukkitRunnable() {
+            @Override
+            public void run() {
+                long now = System.currentTimeMillis();
+                for (Core core : cores.values()) {
+                    if (core.shieldHP < shieldHP) {
+                        if (now - core.lastShieldDamage > shieldRegenDelayTicks * 50L) {
+                            core.shieldHP = Math.min(shieldHP, core.shieldHP + shieldRegenAmount);
+                            updateShieldBar(core);
+                        }
+                    }
+                }
+            }
+        }.runTaskTimer(this, 0L, shieldRegenIntervalTicks);
+
+        combatTagTask = new BukkitRunnable() {
+            @Override
+            public void run() {
+                Iterator<Map.Entry<UUID, Long>> it = lastCombat.entrySet().iterator();
+                long now = System.currentTimeMillis();
+                while (it.hasNext()) {
+                    if (now - it.next().getValue() > combatTagSeconds * 1000L) it.remove();
+                }
+            }
+        }.runTaskTimer(this, 0L, 20L);
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!(sender instanceof Player p)) {
+            sender.sendMessage(Component.text("Players only").color(NamedTextColor.RED));
+            return true;
+        }
+        if (args.length == 0) {
+            p.sendMessage(Component.text("/coreclash create <name> | join <name> | leave | expand | info").color(NamedTextColor.YELLOW));
+            return true;
+        }
+        switch (args[0].toLowerCase()) {
+            case "create" -> handleCreate(p, args);
+            case "join" -> handleJoin(p, args);
+            case "leave" -> handleLeave(p);
+            case "expand" -> handleExpand(p);
+            case "info" -> handleInfo(p);
+            default -> p.sendMessage(Component.text("Unknown subcommand").color(NamedTextColor.RED));
+        }
+        return true;
+    }
+
+    private void handleCreate(Player p, String[] args) {
+        if (args.length < 2) {
+            p.sendMessage(Component.text("Usage: /coreclash create <name>").color(NamedTextColor.RED));
+            return;
+        }
+        if (playerClan.containsKey(p.getUniqueId())) {
+            p.sendMessage(Component.text("Leave your current clan first").color(NamedTextColor.RED));
+            return;
+        }
+        String name = args[1];
+        if (clans.values().stream().anyMatch(c -> c.name.equalsIgnoreCase(name))) {
+            p.sendMessage(Component.text("Clan name taken").color(NamedTextColor.RED));
+            return;
+        }
+        Clan clan = new Clan(UUID.randomUUID(), name, p.getUniqueId());
+        clans.put(clan.id, clan);
+        playerClan.put(p.getUniqueId(), clan.id);
+        p.sendMessage(Component.text("Clan created").color(NamedTextColor.GREEN));
+    }
+
+    private void handleJoin(Player p, String[] args) {
+        if (args.length < 2) {
+            p.sendMessage(Component.text("Usage: /coreclash join <name>").color(NamedTextColor.RED));
+            return;
+        }
+        if (playerClan.containsKey(p.getUniqueId())) {
+            p.sendMessage(Component.text("Leave your current clan first").color(NamedTextColor.RED));
+            return;
+        }
+        String name = args[1];
+        Clan clan = clans.values().stream().filter(c -> c.name.equalsIgnoreCase(name)).findFirst().orElse(null);
+        if (clan == null) {
+            p.sendMessage(Component.text("Clan not found").color(NamedTextColor.RED));
+            return;
+        }
+        clan.members.add(p.getUniqueId());
+        playerClan.put(p.getUniqueId(), clan.id);
+        p.sendMessage(Component.text("Joined clan " + clan.name).color(NamedTextColor.GREEN));
+    }
+
+    private void handleLeave(Player p) {
+        UUID clanId = playerClan.remove(p.getUniqueId());
+        if (clanId == null) {
+            p.sendMessage(Component.text("You are not in a clan").color(NamedTextColor.RED));
+            return;
+        }
+        Clan clan = clans.get(clanId);
+        if (clan != null) {
+            clan.members.remove(p.getUniqueId());
+            if (clan.owner.equals(p.getUniqueId()) && !clan.members.isEmpty()) {
+                clan.owner = clan.members.iterator().next();
+                Player newOwner = Bukkit.getPlayer(clan.owner);
+                if (newOwner != null) newOwner.sendMessage(Component.text("You are now clan owner").color(NamedTextColor.YELLOW));
+            }
+            if (clan.members.isEmpty()) {
+                new HashSet<>(cores.entrySet()).stream()
+                        .filter(e -> e.getValue().clanId.equals(clanId))
+                        .forEach(e -> cores.remove(e.getKey()));
+                clans.remove(clanId);
+                p.sendMessage(Component.text("Clan disbanded").color(NamedTextColor.YELLOW));
+            }
+        }
+        p.sendMessage(Component.text("Left clan").color(NamedTextColor.GREEN));
+    }
+
+    private void handleExpand(Player p) {
+        UUID clanId = playerClan.get(p.getUniqueId());
+        if (clanId == null) {
+            p.sendMessage(Component.text("You are not in a clan").color(NamedTextColor.RED));
+            return;
+        }
+        Clan clan = clans.get(clanId);
+        if (clan == null) return;
+        int owned = (int) cores.values().stream().filter(c -> c.clanId.equals(clanId)).count();
+        if (owned >= maxChunksPerCore) {
+            p.sendMessage(Component.text("Max chunks reached").color(NamedTextColor.RED));
+            return;
+        }
+        double cost = baseExpansionCost * Math.pow(costScaleFactor, owned);
+        if (getBalance(p) < cost) {
+            p.sendMessage(Component.text("Not enough money (need " + String.format("%.1f", cost) + ")").color(NamedTextColor.RED));
+            return;
+        }
+        withdraw(p, cost);
+        Chunk chunk = p.getLocation().getChunk();
+        Location coreLoc = chunk.getBlock(8, p.getWorld().getMinHeight() + 1, 8).getLocation();
+        if (cores.containsKey(coreLoc)) {
+            p.sendMessage(Component.text("Chunk already claimed").color(NamedTextColor.RED));
+            return;
+        }
+        Core core = new Core(coreLoc, clanId, this);
+        cores.put(coreLoc, core);
+        coreLoc.getBlock().setType(coreMaterial);
+        p.sendMessage(Component.text("Chunk claimed (cost " + String.format("%.1f", cost) + ")").color(NamedTextColor.GREEN));
+    }
+
+    private void handleInfo(Player p) {
+        UUID clanId = playerClan.get(p.getUniqueId());
+        if (clanId == null) {
+            p.sendMessage(Component.text("You are not in a clan").color(NamedTextColor.RED));
+            return;
+        }
+        Clan clan = clans.get(clanId);
+        if (clan == null) return;
+        int owned = (int) cores.values().stream().filter(c -> c.clanId.equals(clanId)).count();
+        p.sendMessage(Component.text("Clan: " + clan.name + " | Chunks: " + owned + "/" + maxChunksPerCore).color(NamedTextColor.YELLOW));
+    }
+
+    @EventHandler
+    public void onPlace(BlockPlaceEvent e) {
+        Block b = e.getBlock();
+        if (b.getType() == coreMaterial) {
+            Player p = e.getPlayer();
+            UUID clanId = playerClan.get(p.getUniqueId());
+            if (clanId == null) {
+                p.sendMessage(Component.text("Place cores only in claimed chunks via /coreclash expand").color(NamedTextColor.RED));
+                e.setCancelled(true);
+                return;
+            }
+            Chunk chunk = b.getChunk();
+            Location expected = chunk.getBlock(8, b.getWorld().getMinHeight() + 1, 8).getLocation();
+            if (!b.getLocation().equals(expected)) {
+                p.sendMessage(Component.text("Cores must be placed at chunk center Y=" + (b.getWorld().getMinHeight() + 1)).color(NamedTextColor.RED));
+                e.setCancelled(true);
+                return;
+            }
+            if (cores.containsKey(expected)) {
+                p.sendMessage(Component.text("Chunk already has a core").color(NamedTextColor.RED));
+                e.setCancelled(true);
+                return;
+            }
+            e.setCancelled(true);
+            p.sendMessage(Component.text("Use /coreclash expand to claim this chunk").color(NamedTextColor.YELLOW));
+        }
+    }
+
+    @EventHandler
+    public void onBreak(BlockBreakEvent e) {
+        Block b = e.getBlock();
+        Location loc = b.getLocation();
+        Core core = cores.get(loc);
+        if (core == null) return;
+        Player p = e.getPlayer();
+        UUID clanId = playerClan.get(p.getUniqueId());
+        if (clanId != null && clanId.equals(core.clanId)) {
+            p.sendMessage(Component.text("You cannot break your own core").color(NamedTextColor.RED));
+            e.setCancelled(true);
+            return;
+        }
+        e.setCancelled(true);
+        if (core.shieldHP > 0) {
+            core.shieldHP--;
+            core.lastShieldDamage = System.currentTimeMillis();
+            updateShieldBar(core);
+            p.sendMessage(Component.text("Shield damaged (" + core.shieldHP + "/" + shieldHP + ")").color(NamedTextColor.YELLOW));
+            tagCombat(p.getUniqueId());
+            return;
+        }
+        core.coreHP--;
+        if (core.coreHP <= 0) {
+            Clan clan = clans.get(core.clanId);
+            String clanName = clan == null ? "?" : clan.name;
+            Bukkit.broadcast(Component.text("Core of clan " + clanName + " destroyed!").color(NamedTextColor.RED));
+            cores.remove(loc);
+            loc.getBlock().setType(Material.AIR);
+            dropInventory(loc);
+        } else {
+            p.sendMessage(Component.text("Core damaged (" + core.coreHP + "/" + coreHP + ")").color(NamedTextColor.RED));
+            tagCombat(p.getUniqueId());
+        }
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e) {
+        if (e.getClickedBlock() == null) return;
+        Location loc = e.getClickedBlock().getLocation();
+        Core core = cores.get(loc);
+        if (core == null) return;
+        Player p = e.getPlayer();
+        UUID clanId = playerClan.get(p.getUniqueId());
+        if (clanId != null && clanId.equals(core.clanId)) {
+            p.sendMessage(Component.text("Core HP: " + core.coreHP + "/" + coreHP + " | Shield: " + core.shieldHP + "/" + shieldHP).color(NamedTextColor.AQUA));
+        }
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageByEntityEvent e) {
+        if (e.getDamager() instanceof Player d && e.getEntity() instanceof Player t) {
+            UUID dc = playerClan.get(d.getUniqueId());
+            UUID tc = playerClan.get(t.getUniqueId());
+            if (dc != null && dc.equals(tc)) {
+                e.setCancelled(true);
+                d.sendMessage(Component.text("No friendly fire").color(NamedTextColor.RED));
+                return;
+            }
+            tagCombat(d.getUniqueId());
+            tagCombat(t.getUniqueId());
+        }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+        UUID clanId = playerClan.get(p.getUniqueId());
+        if (clanId == null) return;
+        cores.values().stream()
+                .filter(c -> c.clanId.equals(clanId) && c.shieldHP < shieldHP)
+                .forEach(this::updateShieldBar);
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        Player p = e.getPlayer();
+        shieldBars.values().forEach(bar -> bar.removeViewer(p));
+    }
+
+    private void tagCombat(UUID uuid) {
+        lastCombat.put(uuid, System.currentTimeMillis());
+    }
+
+    private boolean isCombatTagged(UUID uuid) {
+        return System.currentTimeMillis() - lastCombat.getOrDefault(uuid, 0L) < combatTagSeconds * 1000L;
+    }
+
+    private void updateShieldBar(Core core) {
+        Clan clan = clans.get(core.clanId);
+        if (clan == null) return;
+        BossBar bar = shieldBars.computeIfAbsent(core.location, k ->
+                BossBar.bossBar(Component.text("Core Shield"), 1.0f, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS));
+        bar.progress((float) core.shieldHP / shieldHP);
+        bar.name(Component.text("Core Shield " + clan.name + " (" + core.shieldHP + "/" + shieldHP + ")"));
+        Set<Player> wanted = new HashSet<>();
+        for (UUID uuid : clan.members) {
+            Player m = Bukkit.getPlayer(uuid);
+            if (m != null && m.getWorld().equals(core.location.getWorld())) wanted.add(m);
+        }
+        // Collect current player viewers
+        Set<Player> current = new HashSet<>();
+        for (BossBarViewer v : bar.viewers()) {
+            if (v instanceof Player player) current.add(player);
+        }
+        // Remove stale viewers
+        for (Player p : current) {
+            if (!wanted.contains(p)) bar.removeViewer(p);
+        }
+        // Add new viewers
+        for (Player p : wanted) {
+            if (!current.contains(p)) bar.addViewer(p);
+        }
+    }
+
+    private void dropInventory(Location loc) {
+        loc.getWorld().dropItemNaturally(loc, new ItemStack(Material.DIAMOND, 5));
+        loc.getWorld().dropItemNaturally(loc, new ItemStack(Material.EMERALD, 10));
+    }
+
+    private double getBalance(Player p) {
+        return 10000;
+    }
+
+    private void withdraw(Player p, double amt) {
+    }
+
+    private static class Clan {
+        final UUID id;
+        final String name;
+        final Set<UUID> members = ConcurrentHashMap.newKeySet();
+        UUID owner;
+
+        Clan(UUID id, String name, UUID owner) {
+            this.id = id;
+            this.name = name;
+            this.owner = owner;
+            members.add(owner);
+        }
+    }
+
+    private static class Core {
+        final Location location;
+        final UUID clanId;
+        int shieldHP;
+        int coreHP;
+        long lastShieldDamage;
+
+        Core(Location location, UUID clanId, CoreClash plugin) {
+            this.location = location;
+            this.clanId = clanId;
+            this.shieldHP = plugin.shieldHP;
+            this.coreHP = plugin.coreHP;
+        }
+    }
+}
+```
+
+```yaml
+name: CoreClash
+version: 1.0.0
+main: net.coredClash.CoreClash
+api-version: '1.21'
+description: Clan-based core block land claiming and raiding
+commands:
+  coreclash:
+    description: Main command
+    usage: /coreclash <create|join|leave|expand|info>
+permissions:
+  coreclash.user:
+    default: true
+```

@@ -1,0 +1,12 @@
+{
+  "fetched_at": "2026-05-11T05:45:11.190763+00:00",
+  "stable": {
+    "mc_version": "26.1",
+    "java_version": "25",
+    "paper_profile": "paper_26_1",
+    "paper_api_version": "26.1.2.build.62-stable",
+    "brigadier_version": "1.3.10",
+    "paper_api_jar_url": "https://repo.papermc.io/repository/maven-public/io/papermc/paper/paper-api/26.1.2.build.62-stable/paper-api-26.1.2.build.62-stable.jar",
+    "brigadier_jar_url": "https://libraries.minecraft.net/com/mojang/brigadier/1.3.10/brigadier-1.3.10.jar"
+  }
+}

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to Make a Minecraft Plugin (2026 Guide) — StackNest</title>
+  <meta name="description" content="Step-by-step guide to making a Minecraft plugin in 2026. Learn the Paper API, set up Maven, write your first command and event listener, then compile a working JAR — or skip setup entirely with AI." />
+  <meta name="keywords" content="how to make a minecraft plugin, AI minecraft plugin generator, minecraft plugin tutorial, paper 26.1 plugin tutorial, spigot plugin development, minecraft java plugin, create minecraft plugin 2026, folia plugin generator, Paper Spigot Folia AI, auto-fixing compile errors, auto compile minecraft plugin, minecraft plugin compiler, AI plugin builder, generate paper plugin 26.1, no code minecraft plugin, free minecraft plugin generator, minecraft plugin without java, bukkit plugin AI, compile minecraft plugin online, plugin.yml guide, AI code auto-fix, minecraft coding assistant, AI java code generator, best way to make minecraft plugins 2026, paper 26.1 plugin tutorial" />
+  <link rel="canonical" href="https://stacknests.com/how-to-make-minecraft-plugins" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="How to Make a Minecraft Plugin (2026 Guide)" />
+  <meta property="og:description" content="Step-by-step guide to making a Minecraft plugin in 2026 — from setting up your environment to compiling a working JAR." />
+  <meta property="og:url" content="https://stacknests.com/how-to-make-minecraft-plugins" />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://stacknests.com/og-image.png" />
+  <meta property="og:site_name" content="StackNest" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="How to Make a Minecraft Plugin (2026 Guide)" />
+  <meta name="twitter:description" content="Step-by-step guide: set up Maven, use the Paper API, write commands and event listeners, compile a JAR." />
+  <meta name="twitter:image" content="https://stacknests.com/og-image.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Make a Minecraft Plugin",
+    "description": "Step-by-step guide to creating a Minecraft plugin using the Paper API and Maven.",
+    "step": [
+      { "@type": "HowToStep", "name": "Install Java 21 and Maven", "text": "Download Java 21 JDK and Apache Maven. Set JAVA_HOME and add Maven to your PATH." },
+      { "@type": "HowToStep", "name": "Create a Maven project", "text": "Run mvn archetype:generate or use your IDE to scaffold a new Maven project with the Paper API dependency." },
+      { "@type": "HowToStep", "name": "Write your main plugin class", "text": "Create a class that extends JavaPlugin, override onEnable and onDisable, and register your commands and listeners." },
+      { "@type": "HowToStep", "name": "Create plugin.yml", "text": "Add a plugin.yml file declaring your plugin's name, version, main class, API version, and any commands." },
+      { "@type": "HowToStep", "name": "Compile and test", "text": "Run mvn package to build the JAR, then drop it into a test server's plugins folder and start the server." }
+    ],
+    "author": { "@type": "Organization", "name": "StackNest" },
+    "publisher": { "@type": "Organization", "name": "StackNest", "url": "https://stacknests.com" },
+    "datePublished": "2026-03-15",
+    "dateModified": "2026-04-02"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What language do Minecraft plugins use?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Minecraft plugins for Paper, Spigot, and Bukkit servers are written in Java. Kotlin is also supported since it compiles to the same JVM bytecode. Velocity proxy plugins also use Java or Kotlin." }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to know Java to make a Minecraft plugin?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Traditionally yes — Java knowledge is required to write plugins from scratch. However, AI tools like StackNest let you describe what you want in plain English and generate, compile, and deliver a working plugin JAR without writing any code yourself." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the Paper API?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The Paper API is the modern standard for Minecraft plugin development. It extends the Bukkit/Spigot API with performance improvements, async chunk loading, the Adventure text component library, and custom mob goals. Most active server software now uses Paper or a fork of it." }
+      },
+      {
+        "@type": "Question",
+        "name": "How long does it take to make a Minecraft plugin?",
+        "acceptedAnswer": { "@type": "Answer", "text": "A simple plugin (one command, one event) takes an experienced Java developer 30–60 minutes including setup. A complex plugin with GUIs, persistent data storage, and economy integration can take days or weeks. With an AI generator like StackNest, basic to moderately complex plugins are ready in under a minute." }
+      }
+    ]
+  }
+  </script>
+  <style>
+    :root {
+      --bg: #0a0c12; --surface: #111420; --surface2: #181c2a;
+      --border: #1e2235; --text: #e2e6f3; --muted: #8891aa;
+      --accent: #5c6fff; --accent-h: #7b8fff; --green: #34d47a;
+      --yellow: #c9a227; --red: #e05252;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.7; }
+    a { color: var(--accent-h); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(10,12,18,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 58px; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .nav-logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 17px; color: var(--text); }
+    .nav-logo-icon { width: 28px; height: 28px; background: var(--accent); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { color: var(--muted); font-size: 14px; font-weight: 500; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .btn-primary { background: var(--accent); color: #fff; padding: 8px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-primary:hover { background: var(--accent-h); text-decoration: none; }
+    .article-hero { padding: 64px 0 40px; border-bottom: 1px solid var(--border); }
+    .article-tag { display: inline-block; background: rgba(92,111,255,0.1); color: var(--accent-h); border: 1px solid rgba(92,111,255,0.22); border-radius: 999px; font-size: 12px; font-weight: 600; padding: 4px 12px; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 16px; }
+    .article-hero h1 { font-size: clamp(28px,4vw,42px); font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+    .article-hero p { font-size: 18px; color: var(--muted); max-width: 680px; }
+    .article-meta { margin-top: 20px; font-size: 13px; color: var(--muted); }
+    .article-body { padding: 48px 0 80px; }
+    .article-body h2 { font-size: 24px; font-weight: 700; margin: 48px 0 16px; color: var(--text); border-top: 1px solid var(--border); padding-top: 40px; }
+    .article-body h2:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+    .article-body h3 { font-size: 18px; font-weight: 600; margin: 28px 0 10px; color: var(--accent-h); }
+    .article-body p { margin-bottom: 16px; color: #c8cde0; }
+    .article-body ul, .article-body ol { padding-left: 24px; margin-bottom: 16px; color: #c8cde0; }
+    .article-body li { margin-bottom: 8px; }
+    .article-body strong { color: var(--text); }
+    pre { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 20px 0 24px; }
+    code { font-family: 'JetBrains Mono', monospace; font-size: 13.5px; color: #a8b5e8; }
+    pre code { color: #a8b5e8; }
+    .inline-code { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent-h); }
+    .step-number { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: var(--accent); color: #fff; border-radius: 50%; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-right: 10px; }
+    .step-header { display: flex; align-items: center; font-size: 18px; font-weight: 700; color: var(--text); margin: 36px 0 12px; }
+    .step-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px 24px; margin: 8px 0 24px; }
+    .callout { background: rgba(92,111,255,0.08); border: 1px solid rgba(92,111,255,0.2); border-radius: 12px; padding: 18px 22px; margin: 24px 0; }
+    .callout-green { background: rgba(52,212,122,0.07); border-color: rgba(52,212,122,0.2); }
+    .callout p { margin: 0; color: var(--text); font-size: 15px; }
+    .cta-strip { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; text-align: center; margin: 48px 0; }
+    .cta-strip h3 { font-size: 22px; margin-bottom: 10px; }
+    .cta-strip p { color: var(--muted); margin-bottom: 20px; }
+    .related { border-top: 1px solid var(--border); padding-top: 36px; margin-top: 48px; }
+    .related h3 { font-size: 12px; font-weight: 600; margin-bottom: 16px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+    .related-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .related-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+    .related-card a { color: var(--text); font-weight: 600; font-size: 15px; }
+    .related-card p { font-size: 13px; color: var(--muted); margin-top: 6px; margin-bottom: 0; }
+    .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin: 0 0 40px; }
+    .toc-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 12px; }
+    .toc ol { padding-left: 20px; margin: 0; }
+    .toc li { margin-bottom: 6px; font-size: 14px; }
+    @media (max-width: 600px) { .nav-links { display: none; } .related-grid { grid-template-columns: 1fr; } }
+    footer { border-top: 1px solid var(--border); padding: 28px 0; text-align: center; font-size: 13px; color: var(--muted); }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      StackNest
+    </a>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/gallery">Gallery</a>
+      <a href="/docs">Docs</a>
+    </nav>
+<main>
+    <a href="/app" class="btn-primary">Try free <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></a>
+  </div>
+</nav>
+
+<div class="article-hero">
+  <div class="container">
+    <div class="article-tag">Developer Guide</div>
+    <h1>How to Make a Minecraft Plugin<br>(2026 Complete Guide)</h1>
+    <p>From zero to a compiled, working plugin JAR — covering the Paper API, Maven setup, commands, event listeners, and how AI changes the whole workflow.</p>
+    <div class="article-meta">Updated April 2026 &nbsp;·&nbsp; 12 min read &nbsp;·&nbsp; StackNest Team</div>
+  </div>
+</div>
+
+<div class="article-body">
+  <div class="container">
+
+    <div class="toc">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#what-is-a-plugin">What is a Minecraft plugin?</a></li>
+        <li><a href="#prerequisites">Prerequisites and tools</a></li>
+        <li><a href="#project-setup">Setting up a Maven project</a></li>
+        <li><a href="#main-class">Writing your main plugin class</a></li>
+        <li><a href="#plugin-yml">The plugin.yml file</a></li>
+        <li><a href="#commands">Registering commands</a></li>
+        <li><a href="#events">Handling events</a></li>
+        <li><a href="#compile">Compiling and testing</a></li>
+        <li><a href="#ai-shortcut">The AI shortcut</a></li>
+        <li><a href="#faq">Frequently asked questions</a></li>
+      </ol>
+    </div>
+
+    <h2 id="what-is-a-plugin">What is a Minecraft plugin?</h2>
+
+    <p>A Minecraft plugin is a JAR file you drop into the <span class="inline-code">plugins/</span> folder of a Paper, Spigot, or Bukkit server. When the server starts, it loads the plugin and the plugin can listen for game events, register custom commands, modify gameplay mechanics, store data, interact with other plugins, and much more — all without touching Minecraft's own source code.</p>
+
+    <p>Plugins differ from mods (Fabric, Forge, NeoForge) in one crucial way: they run entirely server-side. Players don't need to install anything. This makes plugins the go-to approach for custom server features, economy systems, minigames, and moderation tools.</p>
+
+    <p>The standard software stack in 2026:</p>
+
+    <ul>
+      <li><strong>Paper</strong> — the most widely used server JAR, extends Spigot with performance patches and a richer API</li>
+      <li><strong>Spigot</strong> — still widely used, Paper is backwards-compatible with Spigot plugins</li>
+      <li><strong>Folia</strong> — Paper's multi-threaded fork for very high player counts</li>
+      <li><strong>Velocity</strong> — the modern proxy server (like BungeeCord but faster); uses its own API</li>
+    </ul>
+
+    <p>This guide targets <strong>Paper</strong>, which has the best API, the largest community, and is what most modern plugins are written for.</p>
+
+    <h2 id="prerequisites">Prerequisites and tools</h2>
+
+    <p>You need three things before writing a single line of plugin code:</p>
+
+    <h3>1. Java 21</h3>
+    <p>Minecraft 1.21+ requires Java 21. Download the <strong>JDK</strong> (not just the JRE) from <a href="https://adoptium.net" target="_blank" rel="noopener">Adoptium</a> or <a href="https://www.oracle.com/java/technologies/downloads/" target="_blank" rel="noopener">Oracle</a>. After installing, confirm with:</p>
+    <pre><code>java -version
+javac -version</code></pre>
+    <p>Both should report <span class="inline-code">21.x.x</span>.</p>
+
+    <h3>2. Apache Maven</h3>
+    <p>Maven manages your dependencies (including the Paper API JAR) and handles compilation. <a href="https://maven.apache.org/download.cgi" target="_blank" rel="noopener">Download Maven</a>, extract it, and add its <span class="inline-code">bin/</span> folder to your system PATH. Confirm:</p>
+    <pre><code>mvn -version</code></pre>
+
+    <h3>3. An IDE</h3>
+    <p><strong>IntelliJ IDEA</strong> (Community edition is free) is strongly recommended — it has first-class Maven support and a Java debugger. VS Code with the Java extension pack also works.</p>
+
+    <div class="callout">
+      <p>💡 <strong>Want to skip all of this?</strong> If you don't want to manage a Java development environment, <a href="/app">StackNest</a> generates, compiles, and delivers a ready-to-use plugin JAR from a plain-English description — no local toolchain needed. <a href="#ai-shortcut">Jump to the AI shortcut section.</a></p>
+    </div>
+
+    <h2 id="project-setup">Setting up a Maven project</h2>
+
+    <p>Create a new directory for your plugin and add a <span class="inline-code">pom.xml</span> at the root. Here's a minimal template for a modern Paper 26.1 plugin:</p>
+
+    <pre><code>&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+    http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+  &lt;groupId&gt;com.example&lt;/groupId&gt;
+  &lt;artifactId&gt;my-plugin&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0&lt;/version&gt;
+  &lt;packaging&gt;jar&lt;/packaging&gt;
+
+  &lt;properties&gt;
+    &lt;java.version&gt;21&lt;/java.version&gt;
+    &lt;maven.compiler.source&gt;21&lt;/maven.compiler.source&gt;
+    &lt;maven.compiler.target&gt;21&lt;/maven.compiler.target&gt;
+  &lt;/properties&gt;
+
+  &lt;repositories&gt;
+    &lt;repository&gt;
+      &lt;id&gt;papermc&lt;/id&gt;
+      &lt;url&gt;https://repo.papermc.io/repository/maven-public/&lt;/url&gt;
+    &lt;/repository&gt;
+  &lt;/repositories&gt;
+
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;io.papermc.paper&lt;/groupId&gt;
+      &lt;artifactId&gt;paper-api&lt;/artifactId&gt;
+      &lt;version&gt;1.21.4-R0.1-SNAPSHOT&lt;/version&gt;
+      &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-shade-plugin&lt;/artifactId&gt;
+        &lt;version&gt;3.6.0&lt;/version&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;phase&gt;package&lt;/phase&gt;
+            &lt;goals&gt;&lt;goal&gt;shade&lt;/goal&gt;&lt;/goals&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+
+    <p>The <span class="inline-code">provided</span> scope tells Maven to use the Paper API for compilation but not bundle it into your JAR (the server already has it). The maven-shade-plugin bundles any third-party libraries you add.</p>
+
+    <h2 id="main-class">Writing your main plugin class</h2>
+
+    <p>Create the source file at <span class="inline-code">src/main/java/com/example/MyPlugin.java</span>:</p>
+
+    <pre><code>package com.example;
+
+import org.bukkit.plugin.java.JavaPlugin;
+
+public final class MyPlugin extends JavaPlugin {
+
+    @Override
+    public void onEnable() {
+        getLogger().info("MyPlugin has been enabled!");
+        // Register commands and listeners here
+    }
+
+    @Override
+    public void onDisable() {
+        getLogger().info("MyPlugin has been disabled.");
+    }
+}</code></pre>
+
+    <p>Every plugin has exactly one class that extends <span class="inline-code">JavaPlugin</span>. The <span class="inline-code">onEnable()</span> method runs when the server loads the plugin, and <span class="inline-code">onDisable()</span> runs when the server shuts down or the plugin is reloaded.</p>
+
+    <h2 id="plugin-yml">The plugin.yml file</h2>
+
+    <p>Create <span class="inline-code">src/main/resources/plugin.yml</span>. This file tells the server the plugin's name, version, main class, and what API version it targets:</p>
+
+    <pre><code>name: MyPlugin
+version: "1.0.0"
+main: com.example.MyPlugin
+api-version: "1.21"
+description: My first Minecraft plugin
+authors: [YourName]
+
+commands:
+  hello:
+    description: Say hello
+    usage: /hello</code></pre>
+
+    <p>The <span class="inline-code">api-version</span> field is required on Paper 1.20.5+. Omitting it causes a deprecation warning; using an incorrect value can prevent the plugin from loading.</p>
+
+    <h2 id="commands">Registering commands</h2>
+
+    <p>Commands are handled by a <span class="inline-code">CommandExecutor</span>. Create <span class="inline-code">src/main/java/com/example/HelloCommand.java</span>:</p>
+
+    <pre><code>package com.example;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
+
+public class HelloCommand implements CommandExecutor {
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender,
+                             @NotNull Command command,
+                             @NotNull String label,
+                             @NotNull String[] args) {
+        sender.sendMessage(
+            Component.text("Hello from MyPlugin!", NamedTextColor.GREEN)
+        );
+        return true;
+    }
+}</code></pre>
+
+    <p>Then register it in your main class inside <span class="inline-code">onEnable()</span>:</p>
+
+    <pre><code>Objects.requireNonNull(getCommand("hello"))
+    .setExecutor(new HelloCommand());</code></pre>
+
+    <div class="callout">
+      <p>📌 Paper uses the <strong>Adventure</strong> text component library for all player-facing messages. The old <span class="inline-code">ChatColor</span> / <span class="inline-code">§</span>-prefix approach still works but is deprecated. Use <span class="inline-code">Component.text()</span> for any new plugin.</p>
+    </div>
+
+    <h2 id="events">Handling events</h2>
+
+    <p>Event listeners let your plugin react to game events — a player joining, breaking a block, dying, and hundreds more. Create <span class="inline-code">src/main/java/com/example/PlayerListener.java</span>:</p>
+
+    <pre><code>package com.example;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+
+public class PlayerListener implements Listener {
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        event.getPlayer().sendMessage(
+            Component.text("Welcome to the server!", NamedTextColor.GOLD)
+        );
+    }
+}</code></pre>
+
+    <p>Register it in <span class="inline-code">onEnable()</span>:</p>
+
+    <pre><code>getServer().getPluginManager()
+    .registerEvents(new PlayerListener(), this);</code></pre>
+
+    <p>The full list of available events is in the <a href="https://jd.papermc.io/paper/1.21/" target="_blank" rel="noopener">Paper Javadoc</a>. Every class in the <span class="inline-code">org.bukkit.event.*</span> and <span class="inline-code">io.papermc.paper.event.*</span> packages can be listened to.</p>
+
+    <h3>Event priorities</h3>
+    <p>By default, <span class="inline-code">@EventHandler</span> runs at <span class="inline-code">NORMAL</span> priority. Use <span class="inline-code">@EventHandler(priority = EventPriority.HIGH)</span> if you need to run after other plugins, or <span class="inline-code">LOWEST</span> if you want to run first. Use <span class="inline-code">ignoreCancelled = true</span> to skip events already cancelled by another plugin:</p>
+
+    <pre><code>@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+public void onBlockBreak(BlockBreakEvent event) {
+    // ...
+}</code></pre>
+
+    <h2 id="compile">Compiling and testing</h2>
+
+    <p>From your project root, run:</p>
+
+    <pre><code>mvn clean package</code></pre>
+
+    <p>If the build succeeds, your JAR will be in <span class="inline-code">target/my-plugin-1.0.0.jar</span> (or <span class="inline-code">target/my-plugin-1.0.0-shaded.jar</span> if you're using the shade plugin). Copy it to your test server's <span class="inline-code">plugins/</span> folder and start or reload the server.</p>
+
+    <p>To reload without a full server restart (development only — not recommended for production):</p>
+
+    <pre><code>/reload confirm</code></pre>
+
+    <h3>Common first-time errors</h3>
+
+    <ul>
+      <li><strong>"Cannot find symbol"</strong> — you're importing a class you haven't declared. Check all imported types exist in your code or in the Paper API.</li>
+      <li><strong>"Plugin.yml is missing required field 'main'"</strong> — your <span class="inline-code">plugin.yml</span> references the wrong class path. Match it exactly to your <span class="inline-code">package.ClassName</span>.</li>
+      <li><strong>"Could not load plugin"</strong> — API version mismatch or a missing dependency. Check the server console for the full error.</li>
+      <li><strong>Plugin loads but commands don't work</strong> — command not declared in <span class="inline-code">plugin.yml</span>, or the executor wasn't registered in <span class="inline-code">onEnable()</span>.</li>
+    </ul>
+
+    <h2 id="ai-shortcut">The AI shortcut: skip the boilerplate entirely</h2>
+
+    <p>Everything above describes the traditional workflow. It requires a working Java development environment, familiarity with Maven, and understanding of the Paper API. For many server owners, that's a significant barrier — especially for one-off plugins or experimental features.</p>
+
+    <p><a href="/app">StackNest</a> is an <a href="/minecraft-plugin-generator">AI-powered Minecraft plugin generator</a> that handles all of this automatically:</p>
+
+    <ol>
+      <li>Describe your plugin in plain English: <em>"A kit plugin with Warrior, Archer, and Mage kits. 5-minute cooldown per kit. Kits are listed in a chest GUI. Warrior gets a diamond sword and iron armour. Mage gets a blaze rod that fires fireballs on right-click."</em></li>
+      <li>StackNest's AI generates the full plugin — main class, all supporting classes, <span class="inline-code">plugin.yml</span>, <span class="inline-code">pom.xml</span></li>
+      <li>It compiles the code server-side and runs up to 5 auto-fix passes if there are errors</li>
+      <li>You download the compiled JAR and drop it straight into your <span class="inline-code">plugins/</span> folder</li>
+    </ol>
+
+    <div class="callout callout-green">
+      <p>✅ The free tier includes 3 plugin generations per month — no credit card required. Complex plugins with GUIs, economy integration, and multi-class structures are supported on all paid plans from £4/month.</p>
+    </div>
+
+    <p>For most moderately complex plugin requests, StackNest produces a working plugin in under 60 seconds. For server owners who aren't Java developers, it removes the development environment requirement entirely.</p>
+
+    <p>For developers, it's most useful for the boilerplate-heavy parts: GUI structures, data storage patterns, scheduler tasks, and event wiring. The <a href="/ai-for-programmers">AI for Java developers guide</a> covers the workflow in more detail.</p>
+
+    <h2 id="faq">Frequently asked questions</h2>
+
+    <h3>What language do Minecraft plugins use?</h3>
+    <p>Paper, Spigot, and Bukkit plugins are written in <strong>Java</strong>. Kotlin is also supported and growing in popularity — it compiles to the same JVM bytecode and works transparently with the Paper API. Velocity proxy plugins also use Java or Kotlin.</p>
+
+    <h3>Do I need to know Java to make a Minecraft plugin?</h3>
+    <p>Traditionally yes. However, AI tools like <a href="/app">StackNest</a> let you describe what you want in plain English and receive a compiled, working plugin JAR — no Java knowledge required. If you're learning Java, building plugins is one of the most engaging ways to do it; our <a href="/ai-for-students">guide for CS students</a> covers that angle.</p>
+
+    <h3>What is the Paper API?</h3>
+    <p>The Paper API is the modern standard for Minecraft plugin development. It extends Bukkit/Spigot with performance improvements, async chunk loading, the Adventure text library, custom mob goals (Pathfinder Goals), and Paper-specific events. The Paper API is a superset of the Spigot API — plugins written for Spigot run on Paper, but Paper-specific features won't work on Spigot-only servers.</p>
+
+    <h3>How long does it take to make a Minecraft plugin?</h3>
+    <p>A simple command plugin takes an experienced Java developer 30–60 minutes including project setup. A full plugin with persistent data storage, economy integration, and a chest GUI takes days. With <a href="/app">StackNest</a>, even complex plugins with GUIs and multi-class structures are generated and compiled in under a minute.</p>
+
+    <h3>Can I make a Minecraft plugin without an IDE?</h3>
+    <p>Technically yes — Maven can be run from the terminal and you can edit Java files in any text editor. In practice, an IDE like IntelliJ IDEA makes the process significantly easier: autocomplete, inline API docs, refactoring, and integrated compilation save hours on any non-trivial plugin.</p>
+
+    <h3>Spigot vs PaperMC — which API should I target?</h3>
+    <p>Target <strong>Paper</strong>. The Paper API is a superset of Spigot, so your plugin will still run on Spigot servers; and Paper gives you access to better events, improved performance, the Adventure library, and a more active development team. Most servers have already migrated to Paper or a fork like Folia or Purpur.</p>
+
+    <div class="cta-strip">
+      <h3>Don't want to set up a Java environment?</h3>
+      <p>StackNest generates, compiles, and delivers a working plugin JAR from a plain-English description. Free to start.</p>
+      <a href="/app" class="btn-primary">Generate a plugin free &rarr;</a>
+    </div>
+
+    <div class="related">
+      <h3>Related articles</h3>
+      <div class="related-grid">
+        <div class="related-card">
+          <a href="/minecraft-plugin-generator">Minecraft Plugin Generator</a>
+          <p>How AI plugin generators work and what StackNest can build for your server.</p>
+        </div>
+        <div class="related-card">
+          <a href="/ai-for-programmers">AI for Java Developers</a>
+          <p>How experienced devs integrate AI into their Minecraft plugin workflow.</p>
+        </div>
+        <div class="related-card">
+          <a href="/best-ai-tools">Best AI Tools for Server Owners</a>
+          <p>The full toolkit — plugin generation, moderation, config help, and more.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</main>
+<footer>
+  <div class="container">
+    <p>&copy; 2026 StackNest &nbsp;·&nbsp; <a href="/terms">Terms</a> &nbsp;·&nbsp; <a href="/privacy">Privacy</a> &nbsp;·&nbsp; <a href="/pricing">Pricing</a> &nbsp;·&nbsp; <a href="/gallery">Gallery</a></p>
+    <p style="margin-top:8px;font-size:11px;color:#8891b4">StackNest is not affiliated with or endorsed by Mojang Studios, Microsoft, or the Paper project. Minecraft is a trademark of Mojang Studios.</p>
+  </div>
+</footer>
+
+</body>
+</html>

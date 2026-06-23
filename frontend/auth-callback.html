@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Signing in…</title>
+  <style>
+    body { margin: 0; display: flex; align-items: center; justify-content: center;
+           height: 100vh; font-family: Inter, system-ui, sans-serif; background: #0a0a0f; color: #c8caff; }
+    p { font-size: 1rem; opacity: .8; }
+  </style>
+</head>
+<body>
+  <p>Signing in with Google…</p>
+  <script>
+    // Google redirects here with the id_token in the URL fragment after #
+    // e.g. /auth-callback.html#id_token=xxx&...
+    try {
+      const params = new URLSearchParams(location.hash.slice(1));
+      const id_token = params.get('id_token');
+      if (id_token && window.opener) {
+        window.opener.postMessage(
+          { type: 'sn-google-credential', id_token: id_token },
+          location.origin
+        );
+        window.close();
+      } else {
+        document.querySelector('p').textContent =
+          id_token ? 'Sign-in complete — you may close this window.' : 'No token received. Please try again.';
+      }
+    } catch (e) {
+      document.querySelector('p').textContent = 'Sign-in error. Please close this window and try again.';
+    }
+  </script>
+</body>
+</html>

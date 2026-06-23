@@ -1,0 +1,14 @@
+[Unit]
+Description=StackNest weekly API docs updater timer
+Requires=stacknest-docs-update.service
+
+[Timer]
+# Every Sunday at 03:00 UTC (low-traffic window)
+OnCalendar=Sun *-*-* 03:00:00 UTC
+# If the system was offline at the scheduled time, run once it comes back
+Persistent=true
+# Randomise by up to 10 minutes to avoid dogpiling external APIs
+RandomizedDelaySec=600
+
+[Install]
+WantedBy=timers.target

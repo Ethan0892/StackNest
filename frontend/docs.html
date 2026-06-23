@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Docs &mdash; Generate Minecraft Plugins &amp; Mods for Paper 26.1, Folia, Fabric &amp; Forge | StackNest</title>
+  <meta name="description" content="Learn how to use StackNest to generate Minecraft plugins and mods for Paper 26.1, Folia, Fabric, Forge, and NeoForge with AI. Includes prompt strategy, runtime testing, security screening, troubleshooting, and deployment guidance." />
+  <meta name="keywords" content="how to create minecraft plugin, AI minecraft plugin tutorial, paper 26.1 tutorial, paper 26.1 plugin guide, stacknest guide, minecraft plugin generator help, fabric mod generator ai, forge mod ai, neoforge mod generator, spigot plugin tutorial, folia plugin generator, folia tutorial, runtime plugin testing, minecraft plugin security, plugin malware scan, safe plugin generation, paper spigot folia AI, auto-fixing compile errors, auto compile minecraft plugin, minecraft plugin compiler, AI plugin builder, no code minecraft plugin, free minecraft plugin generator, minecraft plugin without java, plugin.yml guide, AI code auto-fix, minecraft coding assistant, AI java code generator, official runtime test suite, paper api docs" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://stacknests.com/docs" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://stacknests.com/docs" />
+  <meta property="og:title" content="Docs &mdash; Generate Minecraft Plugins &amp; Mods for Paper 26.1 | StackNest" />
+  <meta property="og:description" content="Step-by-step guide to generating Paper 26.1 plugins, Folia plugins, and Fabric, Forge, and NeoForge mods with runtime testing and safer output validation." />
+  <meta property="og:image" content="https://stacknests.com/og-image.png" />
+  <meta property="og:site_name" content="StackNest" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="How to Generate Minecraft Plugins &amp; Mods for Paper 26.1 | StackNest Docs" />
+  <meta name="twitter:description" content="Step-by-step guide to StackNest for Paper 26.1, Folia, Fabric, Forge, and NeoForge with runtime testing, prompt tips, and troubleshooting." />
+  <meta name="twitter:image" content="https://stacknests.com/og-image.png" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "How to Generate Minecraft Plugins and Mods with StackNest for Paper 26.1",
+    "description": "Complete guide to using StackNest's AI Minecraft plugin and mod generator. Covers supported platforms, runtime testing, safer output validation, writing effective prompts, and troubleshooting.",
+    "url": "https://stacknests.com/docs",
+    "author": {
+      "@type": "Organization",
+      "name": "StackNest",
+      "url": "https://stacknests.com"
+    },
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "StackNest",
+      "url": "https://stacknests.com"
+    }
+  }
+  </script>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f1117; --surface: #1a1d26; --surface2: #222638;
+      --border: #2e3350; --border-s: #3d4468;
+      --text: #e8eaf6; --muted: #8891b4;
+      --accent: #5c6fff; --accent-h: #7b8fff;
+      --green: #3ddc84; --yellow: #ffd370; --red: #ff5c6a; --orange: #7b8fff;
+      --radius: 10px;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Navbar */
+    .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 60px; display: flex; align-items: center; background: rgba(15,17,23,.92); border-bottom: 1px solid var(--border); backdrop-filter: blur(16px); }
+    .nav-inner { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 8px; }
+    .nav-logo { display: flex; align-items: center; gap: 9px; font-size: 17px; font-weight: 700; color: var(--text); margin-right: auto; }
+    .nav-logo img { width: 28px; height: 28px; }
+    .nav-link { padding: 6px 12px; border-radius: 7px; font-size: 14px; color: var(--muted); transition: color .15s, background .15s; }
+    .nav-link:hover { color: var(--text); background: var(--surface); text-decoration: none; }
+    .nav-cta { padding: 7px 16px; border-radius: 7px; font-size: 14px; font-weight: 600; background: var(--accent); color: #fff; transition: background .15s; }
+    .nav-cta:hover { background: var(--accent-h); text-decoration: none; }
+
+    /* Layout */
+    .layout { display: flex; max-width: 1200px; margin: 0 auto; padding: 0 24px; min-height: calc(100vh - 60px); padding-top: 60px; }
+    .sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; padding: 32px 0 32px; }
+    .sidebar::-webkit-scrollbar { width: 3px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .content { flex: 1; min-width: 0; padding: 40px 0 80px 48px; max-width: 780px; }
+
+    /* Sidebar nav */
+    .sidenav-section { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; padding: 20px 12px 6px; }
+    .sidenav-section:first-child { padding-top: 0; }
+    .sidenav-link { display: block; padding: 7px 12px; border-radius: 7px; font-size: 13px; color: var(--muted); transition: color .15s, background .15s; border-left: 2px solid transparent; }
+    .sidenav-link:hover { color: var(--text); background: var(--surface); text-decoration: none; }
+    .sidenav-link.active { color: var(--accent); background: rgba(92,111,255,.1); border-left-color: var(--accent); }
+
+    /* Content typography */
+    .content h1 { font-size: 32px; font-weight: 800; line-height: 1.2; letter-spacing: -.02em; margin-bottom: 12px; }
+    .content .lead { font-size: 17px; color: var(--muted); margin-bottom: 40px; line-height: 1.6; }
+    .content h2 { font-size: 22px; font-weight: 700; margin: 48px 0 16px; padding-top: 48px; border-top: 1px solid var(--border); scroll-margin-top: 80px; }
+    .content h2:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+    .content h3 { font-size: 16px; font-weight: 700; margin: 28px 0 10px; color: var(--text); }
+    .content p { color: var(--muted); margin-bottom: 16px; }
+    .content p strong { color: var(--text); }
+    .content ul, .content ol { color: var(--muted); padding-left: 20px; margin-bottom: 16px; }
+    .content li { margin-bottom: 6px; }
+    .content li strong { color: var(--text); }
+    .content code { background: var(--surface2); border: 1px solid var(--border); padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text); }
+    .content pre { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; overflow-x: auto; margin-bottom: 20px; }
+    .content pre code { background: none; border: none; padding: 0; font-size: 13px; line-height: 1.6; }
+
+    /* Callouts */
+    .callout { border-radius: var(--radius); padding: 16px 20px; margin: 24px 0; display: flex; gap: 14px; }
+    .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .callout p { margin: 0; font-size: 14px; }
+    .callout-tip  { background: rgba(61,220,132,.08); border: 1px solid rgba(61,220,132,.2); }
+    .callout-tip .callout-title { color: var(--green); font-weight: 700; margin-bottom: 4px; font-size: 13px; }
+    .callout-warn { background: rgba(255,211,112,.08); border: 1px solid rgba(255,211,112,.2); }
+    .callout-warn .callout-title { color: var(--yellow); font-weight: 700; margin-bottom: 4px; font-size: 13px; }
+    .callout-info { background: rgba(92,111,255,.08); border: 1px solid rgba(92,111,255,.2); }
+    .callout-info .callout-title { color: var(--accent-h); font-weight: 700; margin-bottom: 4px; font-size: 13px; }
+
+    /* Platform cards */
+    .platform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+    @media (max-width: 600px) { .platform-grid { grid-template-columns: 1fr; } }
+    .platform-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
+    .platform-card .p-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .platform-card .p-type { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+    .platform-card .p-desc { font-size: 13px; color: var(--muted); }
+    .p-paper    .p-name { color: #4ade80; }  .p-paper    .p-type { color: #4ade80; }
+    .p-purpur   .p-name { color: #a78bfa; }  .p-purpur   .p-type { color: #a78bfa; }
+    .p-bukkit   .p-name { color: #fbbf24; }  .p-bukkit   .p-type { color: #fbbf24; }
+    .p-folia    .p-name { color: #22d3ee; }  .p-folia    .p-type { color: #22d3ee; }
+    .p-spigot   .p-name { color: #f97316; }  .p-spigot   .p-type { color: #f97316; }
+    .p-velocity .p-name { color: #60a5fa; }  .p-velocity .p-type { color: #60a5fa; }
+    .p-bungeecord .p-name { color: #f87171; } .p-bungeecord .p-type { color: #f87171; }
+
+    /* Steps */
+    .steps { counter-reset: step; list-style: none; padding: 0; margin: 20px 0; }
+    .steps li { counter-increment: step; display: flex; gap: 14px; margin-bottom: 20px; }
+    .steps li::before { content: counter(step); background: var(--accent); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .steps li .step-text { padding-top: 3px; }
+    .steps li .step-text strong { color: var(--text); display: block; margin-bottom: 4px; }
+
+    /* Prompt examples */
+    .prompt-ex { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 12px; }
+    .prompt-ex .p-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+    .prompt-ex .p-label.good { color: var(--green); }
+    .prompt-ex .p-label.bad  { color: var(--red); }
+    .prompt-ex p { font-size: 13px; font-family: 'JetBrains Mono', monospace; margin: 0; }
+
+    /* Table */
+    .doc-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 16px 0; }
+    .doc-table th { padding: 10px 14px; text-align: left; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+    .doc-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--muted); vertical-align: top; }
+    .doc-table td:first-child { color: var(--text); font-weight: 500; }
+    .doc-table tr:last-child td { border-bottom: none; }
+
+    /* Footer */
+    .footer { border-top: 1px solid var(--border); padding: 32px 0; text-align: center; color: var(--muted); font-size: 13px; }
+    .footer a { color: var(--muted); margin: 0 8px; }
+    .footer a:hover { color: var(--text); }
+
+    @media (max-width: 800px) {
+      .sidebar { display: none; }
+      .content { padding-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <img src="/icon.svg" alt="StackNest logo" />
+      StackNest
+    </a>
+    <a href="/" class="nav-link">Home</a>
+    <a href="/pricing" class="nav-link">Pricing</a>
+    <a href="/hosting-bots" class="nav-link">Bot Hosting</a>
+    <a href="/bots" class="nav-link">Discord Bots</a>
+    <a href="/gallery" class="nav-link">Gallery</a>
+    <a href="/app" class="nav-cta">Open App</a>
+  </div>
+</nav>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidenav-section">Getting Started</div>
+    <a href="#intro" class="sidenav-link">What is StackNest?</a>
+    <a href="#first-plugin" class="sidenav-link">Your first plugin</a>
+    <a href="#better-prompts" class="sidenav-link">Writing better prompts</a>
+    <a href="#prompt-template" class="sidenav-link">Prompt template</a>
+
+    <div class="sidenav-section">Mods</div>
+    <a href="#mods-intro" class="sidenav-link">Generating mods with AI</a>
+    <a href="#mod-loaders" class="sidenav-link">Fabric, Forge &amp; NeoForge</a>
+    <a href="#first-mod" class="sidenav-link">Your first mod</a>
+
+    <div class="sidenav-section">Skript &amp; Datapacks</div>
+    <a href="#skript" class="sidenav-link">Skript generation</a>
+    <a href="#datapacks" class="sidenav-link">Datapack generation</a>
+
+    <div class="sidenav-section">Platforms</div>
+    <a href="#platforms" class="sidenav-link">Platform overview</a>
+    <a href="#choosing" class="sidenav-link">Which one to choose?</a>
+
+    <div class="sidenav-section">Using StackNest</div>
+    <a href="#discord-bots" class="sidenav-link">Discord bot hosting</a>
+    <a href="#generation" class="sidenav-link">How generation works</a>
+    <a href="#validation" class="sidenav-link">Validation &amp; errors</a>
+    <a href="#jar" class="sidenav-link">Downloading your JAR</a>
+    <a href="#server-testing" class="sidenav-link">Runtime plugin testing</a>
+    <a href="#gallery" class="sidenav-link">Gallery</a>
+    <a href="#paper26" class="sidenav-link">Paper 26.x &amp; Java 25</a>
+    <a href="#workflow" class="sidenav-link">Recommended workflow</a>
+
+    <div class="sidenav-section">Plans</div>
+    <a href="#plans" class="sidenav-link">Plans &amp; limits</a>
+    <a href="#api-access" class="sidenav-link">API access (Pro &amp; Studio)</a>
+
+    <div class="sidenav-section">Troubleshooting</div>
+    <a href="#troubleshoot" class="sidenav-link">Common issues</a>
+    <a href="#brigadier-errors" class="sidenav-link">Brigadier / command errors</a>
+    <a href="#service-status" class="sidenav-link">Service availability</a>
+  </aside>
+
+  <!-- Main content -->
+  <main class="content" id="content">
+
+    <h1>StackNest Documentation</h1>
+    <p class="lead">Everything you need to get better generations, cleaner outputs, and a smoother path from prompt to deployed plugin.</p>
+
+    <div class="callout callout-info">
+      <div class="callout-icon" aria-hidden="true">●</div>
+      <div>
+        <div class="callout-title">Best place to start</div>
+        <p>If you are new, read <a href="#first-plugin">Your first plugin</a>, copy the <a href="#prompt-template">prompt template</a>, then come back to <a href="#validation">validation</a> if you want to improve a result.</p>
+      </div>
+    </div>
+
+    <!-- ─── What is StackNest ──────────────────────────────────────────── -->
+    <h2 id="intro">What is StackNest?</h2>
+    <p>StackNest is an AI development tool for <strong>Minecraft server plugins, Fabric/Forge/NeoForge mods, and related server workflows</strong>. You describe what you want in plain English &mdash; for example <em>&ldquo;a Fabric mod that adds a /heal command and a glowing apple item&rdquo;</em> or <em>&ldquo;a plugin that rewards players when they vote&rdquo;</em> &mdash; and StackNest generates the code, metadata, and validation feedback.</p>
+    <p>You do not need to be a Java expert to get started. The goal is to shorten the path from idea to working plugin or mod, then give you enough tooling to refine, validate, and deploy with confidence.</p>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon" aria-hidden="true">●</div>
+      <div>
+        <div class="callout-title">Quick start</div>
+        <p>Head to <a href="/app">the app</a>, describe your plugin in one or two clear sentences, and hit Generate. Simple requests are usually faster; larger multi-feature plugins may take longer while validation finishes.</p>
+      </div>
+    </div>
+
+    <h2 id="discord-bots">Discord bot hosting</h2>
+    <p>StackNest also includes hosted Discord bots at <a href="/bots">/bots</a>. You can generate a bot with AI or upload your own Python <code>.py</code> file (or a <code>.zip</code> archive), then deploy and manage it in one place.</p>
+    <ul>
+      <li>Upload your own bot code from the Discord Bots page with the <strong>Upload .py or .zip Bot File</strong> action, or drag and drop the file directly.</li>
+      <li>Deploy with your Discord token, then use start, stop, restart, and logs controls in the same dashboard.</li>
+      <li>Access depends on plan limits.</li>
+    </ul>
+    <div class="callout callout-info">
+      <div class="callout-icon" aria-hidden="true">●</div>
+      <div>
+        <div class="callout-title">Custom bot upload</div>
+        <p>Uploaded bots follow the same hosted runtime flow as generated bots, including lifecycle controls and log viewing.</p>
+      </div>
+    </div>
+
+    <!-- ─── Mod generation overview ─────────────────────────────────────── -->
+    <h2 id="mods-intro">Generating mods with AI</h2>
+    <p>In addition to server plugins, StackNest can generate <strong>Fabric, Forge, and NeoForge mods</strong> from a single prompt. Mod generation runs through the same AI pipeline as plugin generation, but produces mod-specific source files instead of a compiled server plugin.</p>
+
+    <p><strong>What you get from a mod generation:</strong></p>
+    <ul>
+      <li>A main Java class implementing the correct mod entry point (<code>ModInitializer</code> for Fabric, <code>@Mod</code> class for Forge/NeoForge)</li>
+      <li>The mod metadata file &mdash; <code>fabric.mod.json</code> for Fabric, <code>mods.toml</code> for Forge/NeoForge</li>
+      <li>A <code>build.gradle.kts</code> Gradle build file</li>
+      <li>A server-side Gradle compile pass &mdash; on success, a ready-to-install <strong>.jar</strong> download link</li>
+      <li>Inline comments explaining how to wire up the generated features</li>
+    </ul>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon" aria-hidden="true">●</div>
+      <div>
+        <div class="callout-title">Mods are compiled server-side</div>
+        <p>StackNest runs a real Gradle build for every mod generation using the official Fabric Loom / ForgeGradle / NeoGradle toolchain. If compilation succeeds you get a <strong>downloadable .jar</strong> &mdash; drop it straight into your <code>mods/</code> folder. If the build has errors, StackNest automatically retries with targeted corrections before returning the result.</p>
+      </div>
+    </div>
+
+    <h3 id="mod-loaders">Fabric, Forge &amp; NeoForge</h3>
+
+    <div class="platform-grid">
+      <div class="platform-card" style="border-color:rgba(180,100,255,.2)">
+        <div class="p-name">Fabric</div>
+        <div class="p-type">Lightweight modern mod loader</div>
+        <div class="p-desc">The most actively developed loader for recent Minecraft versions (1.14+). Uses <code>fabric.mod.json</code>, the Fabric API, and Mixins. Recommended for most new mods on 1.20+. StackNest injects live PaperMC/Adventure doc context into Fabric generations.</div>
+      </div>
+      <div class="platform-card" style="border-color:rgba(255,130,50,.2)">
+        <div class="p-name">Forge</div>
+        <div class="p-type">Classic loader &mdash; largest ecosystem</div>
+        <div class="p-desc">The original major mod loader with the largest existing mod library. Uses <code>mods.toml</code> and <code>@Mod</code> annotations. Good choice when you need to depend on other Forge mods. Works on 1.20.1 and earlier as well as recent releases.</div>
+      </div>
+      <div class="platform-card" style="border-color:rgba(92,111,255,.2)">
+        <div class="p-name">NeoForge</div>
+        <div class="p-type">Modern Forge fork (1.20.2+)</div>
+        <div class="p-desc">A community fork of Forge that cleaned up the API and improved build tooling. Recommended over Forge for new projects targeting 1.20.2 or later. Uses the same <code>@Mod</code> pattern with <code>neoforge.mods.toml</code> and <code>net.neoforged.*</code> imports.</div>
+      </div>
+    </div>
+
+    <h3 id="first-mod">Your first mod</h3>
+    <ol class="steps">
+      <li>
+        <div class="step-text">
+          <strong>Switch to Mods mode</strong>
+          In the generator at <a href="/app">/app</a>, click the <strong>Mods</strong> pill at the top of the composer. The control strip will change to show mod options.
+        </div>
+      </li>
+      <li>
+        <div class="step-text">
+          <strong>Choose your loader and MC version</strong>
+          Select <em>Fabric</em>, <em>Forge</em>, or <em>NeoForge</em> and pick the Minecraft version you are targeting. Give your mod a name.
+        </div>
+      </li>
+      <li>
+        <div class="step-text">
+          <strong>Select feature chips (optional)</strong>
+          Toggle chips like <em>Custom items</em>, <em>Commands</em>, <em>Event listeners</em>, or <em>Config file</em> to add those patterns to your generation.
+        </div>
+      </li>
+      <li>
+        <div class="step-text">
+          <strong>Describe your mod</strong>
+          Write what the mod should do, e.g. <em>&ldquo;A Fabric 1.21 mod that adds a /heal command and a custom glowing apple item.&rdquo;</em> The more detail, the better the output.
+        </div>
+      </li>
+      <li>
+        <div class="step-text">
+          <strong>Download your compiled .jar</strong>
+          When the build succeeds, click the <strong>Download .jar</strong> button and drop the file into your server&rsquo;s <code>mods/</code> folder. If compilation did not succeed, the full source files are still available so you can build locally with <code>./gradlew build</code>.
+        </div>
+      </li>
+    </ol>
+
+    <!-- ─── Skript ────────────────────────────────────────────────────── -->
+    <h2 id="skript">Skript generation</h2>
+    <p><a href="https://docs.skriptlang.org" target="_blank" rel="noopener">Skript</a> is a scripting plugin for Paper that lets you add game logic in plain-English syntax — no Java compilation needed. StackNest generates complete <code>.sk</code> script files using the Skript 2.x rule set.</p>
+
+    <h3>How to generate a Skript</h3>
+    <ol class="steps">
+      <li>
+        <div class="step-text">
+          <strong>Click the Skript pill</strong>
+          On the generator at <a href="/app">/app</a>, click <strong>Skript</strong> in the mode pills row. The composer strips down to just a text box — no loader or version selector needed.
+        </div>
+      </li>
+      <li>
+        <div class="step-text">
+          <strong>Describe what you want</strong>
+          Write what the script should do, e.g. <em>&ldquo;A /sethome and /home command that saves each player&rsquo;s home location and teleports them back to it.&rdquo;</em>
+        </div>
+      </li>
+      <li>
+        <div class="step-text">
+          <strong>Download and install</strong>
+          Save the generated <code>.sk</code> file into your server&rsquo;s <code>plugins/Skript/scripts/</code> folder. Run <code>/sk reload all</code> or restart the server.
+        </div>
+      </li>
+    </ol>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon" aria-hidden="true">●</div>
+      <div>
+        <div class="callout-title">Skript requirements</div>
+        <p>Your server must have the <a href="https://github.com/SkriptLang/Skript" target="_blank" rel="noopener">Skript plugin</a> (2.x, latest stable) installed on a Paper server. Skript does not work on Fabric, Forge, or Vanilla.</p>
+      </div>
+    </div>
+
+    <h3>What StackNest enforces for Skript</h3>
+    <ul>
+      <li>Indentation-based scope — no braces, no semicolons</li>
+      <li>Correct event names: <code>on join:</code> not <code>on player join:</code></li>
+      <li>Variables: <code>{global}</code> for persistent, <code>{_local}</code> for temporary, <code>{list::*}</code> for lists</li>
+      <li>String interpolation with <code>%expr%</code> inside <code>"..."</code></li>
+      <li>Stores player UUIDs, not player objects, in long-lived variables</li>
+      <li>No Java syntax leaking in (no <code>;</code>, no <code>{}</code> blocks, no <code>import</code>)</li>
+    </ul>
+
+    <div class="prompt-ex">
+      <div class="p-label good">&#x2713; Good Skript prompt</div>
+      <p>A Skript with /sethome and /home commands. /sethome saves the player&rsquo;s current location to a global variable keyed by their UUID. /home teleports them back to that location, or tells them they have no home set. Add a 5-second cooldown on /home.</p>
+    </div>
+
+    <!-- ─── Datapacks ─────────────────────────────────────────────────── -->
+    <h2 id="datapacks">Datapack generation</h2>
+    <p>Vanilla datapacks let you modify game behaviour without a plugin or modloader — using only JSON files, <code>.mcfunction</code> scripts, and folder conventions that Minecraft reads natively.</p>
+    <p>StackNest generates a complete datapack file tree for MC 1.21+ and labels each file with its intended path, so you know exactly where to place it.</p>
+
+    <h3>How to generate a datapack</h3>
+    <ol class="steps">
+      <li>
+        <div class="step-text">
+          <strong>Click the Datapacks pill</strong>
+          On the generator at <a href="/app">/app</a>, click <strong>Datapacks</strong>. A MC version dropdown appears — pick the version you are targeting.
+        </div>
+      </li>
+      <li>
+        <div class="step-text">
+          <strong>Describe your datapack</strong>
+          Explain what it should do: <em>&ldquo;Give players the Speed II effect when they eat a golden carrot. Remove it after 30 seconds.&rdquo;</em>
+        </div>
+      </li>
+      <li>
+        <div class="step-text">
+          <strong>Install the output</strong>
+          Create a folder inside your world&rsquo;s <code>datapacks/</code> directory with the namespace name. Drop the generated files into the correct sub-paths (each file in the output starts with a comment showing its path). Run <code>/datapack enable "file/&lt;name&gt;"</code> and <code>/reload</code>.
+        </div>
+      </li>
+    </ol>
+
+    <h3>What StackNest generates for datapacks</h3>
+    <ul>
+      <li><code>pack.mcmeta</code> — with the correct <code>pack_format</code> for the Minecraft version you asked for, so you do not need to look it up manually.</li>
+      <li><code>data/&lt;namespace&gt;/functions/</code> — <code>.mcfunction</code> files for tick, load, and any custom logic</li>
+      <li>Tick &amp; load function tags in <code>data/minecraft/tags/function/</code></li>
+      <li>Advancements, recipes, loot tables, and predicates in JSON</li>
+      <li>Scoreboard initialisation in the load function</li>
+    </ul>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon" aria-hidden="true">●</div>
+      <div>
+        <div class="callout-title">No compile step for datapacks or Skript</div>
+        <p>Unlike plugins, Skript scripts and datapacks are not compiled by StackNest — Minecraft itself parses them at load time. If a datapack or Skript has a syntax error, check the server console for the specific line that failed.</p>
+      </div>
+    </div>
+
+    <!-- ─── First plugin ───────────────────────────────────────────────── -->
+    <h2 id="first-plugin">Your first plugin</h2>
+    <ol class="steps">
+      <li>
+        <div class="step-text">
+          <strong>Create a free account</strong>
+          Go to <a href="/app">/app</a> and sign up with your email. Verify your email — you'll get a confirmation link.
+        </div>
+      </li>
+      <li>
+        <div class="step-text">
+          <strong>Describe your plugin</strong>
+          Type what you want in the prompt box. Be specific — the more detail you give, the better the result. See <a href="#better-prompts">Writing better prompts</a>.
+        </div>
+      </li>
+      <li>
+        <div class="step-text">
+          <strong>Wait for generation</strong>
+          Click Generate. StackNest writes your plugin, validates it, and attempts automatic corrections when needed. This usually takes 15–60 seconds, but larger plugins can take longer.
+        </div>
+      </li>
+      <li>
+        <div class="step-text">
+          <strong>Download your JAR</strong>
+          Once generated, click <strong>Download JAR</strong>. Drop the <code>.jar</code> file into your server's <code>plugins/</code> folder and restart.
+        </div>
+      </li>
+    </ol>
+
+    <!-- ─── Better prompts ────────────────────────────────────────────── -->
+    <h2 id="better-prompts">Writing better prompts</h2>
+    <p>The quality of your plugin depends heavily on how clearly you describe it. Here are the key things to include:</p>
+    <ul>
+      <li><strong>What triggers the plugin</strong> — a command, an event (player joins, breaks a block, dies), a timer</li>
+      <li><strong>What it does</strong> — the specific action or behaviour</li>
+      <li><strong>Who it affects</strong> — all players, specific permissions, ops only</li>
+      <li><strong>Any configuration</strong> — messages, cooldowns, limits</li>
+      <li><strong>Any dependencies</strong> — Vault, LuckPerms, PlaceholderAPI, databases, or other required plugins</li>
+    </ul>
+
+    <h3 id="prompt-template">Prompt template</h3>
+    <p>Use this structure when you want more reliable results:</p>
+    <pre><code>Build a Paper 26.1 plugin.
+
+Main features:
+- [feature 1]
+- [feature 2]
+
+Commands:
+- /example
+
+Permissions:
+- example.use for regular players
+- example.admin for admins
+
+Config:
+- message text should be configurable
+- cooldown should default to 30 seconds
+
+Storage / integrations:
+- use YAML / SQLite / Vault / LuckPerms
+
+Notes:
+- make this Folia-compatible if needed
+- keep messages formatted with Adventure components</code></pre>
+
+    <h3>Prompt examples</h3>
+
+    <div class="prompt-ex">
+      <div class="p-label bad">Too vague — usually produces a basic result</div>
+      <p>Make a chat plugin</p>
+    </div>
+
+    <div class="prompt-ex">
+      <div class="p-label good">✓ Clear — generates exactly what you want</div>
+      <p>Create a plugin that prefixes all chat messages with the player's rank from LuckPerms. Ops see chat in gold, regular players in white. Add a /togglechat command that lets players mute global chat for themselves.</p>
+    </div>
+
+    <div class="prompt-ex">
+      <div class="p-label bad">Too vague</div>
+      <p>Economy plugin</p>
+    </div>
+
+    <div class="prompt-ex">
+      <div class="p-label good">✓ Clear</div>
+      <p>A simple economy plugin with /balance to check your money, /pay &lt;player&gt; &lt;amount&gt; to send money, and /setbalance &lt;player&gt; &lt;amount&gt; for admins (requires economy.admin permission). Starting balance is 500. Store data in a YAML file.</p>
+    </div>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon" aria-hidden="true">●</div>
+      <div>
+        <div class="callout-title">Pro tip</div>
+        <p>Mention the target platform (e.g. "Paper 26.1" or "Paper 1.21.x compatibility") and any specific APIs you want to use. If you need Folia support, say so explicitly — it uses a different scheduler.</p>
+      </div>
+    </div>
+
+    <!-- ─── Platforms ─────────────────────────────────────────────────── -->
+    <h2 id="platforms">Platform overview</h2>
+    <p>Minecraft server software comes in many flavours. Choosing the right one affects what features your plugin can use.</p>
+
+    <div class="platform-grid">
+      <div class="platform-card p-paper">
+        <div class="p-name">Paper</div>
+        <div class="p-type">Soft-fork of Spigot — most popular</div>
+        <div class="p-desc">The most widely used server software. Extends Bukkit/Spigot with extra APIs and performance improvements. <strong>Best choice for most plugins.</strong></div>
+      </div>
+      <div class="platform-card p-purpur">
+        <div class="p-name">Purpur</div>
+        <div class="p-type">Fork of Paper — extra configurability</div>
+        <div class="p-desc">Builds on Paper with many extra gameplay options and toggles in the config. Fully compatible with Paper plugins — just tick the "Purpur" tag when uploading to the gallery.</div>
+      </div>
+      <div class="platform-card p-bukkit">
+        <div class="p-name">Bukkit / CraftBukkit</div>
+        <div class="p-type">The original plugin API</div>
+        <div class="p-desc">The oldest API layer. Almost everything runs on it, but it's the most limited. Only choose this if you need maximum compatibility with very old servers.</div>
+      </div>
+      <div class="platform-card p-folia">
+        <div class="p-name">Folia</div>
+        <div class="p-type">Paper fork — threaded regions</div>
+        <div class="p-desc">Splits the world into independently ticking regions for multi-core performance. Plugins <strong>must</strong> use Folia's scheduler — standard Paper/Bukkit plugins will not work. Tell StackNest "make this Folia-compatible" when generating.</div>
+      </div>
+      <div class="platform-card p-spigot">
+        <div class="p-name">Spigot</div>
+        <div class="p-type">Fork of Bukkit — long-standing</div>
+        <div class="p-desc">Adds performance tweaks and extra BungeeCord hooks over Bukkit. Mostly superseded by Paper today, but still widely deployed.</div>
+      </div>
+      <div class="platform-card p-velocity">
+        <div class="p-name">Velocity</div>
+        <div class="p-type">Proxy server</div>
+        <div class="p-desc">A high-performance proxy that connects multiple backend servers. Plugins here control cross-server behaviour (chat bridging, server switching, etc.) — not individual world plugins.</div>
+      </div>
+      <div class="platform-card p-bungeecord">
+        <div class="p-name">BungeeCord / Waterfall</div>
+        <div class="p-type">Proxy server (older)</div>
+        <div class="p-desc">The older proxy standard. Mostly replaced by Velocity for new projects, but still used in many networks. BungeeCord plugins can't run on Velocity and vice versa.</div>
+      </div>
+    </div>
+
+    <h2 id="choosing">Which platform should I choose?</h2>
+    <table class="doc-table">
+      <thead><tr><th>I want to…</th><th>Use</th></tr></thead>
+      <tbody>
+        <tr><td>Make a plugin for a standard survival/creative server</td><td>Paper (default)</td></tr>
+        <tr><td>Use extra config options (mob behaviour, etc.)</td><td>Purpur</td></tr>
+        <tr><td>Run on a large multi-core server</td><td>Folia (with "Folia-compatible" prompt)</td></tr>
+        <tr><td>Support the widest range of old servers</td><td>Bukkit API</td></tr>
+        <tr><td>Control a network of servers (hub, survival, skyblock…)</td><td>Velocity or BungeeCord</td></tr>
+        <tr><td>Build a quick automation script instead of a full Java plugin</td><td>Skript (Skript mode)</td></tr>
+        <tr><td>Add game logic without Java or a plugin framework</td><td>Datapacks (Datapack mode)</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ─── How generation works ──────────────────────────────────────── -->
+    <h2 id="generation">How generation works</h2>
+    <p>When you hit <strong>Generate</strong>, StackNest goes through several steps automatically:</p>
+    <ol>
+      <li><strong>Your prompt is sent to the AI</strong> &mdash; it writes Java code and descriptor files based on what you described.</li>
+      <li><strong>For paid plans: Smart Assembly</strong> &mdash; before the main generation pass, a quick AI analysis step identifies which advanced features your plugin needs (Vault, SQLite, GUI click handlers, Folia scheduler, PDC storage, repeating tasks, etc.). Pre-validated Java code blocks for those features are injected directly into the prompt. This significantly reduces the chance of API mistakes, because boilerplate comes from tested templates rather than being generated from scratch.</li>
+      <li><strong>For plugins: the code is compiled</strong> &mdash; the plugin is compiled against the real PaperMC API and any errors are shown.</li>
+      <li><strong>For plugins: automatic fixing</strong> &mdash; if the code has issues, StackNest retries with targeted corrections before returning the result.</li>
+      <li><strong>For mods: Gradle compile + .jar</strong> &mdash; StackNest runs a server-side Gradle build (Fabric Loom / ForgeGradle / NeoGradle). On success you get a downloadable <strong>.jar</strong>. If the build has errors, StackNest retries with corrections. The full source files are always included.</li>
+      <li><strong>For Skript: .sk file output</strong> &mdash; a complete <code>.sk</code> script ready to drop into <code>plugins/Skript/scripts/</code>. No compilation step.</li>
+      <li><strong>For datapacks: full file tree</strong> &mdash; <code>pack.mcmeta</code>, <code>.mcfunction</code> files, JSON tags, advancements, recipes, and loot tables. Each file is labelled with its install path.</li>
+      <li><strong>You get the output</strong> &mdash; the code, any warnings, and a download button for the compiled JAR (plugins and successfully-compiled mods) or source files (Skript, datapacks).</li>
+    </ol>
+
+    <h3>Architecture patterns the AI is guided to use</h3>
+    <p>For complex plugins the AI follows a set of production-grade patterns, not just syntactically correct Java:</p>
+    <ul>
+      <li><strong>Layered manager classes</strong> &mdash; a top-level <code>DatabaseManager</code>, <code>CacheManager</code>, and service layer instead of logic in the main plugin class.</li>
+      <li><strong>Async-safe player data loading</strong> &mdash; a <code>ConcurrentHashMap&lt;UUID, CompletableFuture&lt;PlayerData&gt;&gt;</code> dedup map so the database is hit exactly once per UUID even under concurrent join events.</li>
+      <li><strong>Bounded write queues</strong> &mdash; a <code>LinkedBlockingQueue</code> with a configurable size cap and inline fallback, flushed before shutdown.</li>
+      <li><strong>Config-driven backpressure</strong> &mdash; a <code>Semaphore</code> sized to <code>availableProcessors() * 2</code> limits concurrent database operations so threads are not exhausted under load.</li>
+      <li><strong>Stale-task guards</strong> &mdash; async callbacks check both <code>plugin.isEnabled()</code> and a <code>System.nanoTime()</code> instance ID so they silently drop work if the plugin was reloaded mid-flight.</li>
+      <li><strong>Retry jitter</strong> &mdash; failed external API calls back off with <code>Math.random() * baseDelay</code> to prevent thundering-herd retry storms.</li>
+      <li><strong>Copy-on-write snapshots</strong> &mdash; mutable <code>PlayerData</code> is snapshotted on the main thread before being handed to async writers to prevent torn multi-field reads.</li>
+    </ul>
+
+    <div class="callout callout-info">
+      <div class="callout-icon" aria-hidden="true">●</div>
+      <div>
+        <div class="callout-title">Not every plugin needs every pattern</div>
+        <p>These patterns are injected based on what the prompt asks for. A simple /heal command won&rsquo;t include a write queue. A PlayerData persistence plugin will. On paid plans the Smart Assembly pipeline detects the required patterns automatically and injects pre-validated code blocks — so the AI refines them rather than generating them from scratch.</p>
+      </div>
+    </div>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon" aria-hidden="true">●</div>
+      <div>
+        <div class="callout-title">Generation time &amp; real-time streaming</div>
+        <p>Generation typically takes <strong>15&ndash;60 seconds</strong>. Code streams in real time &mdash; you&rsquo;ll see it being written character by character as it arrives, rather than waiting for the full result. Complex plugins with many features can take longer. Please don&rsquo;t close the tab while it&rsquo;s working.</p>
+      </div>
+    </div>
+
+    <!-- ─── Validation ────────────────────────────────────────────────── -->
+    <h2 id="validation">Validation &amp; errors</h2>
+    <p>StackNest validates your plugin at every stage before returning the result:</p>
+    <ul>
+      <li><strong>Java compilation</strong> — the code is compiled against the real Paper 26.1 API using Java 25. Compiler errors are captured and fed back into the auto-heal loop.</li>
+      <li><strong>plugin.yml check</strong> — all required fields are verified: <code>name</code>, <code>version</code>, <code>main</code>, and <code>api-version</code>. Missing or malformed entries are caught before the JAR is packaged.</li>
+      <li><strong>Static analysis</strong> — catches unsafe and broken patterns before the code ever reaches a server:
+        <ul style="margin-top:8px">
+          <li>Main-thread violations &mdash; reading or writing world state from an async callback</li>
+          <li>Deprecated API use &mdash; removed or legacy Bukkit calls that break on Paper 1.17+</li>
+          <li><code>Thread.sleep()</code> in async tasks &mdash; blocks the thread pool slot; replaced with <code>runTaskLaterAsynchronously</code></li>
+          <li>Raw NMS access &mdash; internal Minecraft internals that break on every version bump</li>
+          <li>Unbounded collections and missing <code>ConcurrentHashMap</code> on shared state</li>
+          <li>Stale async callbacks after plugin reload (<code>isEnabled()</code> checks)</li>
+        </ul>
+      </li>
+      <li><strong>Quality review</strong> — no truncated methods, no empty catch blocks, no placeholder comments left in the output.</li>
+    </ul>
+    <p>If warnings appear after generation they are usually minor (like an unused import) and the plugin will still work. Errors shown in red mean compilation failed — try regenerating with a more specific prompt, or describe what went wrong and the auto-heal loop will attempt a targeted fix.</p>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon" aria-hidden="true">●</div>
+      <div>
+        <div class="callout-title">What gets fixed automatically</div>
+        <p>The auto-heal loop runs multiple targeted passes. Each pass feeds the exact compiler error or static-check failure back to the AI so the correction is precise, not a full regeneration. Most single-error cases resolve in the first pass.</p>
+      </div>
+    </div>
+
+    <!-- ─── JAR download ───────────────────────────────────────────────── -->
+    <h2 id="jar">Downloading your JAR</h2>
+    <p>After a successful generation, click <strong>Download JAR</strong>. You'll get a <code>.jar</code> file ready to install:</p>
+    <ol>
+      <li>Stop your server (or let it run — hot-loading is possible but not recommended).</li>
+      <li>Drop the <code>.jar</code> into your server's <code>/plugins</code> folder.</li>
+      <li>Start (or restart) the server.</li>
+      <li>The plugin loads automatically. Check your console for any startup errors.</li>
+    </ol>
+    <div class="callout callout-tip">
+      <div class="callout-icon" aria-hidden="true">●</div>
+      <div>
+        <div class="callout-title">File location</div>
+        <p>The plugins folder is usually at <code>server-folder/plugins/</code>. Any config files the plugin creates will appear inside a subfolder with the plugin's name, e.g. <code>plugins/YourPlugin/config.yml</code>.</p>
+      </div>
+    </div>
+
+    <!-- ─── Runtime Plugin Testing ───────────────────────────────────── -->
+    <h2 id="server-testing">Runtime plugin testing</h2>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon" aria-hidden="true">●</div>
+      <div>
+        <div class="callout-title">Security scanning for uploaded JARs</div>
+        <p>When you upload an external JAR, StackNest scans its class bytecode for dangerous patterns (network connections, process execution, remote class loading) before running it. Malicious JARs are blocked and trigger a temporary 24-hour suspension on runtime testing access. The sandbox also runs Paper without any outbound network access, preventing plugins from calling home or downloading payloads.</p>
+      </div>
+    </div>
+
+    <p>Instead of downloading a JAR and deploying it to your own server, you can ask StackNest to boot a real <strong>Paper 26.1</strong> server instance, load your plugin, and return a structured diagnostic report &mdash; all within the browser, in under 60 seconds. You can test both StackNest-generated plugins <strong>and plugins you have built yourself</strong> &mdash; just upload the JAR directly.</p>
+
+    <h3>How to use it</h3>
+    <ol>
+      <li>Generate a plugin as normal in the <a href="/app">editor</a>, <em>or</em> upload your own <code>.jar</code> using the <strong>Upload &amp; Test JAR</strong> button in the action bar.</li>
+      <li>For StackNest-generated plugins: click <strong>Test on Server</strong> in the action bar once generation succeeds (Starter and above only).</li>
+      <li>A results panel slides open and streams the test output. It takes roughly 30&ndash;60 seconds.</li>
+      <li>Review the <strong>stat tiles</strong> (load time, warnings, errors) and the <strong>StackNest Insights</strong> section for AI-powered fix hints.</li>
+      <li>Expand <em>Full server log</em> for the raw Paper output if you need to dig deeper.</li>
+    </ol>
+
+    <h3>Plan limits</h3>
+    <table class="doc-table">
+      <thead><tr><th>Plan</th><th>Tests / month</th></tr></thead>
+      <tbody>
+        <tr><td>Free</td><td>Not available</td></tr>
+        <tr><td>Starter</td><td>3</td></tr>
+        <tr><td>Pro</td><td>10</td></tr>
+        <tr><td>Studio</td><td>30</td></tr>
+      </tbody>
+    </table>
+
+    <h3>What the report includes</h3>
+    <ul>
+      <li><strong>Load status</strong> &mdash; whether the plugin enabled successfully.</li>
+      <li><strong>Errors &amp; warnings</strong> &mdash; counts extracted directly from the server log.</li>
+      <li><strong>Stack traces</strong> &mdash; any Java exceptions printed during startup or the first tick.</li>
+      <li><strong>StackNest Insights</strong> &mdash; up to 25 AI-powered hints matched against common plugin issues (missing dependencies, deprecated API calls, unsafe async operations, and more).</li>
+      <li><strong>Full server log</strong> &mdash; the complete Paper console output, expandable on demand.</li>
+    </ul>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon" aria-hidden="true">&#9679;</div>
+      <div>
+        <div class="callout-title">What &ldquo;Passed&rdquo; means</div>
+        <p>A <em>Passed</em> result means the plugin loaded without throwing errors and the server started cleanly. It does <strong>not</strong> test gameplay logic. Always do a manual in-game test for commands, events, and game mechanics before shipping to players.</p>
+      </div>
+    </div>
+
+    <!-- ─── Gallery ───────────────────────────────────────────────────── -->
+    <h2 id="gallery">Gallery</h2>
+    <p>The <a href="/gallery">Gallery</a> is a community library of plugins that users have uploaded for others to use freely.</p>
+    <ul>
+      <li><strong>Browsing</strong> — anyone can browse and download plugins from the gallery, no account needed.</li>
+      <li><strong>Uploading</strong> — you need a verified account. Upload a <code>.jar</code> or <code>.zip</code> containing your plugin (it must have a valid <code>plugin.yml</code> inside).</li>
+      <li><strong>Tagging</strong> — tag your upload with the platforms it supports (Paper, Spigot, etc.) so others can filter by platform.</li>
+    </ul>
+
+    <h2 id="workflow">Recommended workflow</h2>
+    <ol>
+      <li><strong>Start narrow</strong> — generate one core feature first instead of a giant all-in-one plugin.</li>
+      <li><strong>Test the basics</strong> — check commands, permissions, and startup logs on a local Paper test server.</li>
+      <li><strong>Iterate in follow-ups</strong> — add one feature at a time so the AI has a clear next step.</li>
+      <li><strong>Use the editor and log analyser</strong> — they are the fastest path when a plugin almost works but still needs cleanup.</li>
+    </ol>
+
+    <!-- ─── Free vs Pro ───────────────────────────────────────────────── -->
+    <h2 id="plans">Plans &amp; limits</h2>
+    <table class="doc-table">
+      <thead><tr><th>Feature</th><th>Free</th><th>Starter</th><th>Pro</th><th>Studio</th></tr></thead>
+      <tbody>
+        <tr><td>Monthly generations</td><td>2</td><td>15</td><td>100</td><td>300</td></tr>
+        <tr><td>Prompt previews</td><td>20</td><td>20</td><td>Unlimited</td><td>Unlimited</td></tr>
+        <tr><td>Primary generation tier</td><td>Fast</td><td>Fast</td><td>Premium</td><td>Premium + workspace features</td></tr>
+        <tr><td>Platform breadth</td><td>Core plugin flow</td><td>Expanded platform support</td><td>All major supported targets</td><td>All major supported targets</td></tr>
+        <tr><td>Plugin branding</td><td>StackNest added to output</td><td>StackNest added to output</td><td>None</td><td>None</td></tr>
+        <tr><td>Priority queue</td><td>No</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+        <tr><td>Collaboration features</td><td>No</td><td>No</td><td>Basic</td><td>Team-oriented</td></tr>
+        <tr><td>Runtime server tests / month</td><td>&mdash;</td><td>3</td><td>10</td><td>30</td></tr>
+      </tbody>
+    </table>
+    <p>See the <a href="/pricing">pricing page</a> for full details and to upgrade.</p>
+
+    <!-- ─── API access ─────────────────────────────────────────────────── -->
+    <h2 id="api-access">API access <span style="font-size:13px;font-weight:600;color:var(--accent-h);background:rgba(92,111,255,.12);padding:2px 8px;border-radius:4px;margin-left:4px;vertical-align:middle">Pro</span> <span style="font-size:13px;font-weight:600;color:var(--yellow);background:rgba(255,211,112,.12);padding:2px 8px;border-radius:4px;margin-left:4px;vertical-align:middle">Studio</span></h2>
+    <p>Pro and Studio subscribers can generate plugins and mods over HTTP &mdash; no browser required. Pipe StackNest into CI/CD pipelines, Discord bots, server panels, or your own tooling.</p>
+
+    <h3>Getting your API key</h3>
+    <ol>
+      <li>Log in and open <a href="/profile"><strong>Profile &rarr; API Access</strong></a>.</li>
+      <li>Click <strong>Generate key</strong>. The full key is shown <strong>once only</strong> &mdash; copy it immediately and store it securely.</li>
+      <li>Use the key in an <code>Authorization: Bearer</code> header on every request.</li>
+    </ol>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon" aria-hidden="true">&bull;</div>
+      <div>
+        <div class="callout-title">Key shown once</div>
+        <p>Keys are stored as SHA-256 hashes &mdash; StackNest never holds the raw key and cannot recover it for you. If you lose it, go to <strong>Profile &rarr; API Access &rarr; Rotate key</strong> to invalidate the old key and issue a new one.</p>
+      </div>
+    </div>
+
+    <h3>Authentication</h3>
+    <p>Pass your key as a standard Bearer token. The legacy <code>X-API-Key</code> header is also accepted for backwards compatibility.</p>
+    <pre><code># Preferred
+Authorization: Bearer sn_&lt;your-key&gt;
+
+# Also accepted
+X-API-Key: sn_&lt;your-key&gt;</code></pre>
+
+    <h3>Versioned base path</h3>
+    <p>All endpoints are available under both <code>/api/</code> and <code>/api/v1/</code>. The versioned path is recommended for new integrations &mdash; it will remain stable as the API evolves.</p>
+
+    <h3>Endpoints</h3>
+
+    <h4 style="margin-top:20px;margin-bottom:6px;font-size:14px;color:var(--text)"><code>GET /api/v1/user/me</code></h4>
+    <p style="margin-bottom:10px">Returns your identity, plan, and monthly quota. Accepts both browser session cookies and Bearer token.</p>
+    <pre><code>curl https://stacknests.com/api/v1/user/me \
+     -H "Authorization: Bearer sn_&lt;your-key&gt;"</code></pre>
+    <pre><code>{
+  "username":        "YourStudio",
+  "email":           "you@example.com",
+  "plan":            "studio",
+  "gens_used":       14,
+  "gens_remaining":  286,
+  "gens_limit":      300,
+  "days_until_reset": 18
+}</code></pre>
+
+    <h4 style="margin-top:24px;margin-bottom:6px;font-size:14px;color:var(--text)"><code>POST /api/v1/generate</code></h4>
+    <p style="margin-bottom:10px">Generate a <strong>plugin</strong> (Paper, Spigot, Folia, Velocity, Skript, datapack). Each successful call counts as one generation against your monthly quota. Expect <strong>15&ndash;120 seconds</strong> &mdash; set your HTTP client timeout accordingly and do not retry on a live request.</p>
+    <p style="margin-bottom:10px;color:var(--muted);font-size:13px">For <strong>Fabric, Forge, and NeoForge mods</strong> use the SSE endpoint <code>POST /api/generate-mod-progress</code> &mdash; it streams live progress and returns a <code>jar_download_url</code> in the final <code>done</code> event.</p>
+    <pre><code>curl https://stacknests.com/api/v1/generate \
+     -H "Authorization: Bearer sn_&lt;your-key&gt;" \
+     -H "Content-Type: application/json" \
+     -d '{"prompt":"A Paper 26.1 plugin that adds a /heal command","platform":"paper"}'</code></pre>
+    <table class="doc-table" style="margin-top:16px">
+      <thead><tr><th>Field</th><th>Required</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>prompt</code></td><td>Yes</td><td>Describe what the plugin should do. Be specific about the platform version.</td></tr>
+        <tr><td><code>platform</code></td><td>Yes</td><td><code>paper</code>, <code>spigot</code>, <code>folia</code>, <code>velocity</code>, <code>skript</code>, <code>datapack</code></td></tr>
+        <tr><td><code>preset_id</code></td><td>No</td><td>Apply a saved workspace preset to the generation.</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:12px">The response includes <code>request_id</code>, <code>code</code> (Java source), <code>plugin_name</code>, <code>compile_ok</code>, <code>gallery_id</code>, and any <code>warnings</code> / <code>errors</code>. To download the compiled JAR, pass the returned <code>code</code> to <code>POST /api/jar</code>.</p>
+    <pre><code>{
+  "request_id":      "gen_3f8a1c",
+  "success":         true,
+  "code":            "...",
+  "plugin_name":     "HealPlugin",
+  "compile_ok":      true,
+  "yml_ok":          true,
+  "attempts":        2,
+  "elapsed_seconds": 18.4,
+  "gallery_id":      391,
+  "warnings":        [],
+  "errors":          []
+}</code></pre>
+
+    <h4 style="margin-top:24px;margin-bottom:6px;font-size:14px;color:var(--text)"><code>POST /api/jar</code></h4>
+    <p style="margin-bottom:10px">Compile plugin source (from a <code>/api/v1/generate</code> response) into a ready-to-deploy <code>.jar</code>. Returns a binary file download.</p>
+    <pre><code>curl https://stacknests.com/api/jar \
+     -H "Authorization: Bearer sn_&lt;your-key&gt;" \
+     -H "Content-Type: application/json" \
+     -d '{"code":"&lt;code from /api/v1/generate&gt;","plugin_name":"HealPlugin"}' \
+     --output HealPlugin.jar</code></pre>
+    <table class="doc-table" style="margin-top:16px">
+      <thead><tr><th>Field</th><th>Required</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>code</code></td><td>Yes</td><td>The full code string returned by <code>/api/v1/generate</code>.</td></tr>
+        <tr><td><code>plugin_name</code></td><td>No</td><td>Used as the JAR filename. Defaults to <code>StackNestPlugin</code>.</td></tr>
+      </tbody>
+    </table>
+
+    <h4 style="margin-top:24px;margin-bottom:6px;font-size:14px;color:var(--text)"><code>GET /api/mod-jar/&lt;token&gt;</code></h4>
+    <p style="margin-bottom:10px">Download a compiled mod JAR. The <code>token</code> comes from the <code>jar_download_url</code> field in the <code>done</code> event of an <code>/api/generate-mod-progress</code> SSE stream. Tokens are valid for <strong>2 hours</strong>.</p>
+    <pre><code>curl "https://stacknests.com/api/mod-jar/&lt;token&gt;" \
+     -H "Authorization: Bearer sn_&lt;your-key&gt;" \
+     --output my-mod-1.0.jar</code></pre>
+
+    <h3>Errors</h3>
+    <p>All error responses follow a consistent shape. Use <code>error</code> for display and <code>detail</code> (when present) for logging.</p>
+    <pre><code>// 401 — bad or missing key
+{ "error": "Invalid API key" }
+
+// 429 — quota exhausted
+{ "error": "Monthly generation limit reached (300/month). Resets in 18 days.",
+  "usage": { ... }, "upgrade_url": "/pricing" }
+
+// 503 — AI backend temporarily unavailable
+{ "error": "AI backend is unreachable right now. Please try again in 30 seconds.",
+  "detail": "ConnectionError: ..." }</code></pre>
+    <p>Retry on <code>5xx</code> with exponential backoff. Do <strong>not</strong> retry <code>4xx</code> &mdash; those indicate a client-side issue that a retry will not fix.</p>
+
+    <h3>Rate limits</h3>
+    <p>Pro and Studio API keys share the same monthly generation quota as browser use. There is no separate per-minute rate limit. If you need higher throughput, contact support.</p>
+
+    <h3>Python quick-start</h3>
+    <pre><code>import os, time, requests
+
+KEY  = os.environ["STACKNEST_API_KEY"]
+BASE = "https://stacknests.com"
+
+def generate(prompt, platform="paper", retries=3):
+    for attempt in range(retries):
+        try:
+            r = requests.post(
+                f"{BASE}/api/v1/generate",
+                headers={"Authorization": f"Bearer {KEY}"},
+                json={"prompt": prompt, "platform": platform},
+                timeout=150,  # generation can take up to 120s
+            )
+            if r.status_code &lt; 500:
+                r.raise_for_status()
+                return r.json()
+            # 5xx — back off and retry
+            time.sleep(2 ** attempt)
+        except requests.exceptions.Timeout:
+            if attempt == retries - 1:
+                raise
+            time.sleep(2 ** attempt)
+    raise RuntimeError("Generation failed after retries")
+
+def download_jar(code, plugin_name, out_path):
+    r = requests.post(
+        f"{BASE}/api/jar",
+        headers={"Authorization": f"Bearer {KEY}"},
+        json={"code": code, "plugin_name": plugin_name},
+        timeout=60,
+    )
+    r.raise_for_status()
+    with open(out_path, "wb") as f:
+        f.write(r.content)
+
+result = generate("Paper 26.1 plugin: /heal command with a 30-second cooldown")
+print(result["request_id"], result["plugin_name"], "compile_ok:", result["compile_ok"])
+
+if result["compile_ok"]:
+    download_jar(result["code"], result["plugin_name"], f"{result['plugin_name']}.jar")
+    print(f"JAR saved → {result['plugin_name']}.jar")</code></pre>
+
+    <h3>Key management &amp; security</h3>
+    <ul>
+      <li>Keys are hashed with SHA-256. StackNest never stores the raw key.</li>
+      <li><strong>Rotate:</strong> Profile &rarr; API Access &rarr; Rotate key &mdash; old key invalidated instantly, new key shown once.</li>
+      <li><strong>Revoke:</strong> Profile &rarr; API Access &rarr; Revoke &mdash; permanently deletes the key with no recovery.</li>
+      <li>Downgrading your plan below Pro automatically revokes the key.</li>
+      <li>API calls consume monthly generations at the same rate as browser generations.</li>
+    </ul>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon" aria-hidden="true">&bull;</div>
+      <div>
+        <div class="callout-title">Security best practice</div>
+        <p>Store your key in an environment variable (<code>STACKNEST_API_KEY</code>). Never hard-code it in source files or commit it to version control. If it is accidentally exposed, rotate it immediately from your profile page.</p>
+      </div>
+    </div>
+
+    <!-- ─── Troubleshooting ───────────────────────────────────────────── -->
+    <h2 id="troubleshoot">Common issues</h2>
+
+    <h3>My plugin generated but doesn't work on the server</h3>
+    <p>Check your server console for error messages when the plugin loads. Common causes:</p>
+    <ul>
+      <li>Wrong server version — make sure your prompt mentioned the Minecraft version (e.g. "Paper 26.1").</li>
+      <li>Missing dependency — if the plugin requires another plugin (like Vault or LuckPerms), make sure it's installed first.</li>
+      <li>Folia compatibility — if you're on Folia, regenerate with "make this Folia-compatible" in your prompt.</li>
+    </ul>
+
+    <h3>Generation is taking a long time</h3>
+    <p>Complex plugins can take up to 90 seconds. Mod generation may also take 30&ndash;60 seconds. If the page shows a spinner, it&rsquo;s still working &mdash; don&rsquo;t reload. If it times out, try again with a slightly simpler prompt and build up from there.</p>
+
+    <h3>I get a compilation error in the output</h3>
+    <p>This happens occasionally with very complex or unusual requests. Try:</p>
+    <ul>
+      <li>Regenerating with the same prompt (the AI might get it right on the next attempt).</li>
+      <li>Simplifying your prompt slightly, then adding complexity in a follow-up generation.</li>
+      <li>Being more specific about the Minecraft version and API you're targeting.</li>
+    </ul>
+
+    <h3>The plugin has "StackNest" as the author — can I change it?</h3>
+    <p>On the <strong>free plan</strong>, <code>authors: [StackNest]</code> is added to your <code>plugin.yml</code> automatically. You can edit the file manually to change it, or upgrade to <a href="/pricing">Pro</a> to remove this entirely.</p>
+
+    <h3>I&rsquo;ve hit my monthly limit</h3>
+    <p>Free accounts get 2 plugin/mod generations per month. If you need more headroom, move to <a href="/pricing">Starter, Pro, or Studio</a> depending on how often you generate and whether you need premium tooling.</p>
+
+    <!-- ─── Paper 26.x ─────────────────────────────────────────────────── -->
+    <h2 id="paper26">Paper 26.x &amp; Java 25</h2>
+    <p>Paper 26.1 is a major release that changes how Paper is versioned and built. Instead of the old <code>1.x-R0.1-SNAPSHOT</code> Maven scheme, Paper now uses its own version numbers like <code>26.1.2.build.62-stable</code>. StackNest tracks the latest stable build automatically &mdash; you do not need to do anything.</p>
+
+    <h3>Key differences from Paper 1.x</h3>
+    <ul>
+      <li><strong>Java 25 required</strong> &mdash; Paper 26.1 is compiled for Java 25. StackNest's compilation pipeline uses Java 25 automatically when targeting 26.1.</li>
+      <li><strong>Brigadier included on the compile classpath</strong> &mdash; the <code>com.mojang:brigadier</code> library is now an explicit compile dependency. You can use Brigadier commands without wrapping them in reflection.</li>
+      <li><strong>Command registration changed</strong> &mdash; use <code>getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -&gt; { ... })</code>. There is no class called <code>CommandRegistrationEvent</code> &mdash; that name does not exist in the API.</li>
+      <li><strong>New Paper-native API surface</strong> &mdash; many Bukkit-compatibility shims have been removed or deprecated. Use Paper's own APIs directly.</li>
+    </ul>
+
+    <h3 id="brigadier-errors">Brigadier &amp; command errors</h3>
+    <p>If you see errors like <code>package com.mojang.brigadier.command does not exist</code> or <code>cannot find symbol … CommandRegistrationEvent</code>, the causes are:</p>
+    <ul>
+      <li><code>com.mojang.brigadier.command</code> &mdash; <strong>this package does not exist</strong>. The correct packages are <code>com.mojang.brigadier</code> and <code>com.mojang.brigadier.context</code>. Use <code>com.mojang.brigadier.Command</code>, not <code>com.mojang.brigadier.command.Command</code>.</li>
+      <li><code>CommandRegistrationEvent</code> &mdash; <strong>this class does not exist</strong> in Paper's API. Register commands via the lifecycle manager instead:</li>
+    </ul>
+    <pre><code>// Paper 26.1 command registration
+@Override
+public void onEnable() {
+    getLifecycleManager().registerEventHandler(
+        LifecycleEvents.COMMANDS,
+        event -&gt; {
+            Commands cmds = event.registrar();
+            cmds.register(
+                Commands.literal("mycommand")
+                    .executes(ctx -&gt; {
+                        ctx.getSource().getSender().sendMessage("Hello!");
+                        return Command.SINGLE_SUCCESS;
+                    })
+                    .build()
+            );
+        }
+    );
+}</code></pre>
+
+    <div class="callout callout-tip">
+      <div class="callout-icon" aria-hidden="true">●</div>
+      <div>
+        <div class="callout-title">Auto-maintained versions</div>
+        <p>StackNest automatically detects the latest Paper stable release from the PaperMC Maven repository. When a new stable build is published (e.g. <code>26.1.3.build.10-stable</code>), the compiler target updates on the next server startup &mdash; no manual intervention needed.</p>
+      </div>
+    </div>
+
+    <!-- ─── Service availability ──────────────────────────────────────── -->
+    <h2 id="service-status">Service availability</h2>
+    <p>StackNest uses AI services to generate plugins. Occasionally these services may be slower or temporarily unavailable during periods of high demand.</p>
+
+    <div class="callout callout-info">
+      <div class="callout-icon" aria-hidden="true">●</div>
+      <div>
+        <div class="callout-title">If generation fails</div>
+        <p>If you see a "temporarily unavailable" message, the AI service is likely busy or experiencing an outage. <strong>This is not a problem with your prompt.</strong> Please wait a few minutes and try again — these issues typically resolve quickly.</p>
+      </div>
+    </div>
+
+    <p>Pro users get priority queue access, meaning their requests are processed before free-tier requests during high-traffic periods.</p>
+
+  </main>
+</div>
+
+<footer class="footer">
+  <p>
+    <a href="/terms">Terms</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/gallery">Gallery</a>
+    <a href="/support">Support</a>
+  </p>
+  <p style="margin-top:10px">© 2026 StackNest. All rights reserved.</p>
+<p style="margin-top:8px;font-size:11px;color:#8891b4;text-align:center">StackNest is not affiliated with or endorsed by Mojang Studios, Microsoft, or Discord Inc. Minecraft is a trademark of Mojang Studios.</p>
+</footer>
+
+<script>
+  // Highlight active sidebar link on scroll
+  const sections = document.querySelectorAll('[id]');
+  const links = document.querySelectorAll('.sidenav-link');
+
+  function updateActive() {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    links.forEach(l => {
+      l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+    });
+  }
+
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# API endpoints (never public)
+Disallow: /api/
+
+# App / user-facing tool pages
+Disallow: /app
+Disallow: /profile
+Disallow: /billing
+Disallow: /admin
+Disallow: /verify
+
+# Discord invite redirect (301 → external link, not a real page)
+Disallow: /discord
+
+Sitemap: https://stacknests.com/sitemap.xml

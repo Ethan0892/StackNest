@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spigot Plugin Generator — AI-Powered, Compiles Instantly | StackNest</title>
+  <meta name="description" content="Generate Spigot plugins with AI in 2026. Describe your plugin idea in plain English — StackNest writes the Java, compiles it against the Spigot API, and delivers a working JAR. Compatible with Spigot, Paper, and Bukkit servers." />
+  <meta name="keywords" content="spigot plugin generator, AI spigot plugin generator, spigot plugin creator, spigot minecraft plugin ai, generate spigot plugin, spigot api plugin generator, spigot plugin maker, ai spigot plugin, spigotmc plugin generator, bukkit plugin generator, spigot plugin creator 2026, paper plugin generator, folia plugin generator, Paper Spigot Folia AI, auto-fixing compile errors, auto compile spigot plugin, minecraft plugin compiler, AI plugin builder, no code spigot plugin, free spigot plugin generator, minecraft plugin without java, compile spigot plugin online, AI code auto-fix, plugin.yml generator, minecraft coding assistant, AI java code generator, paper 1.21 api, best spigot plugin generator 2026" />
+  <link rel="canonical" href="https://stacknests.com/spigot-plugin-generator" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="Spigot Plugin Generator — AI-Powered | StackNest" />
+  <meta property="og:description" content="Describe your Spigot plugin in plain English and get a compiled JAR back in under a minute. Compatible with Spigot, Paper, and Bukkit servers." />
+  <meta property="og:url" content="https://stacknests.com/spigot-plugin-generator" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://stacknests.com/og-image.png" />
+  <meta property="og:site_name" content="StackNest" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Spigot Plugin Generator — AI-Powered | StackNest" />
+  <meta name="twitter:description" content="Describe your Spigot plugin. StackNest writes, compiles, and delivers the JAR. Free tier available." />
+  <meta name="twitter:image" content="https://stacknests.com/og-image.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "StackNest Spigot Plugin Generator",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web",
+    "description": "AI-powered Spigot plugin generator. Describe your plugin in plain English and receive a compiled JAR compatible with Spigot, Paper, and Bukkit servers — with automatic error fixing.",
+    "url": "https://stacknests.com/spigot-plugin-generator",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP", "description": "Free tier: 3 plugins/month" },
+    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.8", "bestRating": "5", "worstRating": "1", "ratingCount": "451" },
+    "publisher": { "@type": "Organization", "name": "StackNest", "url": "https://stacknests.com" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a Spigot plugin generator?",
+        "acceptedAnswer": { "@type": "Answer", "text": "A Spigot plugin generator is a tool that creates custom plugin code for Spigot and Bukkit-based Minecraft servers. AI-powered generators like StackNest let you describe what you want in plain English, then automatically write the Java source, compile it against the Spigot API, and package it as a .jar file." }
+      },
+      {
+        "@type": "Question",
+        "name": "Are Spigot plugins compatible with Paper?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Spigot plugins run on Paper servers without modification because Paper extends Spigot. If you want to use Paper-specific features (Adventure components, PDC, Folia), mention Paper in your prompt and StackNest will target the Paper API instead." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does StackNest actually compile the plugin?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. StackNest generates the Java source code, compiles it server-side against the Spigot API, and returns a compiled JAR file ready to drop into your server's plugins folder. It also runs up to 5 automatic fix passes if there are compile errors." }
+      },
+      {
+        "@type": "Question",
+        "name": "Can it generate plugins with Vault economy support?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Mention Vault in your prompt and StackNest adds the correct Maven soft-depend, hooks into the economy provider, and generates balance/deposit/withdraw code with proper null-safe provider checks." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the generated Spigot plugin free to use?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. You own 100% of what's generated. Use it on your server, sell it, or distribute it however you like — there are no licensing restrictions on the output." }
+      }
+    ]
+  }
+  </script>
+  <style>
+    :root { --bg:#0a0c12;--surface:#111420;--surface2:#181c2a;--border:#1e2235;--text:#e2e6f3;--muted:#8891aa;--accent:#5c6fff;--accent-h:#7b8fff;--green:#34d47a;--yellow:#c9a227;--red:#e05252; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:16px;line-height:1.7}
+    a{color:var(--accent-h);text-decoration:none}a:hover{text-decoration:underline}
+    .container{max-width:1080px;margin:0 auto;padding:0 24px}
+    .container-narrow{max-width:760px;margin:0 auto;padding:0 24px}
+    nav{position:sticky;top:0;z-index:100;background:rgba(10,12,18,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-inner{max-width:1080px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+    .nav-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;color:var(--text)}
+    .nav-logo-icon{width:28px;height:28px;border-radius:7px;background:var(--accent);display:flex;align-items:center;justify-content:center}
+    .nav-links{display:flex;gap:28px;font-size:14px}.nav-links a{color:var(--muted);font-weight:500}.nav-links a:hover{color:var(--text);text-decoration:none}
+    .btn-primary{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;font-weight:600;font-size:14px;padding:9px 20px;border-radius:8px}.btn-primary:hover{background:var(--accent-h);text-decoration:none}
+    .btn-secondary{display:inline-flex;align-items:center;gap:6px;background:transparent;color:var(--text);font-weight:500;font-size:15px;padding:10px 22px;border-radius:8px;border:1px solid var(--border)}.btn-secondary:hover{border-color:var(--accent);color:var(--accent-h);text-decoration:none}
+    .hero{padding:80px 0 64px;text-align:center}
+    .hero-label{display:inline-flex;align-items:center;gap:6px;background:rgba(92,111,255,0.12);border:1px solid rgba(92,111,255,0.25);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:var(--accent-h);letter-spacing:.04em;text-transform:uppercase;margin-bottom:22px}
+    .hero h1{font-size:clamp(32px,5vw,56px);font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin-bottom:20px}.hero h1 span{color:var(--accent-h)}
+    .hero p{font-size:18px;color:var(--muted);max-width:580px;margin:0 auto 32px}
+    .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .hero-note{font-size:13px;color:var(--muted);margin-top:16px}
+    .demo-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;margin:32px 0 0}
+    .demo-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px}
+    .demo-prompt{font-size:14px;color:var(--text);font-style:italic;line-height:1.6;padding:14px 18px;background:var(--surface2);border-radius:10px;margin-bottom:20px;border-left:3px solid var(--accent)}
+    .demo-output{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .demo-file{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--text)}
+    .demo-file.jar{border-color:var(--green);color:var(--green);font-weight:600}
+    .demo-arrow{color:var(--muted);font-size:18px}
+    .section{padding:72px 0}
+    .section-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--accent-h);margin-bottom:12px}
+    .section h2{font-size:clamp(24px,3.5vw,36px);font-weight:800;line-height:1.2;margin-bottom:16px}
+    .section .lead{font-size:17px;color:var(--muted);max-width:640px;margin-bottom:48px}
+    .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .feature-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px}
+    .feature-icon{width:40px;height:40px;border-radius:10px;background:rgba(92,111,255,0.12);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+    .feature-card h3{font-size:16px;font-weight:700;margin-bottom:8px}
+    .feature-card p{font-size:14px;color:var(--muted);margin:0;line-height:1.6}
+    .steps{display:flex;flex-direction:column;gap:0}
+    .step{display:flex;gap:24px;padding:28px 0;border-bottom:1px solid var(--border)}.step:last-child{border-bottom:none}
+    .step-num{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0;margin-top:2px}
+    .step-body h3{font-size:18px;font-weight:700;margin-bottom:8px}.step-body p{color:var(--muted);font-size:15px;margin:0}
+    .tags{display:flex;flex-wrap:wrap;gap:10px}
+    .tag{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 16px;font-size:14px;font-weight:600}
+    .examples-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .example-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px}
+    .example-card .prompt{font-size:13.5px;color:var(--text);font-style:italic;margin-bottom:10px;line-height:1.5}
+    .example-card .result{font-size:12px;color:var(--muted)}.example-card .result strong{color:var(--green)}
+    .faq{display:flex;flex-direction:column;gap:16px}
+    .faq-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px}
+    .faq-item h3{font-size:16px;font-weight:700;margin-bottom:8px}.faq-item p{color:var(--muted);font-size:15px;margin:0}
+    .cta-section{padding:80px 0;text-align:center}
+    .cta-box{background:linear-gradient(135deg,rgba(92,111,255,0.12) 0%,rgba(92,111,255,0.05) 100%);border:1px solid rgba(92,111,255,0.25);border-radius:20px;padding:56px 40px}
+    .cta-box h2{font-size:clamp(24px,3.5vw,36px);font-weight:800;margin-bottom:14px}.cta-box p{font-size:17px;color:var(--muted);margin-bottom:28px}
+    .related{border-top:1px solid var(--border);padding:48px 0 72px}
+    .related-heading{font-size:12px;font-weight:600;margin-bottom:20px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+    .related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .related-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+    .related-card a{color:var(--text);font-weight:600;font-size:15px}.related-card p{font-size:13px;color:var(--muted);margin-top:6px;margin-bottom:0}
+    @media(max-width:768px){.features-grid{grid-template-columns:1fr}.examples-grid{grid-template-columns:1fr}.related-grid{grid-template-columns:1fr}}
+    @media(max-width:600px){.nav-links{display:none}}
+    footer{border-top:1px solid var(--border);padding:28px 0;text-align:center;font-size:13px;color:var(--muted)}
+    footer a{color:var(--muted)}footer a:hover{color:var(--text)}
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      StackNest
+    </a>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/gallery">Gallery</a>
+      <a href="/docs">Docs</a>
+    </nav>
+    <a href="/app" class="btn-primary">Try free <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-label">
+      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      Spigot Plugin Generator
+    </div>
+    <h1>Generate Spigot plugins<br><span>without writing Java</span></h1>
+    <p>Describe your plugin in plain English. StackNest writes full Spigot/Bukkit API code, compiles it server-side, and hands you a working <strong>.jar</strong> — compatible with Spigot, Paper, and Bukkit.</p>
+    <div class="hero-actions">
+      <a href="/app" class="btn-primary">Generate a Spigot plugin free &rarr;</a>
+      <a href="/gallery" class="btn-secondary">Browse examples</a>
+    </div>
+    <p class="hero-note">Free tier · No credit card · Spigot + Paper + Bukkit compatible</p>
+  </div>
+</section>
+
+<div class="container-narrow">
+  <div class="demo-box">
+    <div class="demo-label">You type:</div>
+    <div class="demo-prompt">"A Spigot plugin that adds a /spawn command to teleport players to the world spawn point. Admins can set the spawn with /setspawn. Shows a 3-second countdown before teleporting and plays a sound. Store spawn location in config.yml."</div>
+    <div class="demo-label">StackNest delivers:</div>
+    <div class="demo-output">
+      <span class="demo-file">SpawnPlugin.java</span>
+      <span class="demo-file">SpawnCommand.java</span>
+      <span class="demo-file">SetSpawnCommand.java</span>
+      <span class="demo-file">plugin.yml</span>
+      <span class="demo-file">config.yml</span>
+      <span class="demo-file">pom.xml</span>
+      <span class="demo-arrow">→</span>
+      <span class="demo-file jar">SpawnManager.jar ✓</span>
+    </div>
+  </div>
+</div>
+
+<section class="section" style="border-top:1px solid var(--border)">
+  <div class="container-narrow">
+    <div class="section-title">How it works</div>
+    <h2>From plain English to a compiled<br>Spigot JAR in under a minute</h2>
+    <p class="lead">StackNest handles the entire plugin development workflow — writing, compiling, and packaging.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Describe your Spigot plugin</h3>
+          <p>Write what you want in plain English. Include commands, events, GUIs, config values, Vault hooks, or anything else. The more detail you give, the more precisely it's built.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>AI generates Spigot API source code</h3>
+          <p>A specialised model generates all Java classes, <code style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent-h)">plugin.yml</code>, and a <code style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent-h)">pom.xml</code> targeting the correct Spigot API version. Compatible output runs on Spigot, CraftBukkit, and Paper.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Compiles server-side with auto-healing</h3>
+          <p>The code is compiled against the Spigot API. If there are errors, StackNest runs up to 5 automatic fix passes — reading the compiler output and patching the broken sections — until the plugin compiles cleanly.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>Download and drop into plugins/</h3>
+          <p>You get a working JAR plus the full source code. No local Java, no Maven setup required.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="section-title">What StackNest handles</div>
+    <h2>Full Spigot API coverage</h2>
+    <p class="lead">Everything a Spigot developer would write by hand — generated, compiled, and validated for you.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="var(--accent-h)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
+        <h3>Commands &amp; Tab Complete</h3>
+        <p>CommandExecutor and TabCompleter setup with sub-commands, argument validation, permission nodes, and clean usage messages in plugin.yml.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="var(--accent-h)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div>
+        <h3>Event Listeners</h3>
+        <p>PlayerJoinEvent, PlayerMoveEvent, BlockBreakEvent — any Bukkit/Spigot event registered with the correct priority and cancellation handling.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="var(--accent-h)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path stroke-linecap="round" d="M9 9h6M9 12h6M9 15h4"/></svg></div>
+        <h3>Chest GUI Menus</h3>
+        <p>InventoryHolder-based GUIs with click handling, item formatting, lore, pagination, and confirmation dialogs.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="var(--accent-h)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+        <h3>Config &amp; YAML Files</h3>
+        <p>config.yml with FileConfiguration, reloadConfig(), typed getters, and default value handling. Custom data files with automatic creation.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="var(--accent-h)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg></div>
+        <h3>Vault Economy</h3>
+        <p>Economy hook with balance checks, deposit/withdraw, and null-safe provider registration — all correctly wired in plugin.yml as a soft-depend.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="var(--accent-h)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        <h3>Schedulers &amp; Tasks</h3>
+        <p>BukkitRunnable, runTaskTimer, runTaskAsyncLater — repeating tasks, delayed actions, async database calls with sync callbacks.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container-narrow">
+    <div class="section-title">Example prompts</div>
+    <h2>What people are building</h2>
+    <p class="lead">Real plugin descriptions — paste something similar to get started instantly.</p>
+    <div class="examples-grid">
+      <div class="example-card">
+        <div class="prompt">"A Spigot teleportation request plugin: /tpa [player] sends a request, the target accepts with /tpaccept or declines with /tpdeny. Requests expire after 60 seconds."</div>
+        <div class="result"><strong>✓ Compiled</strong> · TeleportRequest.jar · 4 files</div>
+      </div>
+      <div class="example-card">
+        <div class="prompt">"A daily rewards plugin that gives players a configurable item reward the first time they join each calendar day. Uses config.yml for reward items and amounts. Announces to chat."</div>
+        <div class="result"><strong>✓ Compiled</strong> · DailyRewards.jar · 3 files</div>
+      </div>
+      <div class="example-card">
+        <div class="prompt">"A chat formatting plugin that adds prefix/suffix support for PermissionsEx groups. Different colours per rank, no duplicate spaces, works on join messages too."</div>
+        <div class="result"><strong>✓ Compiled</strong> · ChatFormat.jar · 2 files</div>
+      </div>
+      <div class="example-card">
+        <div class="prompt">"A godmode plugin: /god toggles damage immunity for the player, /god [player] for admins. Shows a particle effect while active. Persists through reconnects in a flat file."</div>
+        <div class="result"><strong>✓ Compiled</strong> · GodMode.jar · 3 files</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container-narrow">
+    <div class="section-title">Compatibility</div>
+    <h2>Works with the whole Spigot ecosystem</h2>
+    <p class="lead">Generated plugins are compatible across the major Bukkit-based server platforms.</p>
+    <div class="tags">
+      <span class="tag">SpigotMC 1.21</span>
+      <span class="tag">CraftBukkit</span>
+      <span class="tag">Paper (Spigot-compatible)</span>
+      <span class="tag">Bukkit API</span>
+      <span class="tag">Vault</span>
+      <span class="tag">PlaceholderAPI</span>
+      <span class="tag">PermissionsEx</span>
+      <span class="tag">LuckPerms API</span>
+      <span class="tag">Essentials hooks</span>
+      <span class="tag">WorldGuard</span>
+      <span class="tag">MySQL / SQLite</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container-narrow">
+    <div class="section-title">FAQ</div>
+    <h2>Common questions</h2>
+    <div class="faq">
+      <div class="faq-item">
+        <h3>What is a Spigot plugin generator?</h3>
+        <p>A Spigot plugin generator creates custom plugin code for SpigotMC and Bukkit-based Minecraft servers. AI-powered tools like StackNest handle writing the Java source, compiling it against the Spigot API, and packaging it as a ready-to-use .jar — no Java experience needed.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Are Spigot plugins compatible with Paper?</h3>
+        <p>Yes. Spigot plugins run on Paper servers without modification because Paper extends Spigot. If you want Paper-specific features (Adventure text, PDC, Folia support), mention Paper in your prompt and StackNest will target the Paper API instead.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Does StackNest actually compile the code?</h3>
+        <p>Yes. StackNest compiles the generated Java source server-side using Maven and returns a compiled .jar. If there are compiler errors, it runs up to 5 automatic fix passes before giving up — you only get a download link once it compiled cleanly.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can I request specific Spigot API versions?</h3>
+        <p>Yes. Mention the version in your prompt (e.g. "target Spigot 1.20.1") and StackNest will use the correct API version in the pom.xml dependency. Defaults to the latest stable Spigot API.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Do I need a local Java or Maven setup?</h3>
+        <p>No. All compilation happens on StackNest's servers. You just download the finished .jar and drop it into your server's plugins/ folder.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container-narrow">
+    <div class="cta-box">
+      <h2>Ready to generate your Spigot plugin?</h2>
+      <p>Free to start. No credit card. Your first plugin in under a minute.</p>
+      <a href="/app" class="btn-primary" style="font-size:16px;padding:13px 32px">Generate a plugin free &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="related">
+    <div class="related-heading">Related generators</div>
+    <div class="related-grid">
+      <div class="related-card">
+        <a href="/paper-plugin-generator">Paper Plugin Generator</a>
+        <p>AI-generated Paper plugins with Adventure components, PDC, and Folia support.</p>
+      </div>
+      <div class="related-card">
+        <a href="/minecraft-plugin-generator">Minecraft Plugin Generator</a>
+        <p>The general-purpose AI plugin generator for Paper, Spigot, Velocity, and Folia.</p>
+      </div>
+      <div class="related-card">
+        <a href="/minecraft-mod-generator">Minecraft Mod Generator</a>
+        <p>Fabric, Forge, and NeoForge mods — AI-written and compiled for your modloader.</p>
+      </div>
+      <div class="related-card">
+        <a href="/fabric-mod-generator">Fabric Mod Generator</a>
+        <p>AI-generated Fabric mods targeting the latest Fabric API and Minecraft mappings.</p>
+      </div>
+      <div class="related-card">
+        <a href="/how-to-make-minecraft-plugins">How to make Minecraft plugins</a>
+        <p>A beginner's guide to plugin development — and how AI can speed it up.</p>
+      </div>
+      <div class="related-card">
+        <a href="/best-minecraft-ai-plugin-generator">Best AI plugin generators 2026</a>
+        <p>Comparing the top AI tools for generating Minecraft plugins this year.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2026 StackNest &nbsp;&middot;&nbsp; <a href="/privacy">Privacy</a> &nbsp;&middot;&nbsp; <a href="/terms">Terms</a> &nbsp;&middot;&nbsp; <a href="/docs">Docs</a> &nbsp;&middot;&nbsp; <a href="/pricing">Pricing</a></p>
+  </div>
+</footer>
+</body>
+</html>

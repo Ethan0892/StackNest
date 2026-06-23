@@ -1,0 +1,27 @@
+// NeoForge 1.21.x — NeoGradle 7.x
+// Use net.neoforged.* imports — NEVER net.minecraftforge.*
+plugins {
+    id("net.neoforged.gradle.userdev") version "7.0.142"
+    id("java")
+}
+
+version = "1.0.0"
+group = "com.example.examplemod"
+
+runs {
+    configureEach {
+        systemProperty("forge.logging.console.level", "debug")
+        modSource(project.sourceSets.main.get())
+    }
+    create("server")
+    create("client")
+}
+
+dependencies {
+    // Change to the NeoForge version you target: https://projects.neoforged.net/neoforged/neoforge
+    implementation("net.neoforged:neoforge:21.1.66")
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+}

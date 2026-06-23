@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <title>Server Log Analyzer - StackNest</title>
+  <meta name="description" content="Analyze Minecraft server logs with AI to detect plugin conflicts, startup errors, performance issues, and actionable fixes in seconds." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://stacknests.com/logs" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f1117;
+      --bg2: #080a0f;
+      --surface: #1a1d26;
+      --surface2: #222638;
+      --border: #2e3350;
+      --text: #e8eaf6;
+      --muted: #8891b4;
+      --accent: #5c6fff;
+      --accent-h: #7b8fff;
+      --good: #3ddc84;
+      --warn: #ffd370;
+      --bad: #ff6c7a;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Inter', system-ui, sans-serif;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: inherit; text-decoration: none; }
+    code { font-family: var(--mono); }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 58px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(8, 10, 15, 0.86);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+    .logo { font-size: 1.15rem; font-weight: 700; }
+    .logo span { color: var(--accent); }
+    .sep { width: 1px; height: 22px; background: var(--border); }
+    .title { color: var(--muted); font-size: .84rem; }
+    .nav { margin-left: auto; display: flex; gap: 6px; }
+    .nav a {
+      padding: 6px 12px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      color: var(--muted);
+      font-size: .8rem;
+      font-weight: 500;
+      transition: all .15s;
+    }
+    .nav a:hover { color: var(--text); border-color: var(--border); background: var(--surface); }
+    .nav a.active { color: var(--accent-h); border-color: var(--accent); background: rgba(92,111,255,.1); }
+
+    main {
+      width: min(1400px, 100%);
+      margin: 0 auto;
+      padding: 24px 20px 72px;
+      flex: 1;
+    }
+
+    .hero { margin-bottom: 18px; }
+    .hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -.7px; margin-bottom: 10px; }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, #fff 30%, var(--accent-h) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p { color: var(--muted); font-size: .95rem; max-width: 760px; line-height: 1.6; }
+
+    .upload-shell {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .drop-zone {
+      border: 1.5px dashed var(--border);
+      border-radius: var(--radius-sm);
+      background: rgba(92,111,255,.03);
+      padding: 26px 16px;
+      text-align: center;
+      color: var(--muted);
+      font-size: .9rem;
+      cursor: pointer;
+      transition: all .18s;
+    }
+    .drop-zone:hover, .drop-zone.drag {
+      border-color: var(--accent);
+      background: rgba(92,111,255,.08);
+      color: var(--text);
+    }
+    .drop-zone .label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      font-size: .78rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: .08em;
+      color: var(--accent-h);
+    }
+    .drop-zone p strong { color: var(--text); }
+
+    .or-line {
+      color: var(--muted);
+      text-align: center;
+      font-size: .8rem;
+      margin: 12px 0;
+      position: relative;
+    }
+    .or-line::before, .or-line::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 42%;
+      height: 1px;
+      background: var(--border);
+    }
+    .or-line::before { left: 0; }
+    .or-line::after { right: 0; }
+
+    textarea {
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: .77rem;
+      line-height: 1.55;
+      outline: none;
+      padding: 14px;
+      transition: border-color .15s;
+    }
+    textarea:focus { border-color: var(--accent); }
+
+    .row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text);
+      font-size: .82rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: all .15s;
+      font-family: var(--sans);
+    }
+    .btn:hover { border-color: var(--accent); background: var(--surface); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn.primary:hover { background: var(--accent-h); border-color: var(--accent-h); }
+    .btn.danger { color: var(--bad); border-color: rgba(255,108,122,.35); }
+
+    .toolbar {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .file-pill {
+      flex: 1;
+      min-width: 240px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      padding: 7px 12px;
+      font-size: .8rem;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: .72rem;
+      padding: 4px 10px;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+    }
+    .chip.error { border-color: rgba(255,108,122,.45); color: var(--bad); }
+    .chip.warn { border-color: rgba(255,211,112,.45); color: var(--warn); }
+    .chip.good { border-color: rgba(61,220,132,.45); color: var(--good); }
+
+    .layout {
+      display: none;
+      grid-template-columns: 1fr 360px;
+      gap: 14px;
+      align-items: start;
+    }
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .card-header {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .card-title { font-size: .82rem; font-weight: 700; }
+
+    .log-wrap {
+      max-height: calc(100vh - 260px);
+      min-height: 380px;
+      overflow: auto;
+      background: var(--bg2);
+      font-family: var(--mono);
+      font-size: .75rem;
+      line-height: 1.52;
+    }
+    .line {
+      display: flex;
+      border-left: 2px solid transparent;
+      transition: background .12s;
+    }
+    .line:hover { background: rgba(255,255,255,.03); }
+    .line.target { background: rgba(92,111,255,.18); border-left-color: var(--accent); }
+    .line.error { background: rgba(255,108,122,.08); }
+    .line.warn { background: rgba(255,211,112,.07); }
+    .line.stack { background: rgba(92,111,255,.05); }
+
+    .ln {
+      width: 58px;
+      flex-shrink: 0;
+      text-align: right;
+      color: #4a5073;
+      padding: 0 10px 0 0;
+      border-right: 1px solid var(--border);
+      user-select: none;
+    }
+    .txt {
+      flex: 1;
+      white-space: pre-wrap;
+      word-break: break-word;
+      padding: 0 10px;
+      color: #cad0e8;
+    }
+    .txt.error { color: #ff9aa5; }
+    .txt.warn { color: #ffd88a; }
+    .txt.stack { color: #95a0c9; }
+
+    .issue-list {
+      max-height: 420px;
+      overflow: auto;
+    }
+    .issue {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background .12s;
+    }
+    .issue:hover { background: var(--surface2); }
+    .issue:last-child { border-bottom: none; }
+    .issue small { color: var(--muted); font-size: .7rem; }
+    .issue .msg {
+      margin-top: 5px;
+      font-family: var(--mono);
+      font-size: .74rem;
+      line-height: 1.45;
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    .meta {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .meta-item {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 8px;
+      text-align: center;
+      background: var(--bg2);
+    }
+    .meta-item .n { font-size: 1.18rem; font-weight: 800; }
+    .meta-item .k { font-size: .66rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+
+    .ai {
+      margin-top: 14px;
+      display: none;
+    }
+    .ai .body {
+      max-height: 500px;
+      overflow: auto;
+      padding: 16px;
+      line-height: 1.7;
+      font-size: .86rem;
+    }
+    .ai .body h2 {
+      margin: 14px 0 6px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid var(--border);
+      font-size: .95rem;
+    }
+    .ai .body h3 { margin: 10px 0 4px; color: var(--accent-h); font-size: .86rem; }
+    .ai .body p, .ai .body li { color: var(--muted); }
+    .ai .body ul { padding-left: 18px; margin-bottom: 10px; }
+    .ai .body strong { color: var(--text); }
+    .ai .body pre {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      overflow: auto;
+      font-family: var(--mono);
+      font-size: .75rem;
+    }
+    .ai .body code {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      color: var(--warn);
+      font-family: var(--mono);
+      font-size: .78rem;
+    }
+
+    .spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    footer {
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      text-align: center;
+      padding: 16px;
+      font-size: .74rem;
+    }
+    footer a { color: var(--accent-h); }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">Stack<span>Nest</span></a>
+    <div class="sep"></div>
+    <span class="title">Server Log Analyzer</span>
+    <nav class="nav">
+      <a href="/app">Generator</a>
+      <a href="/editor">Editor</a>
+      <a href="/logs" class="active">Logs</a>
+      <a href="/gallery">Gallery</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Diagnose <em>Server Errors</em> Fast</h1>
+      <p>Load your latest.log and jump directly to root-cause lines. You get local triage instantly plus optional AI diagnosis from Kimi.</p>
+    </section>
+
+    <section class="upload-shell">
+      <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="onDrop(event)">
+        <div class="label">LOG</div>
+        <p><strong>Drop your file here</strong><br/>or click to browse - <code>latest.log</code>, <code>server.log</code>, crash reports</p>
+      </div>
+      <input id="file-input" type="file" accept=".log,.txt" style="display:none" onchange="onPickFile(event)" />
+
+      <div class="or-line">or paste log text</div>
+
+      <textarea id="log-input" spellcheck="false" placeholder="Paste Minecraft/Paper log text here..."></textarea>
+      <div class="row" style="margin-top:10px;">
+        <button class="btn primary" onclick="loadFromTextarea()" style="flex:1;justify-content:center;">Load and highlight</button>
+        <button class="btn" onclick="loadExample()">Load example</button>
+      </div>
+    </section>
+
+    <section class="toolbar" id="toolbar">
+      <div class="file-pill" id="file-pill">No file loaded</div>
+      <span class="chip" id="chip-lines">0 lines</span>
+      <span class="chip error" id="chip-errors">0 errors</span>
+      <span class="chip warn" id="chip-warns">0 warns</span>
+      <button class="btn" onclick="setFilter('all')">All</button>
+      <button class="btn" onclick="setFilter('error')">Errors</button>
+      <button class="btn" onclick="setFilter('warn')">Warnings</button>
+      <button class="btn" id="ai-btn" onclick="runAi()">AI analysis</button>
+      <button class="btn danger" onclick="resetView()">Close</button>
+    </section>
+
+    <section class="layout" id="layout">
+      <article class="card">
+        <div class="card-header">
+          <span class="card-title">Highlighted log</span>
+          <span style="font-size:.74rem;color:var(--muted);" id="position-hint">Click issue at right to jump</span>
+        </div>
+        <div class="log-wrap" id="log-wrap"></div>
+      </article>
+
+      <aside class="card">
+        <div class="card-header"><span class="card-title">Issue summary</span></div>
+        <div class="meta" id="meta"></div>
+        <div class="issue-list" id="issue-list"></div>
+      </aside>
+    </section>
+
+    <section class="card ai" id="ai-panel">
+      <div class="card-header">
+        <span class="card-title">Kimi AI diagnosis</span>
+        <div class="row">
+          <button class="btn" onclick="copyAi()">Copy</button>
+          <button class="btn" onclick="downloadTriageJson()">Export JSON</button>
+        </div>
+      </div>
+      <div class="body" id="ai-body"></div>
+    </section>
+  </main>
+
+  <footer>
+    <a href="/">StackNest</a> &middot; <a href="/app">Generator</a> &middot; <a href="/terms">Terms</a> &middot; <a href="/privacy">Privacy</a>
+    <p style="margin-top:8px;font-size:11px;color:#8891b4;text-align:center">StackNest is not affiliated with or endorsed by Mojang Studios, Microsoft, or Discord Inc. Minecraft is a trademark of Mojang Studios.</p>
+</footer>
+
+  <script>
+    let rawLines = [];
+    let parsed = [];
+    let issues = [];
+    let currentFilter = 'all';
+    let lastAiMarkdown = '';
+    let lastBackendPayload = null;
+
+    function esc(text) {
+      return String(text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function onDrop(e) {
+      e.preventDefault();
+      document.getElementById('drop-zone').classList.remove('drag');
+      const file = e.dataTransfer.files[0];
+      if (!file) return;
+      readFile(file, file.name);
+    }
+
+    function onPickFile(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      readFile(file, file.name);
+    }
+
+    function readFile(file, label) {
+      const reader = new FileReader();
+      reader.onload = (ev) => init(ev.target.result || '', label || file.name || 'log');
+      reader.readAsText(file);
+    }
+
+    function loadFromTextarea() {
+      const txt = document.getElementById('log-input').value.trim();
+      if (!txt) {
+        alert('Paste or load a log first.');
+        return;
+      }
+      init(txt, 'pasted log');
+    }
+
+    function classify(line) {
+      const low = line.toLowerCase();
+      if (low.includes('[severe]') || low.includes('[error]')) return 'error';
+      if (low.includes('[warn]') || low.includes(' warning')) return 'warn';
+      if (/^\s*at\s+/.test(line) || /^\s*\.\.\.\s+\d+\s+more/.test(line) || /^\s*caused by:/i.test(line)) return 'stack';
+      if (low.includes('exception') && !/^\s*at\s+/.test(line)) return 'error';
+      return 'info';
+    }
+
+    function parseLocalIssues(lines) {
+      const out = [];
+      let i = 0;
+      while (i < lines.length) {
+        const level = classify(lines[i]);
+        if (level === 'error' || level === 'warn') {
+          const trace = [];
+          let j = i + 1;
+          while (j < lines.length && classify(lines[j]) === 'stack') {
+            trace.push(lines[j]);
+            j++;
+          }
+          out.push({
+            line: i + 1,
+            severity: level,
+            message: lines[i].trim(),
+            trace: trace.slice(0, 10),
+            plugin: extractPlugin(lines[i]),
+          });
+          i = j;
+        } else {
+          i++;
+        }
+      }
+      return out;
+    }
+
+    function extractPlugin(line) {
+      const m = line.match(/\[(?!\d{2}:\d{2}:\d{2})([^\]]+)\]/);
+      if (!m) return null;
+      const name = (m[1] || '').trim();
+      if (!name) return null;
+      if (['error', 'warn', 'warning', 'info', 'severe'].includes(name.toLowerCase())) return null;
+      if (name.length > 48) return null;
+      return name;
+    }
+
+    function init(text, label) {
+      rawLines = text.split(/\r?\n/);
+      parsed = rawLines.map((line, idx) => ({ line, idx, cls: classify(line) }));
+      issues = parseLocalIssues(rawLines);
+      lastBackendPayload = null;
+      lastAiMarkdown = '';
+
+      document.getElementById('file-pill').textContent = `${label} (${rawLines.length.toLocaleString()} lines)`;
+      document.getElementById('chip-lines').textContent = `${rawLines.length.toLocaleString()} lines`;
+      document.getElementById('chip-errors').textContent = `${issues.filter(i => i.severity === 'error').length} errors`;
+      document.getElementById('chip-warns').textContent = `${issues.filter(i => i.severity === 'warn').length} warns`;
+
+      document.getElementById('toolbar').style.display = 'flex';
+      document.getElementById('layout').style.display = 'grid';
+      document.getElementById('ai-panel').style.display = 'none';
+      document.getElementById('ai-body').innerHTML = '';
+
+      renderMeta();
+      renderIssueList();
+      setFilter('all');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetView() {
+      rawLines = [];
+      parsed = [];
+      issues = [];
+      lastBackendPayload = null;
+      lastAiMarkdown = '';
+      document.getElementById('toolbar').style.display = 'none';
+      document.getElementById('layout').style.display = 'none';
+      document.getElementById('ai-panel').style.display = 'none';
+      document.getElementById('log-wrap').innerHTML = '';
+      document.getElementById('issue-list').innerHTML = '';
+      document.getElementById('meta').innerHTML = '';
+      document.getElementById('log-input').value = '';
+    }
+
+    function renderMeta() {
+      const errors = issues.filter(i => i.severity === 'error').length;
+      const warns = issues.filter(i => i.severity === 'warn').length;
+      const frames = issues.reduce((n, i) => n + (i.trace?.length || 0), 0);
+      document.getElementById('meta').innerHTML = `
+        <div class="meta-item"><div class="n" style="color:${errors ? 'var(--bad)' : 'var(--good)'}">${errors}</div><div class="k">Errors</div></div>
+        <div class="meta-item"><div class="n" style="color:${warns ? 'var(--warn)' : 'var(--good)'}">${warns}</div><div class="k">Warnings</div></div>
+        <div class="meta-item"><div class="n" style="color:var(--muted)">${frames}</div><div class="k">Stack frames</div></div>
+      `;
+    }
+
+    function renderIssueList() {
+      const el = document.getElementById('issue-list');
+      if (!issues.length) {
+        el.innerHTML = `<div style="padding:28px 14px;color:var(--good);font-size:.85rem;">No errors or warnings found.</div>`;
+        return;
+      }
+      el.innerHTML = issues.map((item, idx) => {
+        const tag = item.severity === 'error' ? 'error' : 'warn';
+        const plugin = item.plugin ? ` | plugin: ${esc(item.plugin)}` : '';
+        const traceLine = item.trace && item.trace.length ? `<small>${item.trace.length} stack frame(s)</small>` : `<small>no stack trace</small>`;
+        return `
+          <div class="issue" onclick="jumpTo(${item.line})">
+            <span class="chip ${tag}">${item.severity}</span>
+            <small>line ${item.line}${plugin}</small>
+            <div class="msg">${esc(item.message).slice(0, 240)}</div>
+            ${traceLine}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function setFilter(mode) {
+      currentFilter = mode;
+      renderLog();
+    }
+
+    function renderLog(targetLine = null) {
+      const wrap = document.getElementById('log-wrap');
+      const rows = [];
+      for (const row of parsed) {
+        if (currentFilter === 'error' && row.cls !== 'error' && row.cls !== 'stack') continue;
+        if (currentFilter === 'warn' && row.cls !== 'warn' && row.cls !== 'stack') continue;
+        const target = targetLine === row.idx + 1 ? ' target' : '';
+        rows.push(
+          `<div class="line ${row.cls}${target}" id="line-${row.idx + 1}">` +
+            `<span class="ln">${row.idx + 1}</span>` +
+            `<span class="txt ${row.cls}">${esc(row.line)}</span>` +
+          `</div>`
+        );
+      }
+      wrap.innerHTML = rows.join('') || `<div style="padding:28px;color:var(--muted)">No lines match this filter.</div>`;
+    }
+
+    function jumpTo(lineNo) {
+      if (currentFilter !== 'all') {
+        currentFilter = 'all';
+        renderLog(lineNo);
+      }
+      const node = document.getElementById(`line-${lineNo}`);
+      if (!node) return;
+      document.querySelectorAll('.line.target').forEach(n => n.classList.remove('target'));
+      node.classList.add('target');
+      node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    async function runAi() {
+      if (!rawLines.length) {
+        alert('Load a log first.');
+        return;
+      }
+      const btn = document.getElementById('ai-btn');
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner"></span> Analysing...`;
+      const panel = document.getElementById('ai-panel');
+      const body = document.getElementById('ai-body');
+      panel.style.display = 'block';
+      body.innerHTML = `<p style="color:var(--muted)">Running backend analysis...</p>`;
+
+      try {
+        const res = await fetch('/api/logs/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ log: rawLines.join('\n') }),
+        });
+        const data = await res.json();
+        if (!res.ok || data.error) {
+          body.innerHTML = `<p style="color:var(--bad)">${esc(data.error || 'Analysis failed')}</p>`;
+          return;
+        }
+
+        lastBackendPayload = data;
+        lastAiMarkdown = data.analysis || '';
+
+        // Use backend issue list as source of truth when available.
+        if (Array.isArray(data.issues)) {
+          issues = data.issues;
+          document.getElementById('chip-errors').textContent = `${Number(data.error_count || 0)} errors`;
+          document.getElementById('chip-warns').textContent = `${Number(data.warning_count || 0)} warns`;
+          renderMeta();
+          renderIssueList();
+        }
+
+        const mode = data.kimi_available ? 'AI mode' : 'Basic mode';
+        const topEx = (data.top_exceptions || []).slice(0, 5).map(x => `<code>${esc(x.name)} (${Number(x.count || 0)})</code>`).join(' ');
+        const topPlugins = (data.probable_plugins || []).slice(0, 5).map(x => `<code>${esc(x.name)} (${Number(x.count || 0)})</code>`).join(' ');
+
+        body.innerHTML = `
+          <div style="margin-bottom:10px;padding:10px;border:1px solid var(--border);background:var(--bg2);border-radius:8px;">
+            <div class="row" style="margin-bottom:8px;">
+              <span class="chip">${mode}</span>
+              <span class="chip error">${Number(data.error_count || 0)} errors</span>
+              <span class="chip warn">${Number(data.warning_count || 0)} warns</span>
+              <span class="chip">${Number(data.issue_count || 0)} issues</span>
+            </div>
+            <div style="font-size:.78rem;color:var(--muted);line-height:1.6;">
+              <div><strong style="color:var(--text)">Top exceptions:</strong> ${topEx || 'none'}</div>
+              <div><strong style="color:var(--text)">Likely plugins:</strong> ${topPlugins || 'none'}</div>
+            </div>
+          </div>
+          ${renderMarkdown(data.analysis || 'No analysis returned.')}
+        `;
+      } catch (err) {
+        body.innerHTML = `<p style="color:var(--bad)">Request failed: ${esc(String(err))}</p>`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'AI analysis';
+      }
+    }
+
+    function copyAi() {
+      if (!lastAiMarkdown) {
+        alert('Run AI analysis first.');
+        return;
+      }
+      navigator.clipboard.writeText(lastAiMarkdown)
+        .then(() => alert('Analysis copied.'))
+        .catch(() => alert('Copy failed.'));
+    }
+
+    function downloadTriageJson() {
+      if (!lastBackendPayload) {
+        alert('Run AI analysis first.');
+        return;
+      }
+      const blob = new Blob([JSON.stringify(lastBackendPayload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'stacknest-log-triage.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function renderMarkdown(md) {
+      let html = esc(md || '');
+      html = html.replace(/```[\w]*\n([\s\S]*?)```/g, '<pre>$1</pre>');
+      html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+      html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+      html = html.replace(/^# (.+)$/gm, '<h2>$1</h2>');
+      html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+      html = html.replace(/^\s*[-*]\s+(.+)$/gm, '<li>$1</li>');
+      html = html.replace(/\n{2,}/g, '</p><p>');
+      html = '<p>' + html + '</p>';
+      html = html.replace(/<p>\s*(<h[23]>)/g, '$1').replace(/(<\/h[23]>)\s*<\/p>/g, '$1');
+      html = html.replace(/<p>\s*(<pre>)/g, '$1').replace(/(<\/pre>)\s*<\/p>/g, '$1');
+      html = html.replace(/<p>\s*(<li>)/g, '<ul>$1').replace(/(<\/li>)\s*<\/p>/g, '$1</ul>');
+      html = html.replace(/<p>\s*<\/p>/g, '');
+      return html;
+    }
+
+    function loadExample() {
+      const sample = `[12:00:01 INFO]: Starting minecraft server version 1.21.4
+[12:00:03 INFO]: Loading world
+[12:00:05 WARN]: Can't keep up! Running 2156ms behind
+[12:00:12 ERROR]: Error occurred while enabling ExamplePlugin v1.2
+java.lang.NullPointerException: Cannot invoke method because value is null
+\tat com.example.plugin.ShopManager.openShop(ShopManager.java:89)
+\tat com.example.plugin.ShopCommand.onCommand(ShopCommand.java:34)
+[12:00:13 ERROR]: Disabling ExamplePlugin v1.2
+[12:00:16 WARN]: [WorldGuard] Could not load world plots - world not found
+[12:01:03 ERROR]: Encountered an unexpected exception
+net.minecraft.server.ReportedException: Exception ticking world
+\tat net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:820)
+Caused by: java.lang.OutOfMemoryError: Java heap space`;
+      document.getElementById('log-input').value = sample;
+      loadFromTextarea();
+    }
+  </script>
+
+<div style="position:fixed;bottom:0;left:0;right:0;height:22px;background:#080a0f;border-top:1px solid #1a1d26;display:flex;align-items:center;justify-content:center;font-size:11px;color:#3d4468;z-index:1000;pointer-events:none;">
+  &copy; 2026 StackNest
+</div>
+<script src="/auth.js"></script>
+</body>
+</html>

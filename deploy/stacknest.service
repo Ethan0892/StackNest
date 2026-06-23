@@ -1,0 +1,48 @@
+[Unit]
+Description=StackNest – Minecraft Plugin Generator API
+Documentation=https://github.com/your-repo/stacknest
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=stacknest
+Group=stacknest
+WorkingDirectory=/opt/stacknest
+Environment="PATH=/opt/stacknest/.venv/bin:/usr/bin:/bin"
+# Java 25 is required for Paper 26.x compilation. Point to the installed JDK.
+# Override on the server by setting STACKNEST_JAVAC_25 in /opt/stacknest/.env
+Environment="STACKNEST_JAVAC_25=/usr/lib/jvm/java-25-openjdk/bin/javac"
+EnvironmentFile=-/opt/stacknest/.env
+ExecStart=/opt/stacknest/.venv/bin/gunicorn -c gunicorn.conf.py api.app:app
+ExecReload=/bin/kill -s HUP $MAINPID
+
+# Restart policy
+Restart=on-failure
+RestartSec=5
+StartLimitIntervalSec=120
+StartLimitBurst=5
+
+# File descriptor limits (for concurrent connections)
+LimitNOFILE=65536
+
+# Security hardening
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+UMask=0027
+
+# Allow writes to data, libs, hosted bots dir, systemd units, and temp dirs
+ReadWritePaths=/opt/stacknest/data /opt/stacknest/libs /opt/stacknest/hosted_bots /etc/systemd/system /tmp
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=stacknest
+
+[Install]
+WantedBy=multi-user.target

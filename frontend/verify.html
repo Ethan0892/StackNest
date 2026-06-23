@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify email - StackNest</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0d14;
+      --card: #121625;
+      --border: #222842;
+      --text: #e3e7f8;
+      --muted: #8a93b9;
+      --accent: #6172ff;
+      --ok: #3ddc84;
+      --warn: #ff9050;
+      --bad: #ff5c6a;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at top, rgba(97,114,255,0.18), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(61,220,132,0.10), transparent 28%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, sans-serif;
+    }
+    .card {
+      width: min(520px, calc(100vw - 32px));
+      padding: 28px 26px;
+      background: rgba(18, 22, 37, 0.94);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      background: linear-gradient(145deg, var(--accent), #8b99ff);
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 800;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 1.3rem;
+    }
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .status {
+      margin-top: 18px;
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      color: var(--ok);
+    }
+    .status.error {
+      color: var(--bad);
+    }
+    .status.pending {
+      color: var(--warn);
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      background: transparent;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .btn.primary {
+      background: linear-gradient(145deg, var(--accent), #8b99ff);
+      border-color: transparent;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="brand"><span class="badge">S</span> StackNest</div>
+    <h1 id="title">Verifying your email</h1>
+    <p id="message">Please wait while we confirm your email address.</p>
+    <div class="status pending" id="status">Submitting verification request...</div>
+    <div class="actions" id="actions" hidden>
+      <a class="btn primary" href="/app">Open StackNest</a>
+      <a class="btn" href="/profile">Open Profile</a>
+    </div>
+  </main>
+  <script>
+    (async function () {
+      const status = document.getElementById('status');
+      const title = document.getElementById('title');
+      const message = document.getElementById('message');
+      const actions = document.getElementById('actions');
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get('token');
+      if (!token) {
+        title.textContent = 'Verification link is incomplete';
+        message.textContent = 'This link is missing its token. Request a fresh verification email from your account page.';
+        status.textContent = 'Missing verification token.';
+        status.className = 'status error';
+        actions.hidden = false;
+        return;
+      }
+
+      try {
+        const resp = await fetch('/api/auth/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token })
+        });
+        const data = await resp.json().catch(() => ({}));
+        if (!resp.ok) {
+          title.textContent = 'Verification failed';
+          message.textContent = data.error || 'This verification link could not be completed.';
+          status.textContent = 'No account changes were made.';
+          status.className = 'status error';
+          actions.hidden = false;
+          return;
+        }
+
+        title.textContent = 'Email verified';
+        message.textContent = data.message || 'Your StackNest account is now verified.';
+        status.textContent = 'Verification complete. You can return to the app.';
+        status.className = 'status';
+        actions.hidden = false;
+      } catch {
+        title.textContent = 'Verification request failed';
+        message.textContent = 'We could not reach the server to complete verification.';
+        status.textContent = 'Please try this link again in a moment.';
+        status.className = 'status error';
+        actions.hidden = false;
+      }
+    })();
+  </script>
+</body>
+</html>

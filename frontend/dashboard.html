@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <title>Bot Hosting Dashboard - StackNest</title>
+  <meta name="description" content="Manage hosted Discord bots with live metrics, package installs, a file tree, and runtime logs." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080b12;
+      --bg-alt: #0c0f1a;
+      --surface: #131722;
+      --surface-strong: #1b2030;
+      --surface-soft: #212740;
+      --border: #252d45;
+      --border-strong: #303858;
+      --text: #dde1f5;
+      --muted: #6b739c;
+      --soft: #a9b2d8;
+      --accent: #6272ff;
+      --accent-2: #8291ff;
+      --warn: #ffc94d;
+      --danger: #ff5c6a;
+      --ok: #3ddc84;
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.24);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Inter', sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    a { color: inherit; }
+    button, input, textarea, select { font: inherit; }
+
+    .shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+      padding: 24px 18px 18px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      margin-bottom: 22px;
+    }
+
+    .brand img {
+      width: 34px;
+      height: 34px;
+    }
+
+    .brand-copy strong {
+      display: block;
+      font-size: 17px;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-copy span {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .nav-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .nav-chip {
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--soft);
+      background: rgba(255,255,255,0.02);
+      font-size: 13px;
+    }
+
+    .nav-chip.active {
+      background: rgba(98, 114, 255, 0.14);
+      color: var(--text);
+      border-color: rgba(98, 114, 255, 0.28);
+    }
+
+    .side-card {
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .side-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .user-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .user-copy strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .user-copy span {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      word-break: break-word;
+    }
+
+    .bot-list {
+      display: grid;
+      gap: 10px;
+      max-height: calc(100vh - 300px);
+      overflow: auto;
+      padding-right: 2px;
+    }
+
+    .bot-switch {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .bot-switch.active {
+      border-color: rgba(98, 114, 255, 0.36);
+      background: rgba(98, 114, 255, 0.12);
+    }
+
+    .bot-switch strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .bot-switch span {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .status-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--soft);
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--muted);
+      box-shadow: 0 0 0 rgba(0,0,0,0);
+    }
+
+    .dot.running { background: var(--ok); box-shadow: 0 0 14px rgba(93, 226, 165, 0.75); }
+    .dot.error { background: var(--danger); box-shadow: 0 0 14px rgba(255, 92, 106, 0.7); }
+    .dot.stopped { background: var(--muted); }
+
+    .main {
+      padding: 26px;
+      min-width: 0;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .inline-alert {
+      border: 1px solid rgba(255, 92, 106, 0.28);
+      background: rgba(255, 92, 106, 0.1);
+      color: #ffc9cf;
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-size: 12px;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .inline-alert.show {
+      display: block;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .lead {
+      margin-top: 10px;
+      color: var(--muted);
+      max-width: 760px;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.025);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 11px 14px;
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .btn:hover { transform: translateY(-1px); border-color: var(--border-strong); }
+    .btn.primary { background: rgba(98, 114, 255, 0.14); border-color: rgba(98, 114, 255, 0.32); }
+    .btn.success { background: rgba(61, 220, 132, 0.14); border-color: rgba(61, 220, 132, 0.3); }
+    .btn.danger { background: rgba(255, 92, 106, 0.12); border-color: rgba(255, 92, 106, 0.28); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .metrics-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-bottom: 18px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      min-width: 0;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .metric-value {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+
+    .metric-sub {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .spark {
+      width: 100%;
+      height: 38px;
+      margin-top: 10px;
+      display: block;
+      border-radius: 9px;
+      background: rgba(255,255,255,0.01);
+      border: 1px solid var(--border);
+    }
+
+    .hero-grid {
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, 420px);
+      margin-bottom: 18px;
+      align-items: start;
+    }
+
+    .hero-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      background: var(--surface-strong);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--soft);
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-size: 28px;
+      letter-spacing: -0.04em;
+      margin-bottom: 6px;
+    }
+
+    .hero-meta {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .info-box {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface-strong);
+      padding: 12px;
+    }
+
+    .info-box strong {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+
+    .info-box span {
+      display: block;
+      font-size: 14px;
+      word-break: break-word;
+    }
+
+    .error-box {
+      margin-top: 16px;
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid rgba(255, 123, 137, 0.24);
+      background: rgba(255, 123, 137, 0.08);
+    }
+
+    .error-box[hidden] { display: none; }
+
+    .error-box strong {
+      display: block;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: #ffc6ce;
+      margin-bottom: 8px;
+    }
+
+    .error-box pre {
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #ffe4e8;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 180px;
+      overflow: auto;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 17px;
+      letter-spacing: -0.03em;
+    }
+
+    .section-head p {
+      margin: 4px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .workspace-grid {
+      grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .tree-wrap {
+      max-height: 640px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .tree-toolbar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .input, .textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.025);
+      color: var(--text);
+      padding: 11px 12px;
+      outline: none;
+    }
+
+    .input:focus, .textarea:focus, .select:focus {
+      border-color: rgba(88, 196, 255, 0.4);
+      box-shadow: 0 0 0 3px rgba(88, 196, 255, 0.12);
+    }
+
+    .textarea {
+      min-height: 340px;
+      resize: vertical;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.025);
+      color: var(--text);
+      padding: 11px 12px;
+      outline: none;
+    }
+
+    .tree-node {
+      display: block;
+    }
+
+    .tree-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--soft);
+      border-radius: 10px;
+      padding: 8px 10px;
+      cursor: pointer;
+      text-align: left;
+      font-size: 13px;
+      margin-bottom: 2px;
+    }
+
+    .tree-row:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+    .tree-row.active { background: rgba(98, 114, 255, 0.14); border-color: rgba(98, 114, 255, 0.32); color: var(--text); }
+
+    .tree-children {
+      margin-left: 14px;
+      padding-left: 12px;
+      border-left: 1px solid rgba(151, 186, 224, 0.12);
+    }
+
+    .crumbs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .crumbs button {
+      border: none;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      padding: 0;
+      font-size: inherit;
+    }
+
+    .editor-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .editor-meta strong {
+      display: block;
+      font-size: 14px;
+      font-family: var(--mono);
+      word-break: break-all;
+    }
+
+    .editor-meta span {
+      display: block;
+      margin-top: 3px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .stack-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .mono-box {
+      font-family: var(--mono);
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 11px;
+      line-height: 1.6;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #0c1020;
+      padding: 14px;
+      min-height: 200px;
+      max-height: 320px;
+      overflow: auto;
+    }
+
+    .package-note {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .inline-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--soft);
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.025);
+    }
+
+    .gate {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .gate-card {
+      max-width: 520px;
+      text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 32px;
+    }
+
+    .gate-card h2 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      letter-spacing: -0.05em;
+    }
+
+    .gate-card p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    .toast-wrap {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      display: grid;
+      gap: 10px;
+      z-index: 100;
+    }
+
+    .toast {
+      min-width: 240px;
+      max-width: 360px;
+      background: rgba(8, 16, 24, 0.96);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      box-shadow: var(--shadow);
+      font-size: 13px;
+    }
+
+    .toast.ok { border-color: rgba(93, 226, 165, 0.35); }
+    .toast.err { border-color: rgba(255, 123, 137, 0.35); }
+
+    @media (max-width: 1240px) {
+      .metrics-grid,
+      .stack-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .hero-grid,
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 880px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar {
+        position: static;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .metrics-grid,
+      .stack-grid,
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+      .topbar {
+        flex-direction: column;
+      }
+      .top-actions {
+        justify-content: flex-start;
+      }
+      .main { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="auth-gate" class="gate" style="display:none">
+    <div class="gate-card">
+      <div class="eyebrow">StackNest Bot Hosting</div>
+      <h2>Sign in to open your dashboard</h2>
+      <p>Your hosted bots, logs, packages, and files are only available after authentication. Use the bot builder to sign in, then come back here.</p>
+      <div class="action-row" style="justify-content:center">
+        <a class="btn primary" href="/bots">Open Bot Builder</a>
+        <a class="btn" href="/">Go Home</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="dashboard-shell" class="shell" style="display:none">
+    <aside class="sidebar">
+      <a class="brand" href="/">
+        <img src="/icon.svg" alt="StackNest logo" />
+        <div class="brand-copy">
+          <strong>StackNest</strong>
+          <span>Bot Hosting Dashboard</span>
+        </div>
+      </a>
+
+      <div class="nav-row">
+        <a class="nav-chip" href="/bots">Builder</a>
+        <a class="nav-chip active" href="/dashboard">Dashboard</a>
+      </div>
+
+      <div class="side-card">
+        <div class="side-title">Operator</div>
+        <div class="user-row">
+          <div class="avatar" id="user-avatar">S</div>
+          <div class="user-copy">
+            <strong id="user-name">StackNest</strong>
+            <span id="user-email">-</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <div class="side-title">Hosted Bots</div>
+        <div class="bot-list" id="bot-list">
+          <div style="color:var(--muted);font-size:13px">Loading bots...</div>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <div class="side-title">Session</div>
+        <div class="package-note">This dashboard polls live process metrics for the selected bot and lets you install Python packages into an isolated per-bot dependency path.</div>
+        <button class="btn" type="button" onclick="logout()" style="width:100%">Log Out</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">Managed Bot Runtime</div>
+          <h1 id="hero-heading">Select a hosted bot</h1>
+          <div class="lead" id="hero-lead">Use this dashboard to inspect files, install dependencies, watch runtime output, and manage your bot like a hosting panel.</div>
+        </div>
+        <div class="top-actions">
+          <button class="btn" type="button" onclick="refreshDashboard()">Refresh</button>
+          <button class="btn success" type="button" onclick="botAction('start')">Start</button>
+          <button class="btn" type="button" onclick="botAction('stop')">Stop</button>
+          <button class="btn primary" type="button" onclick="botAction('restart')">Restart</button>
+        </div>
+      </div>
+
+      <div id="dashboard-alert" class="inline-alert"></div>
+
+      <section class="grid metrics-grid">
+        <div class="card">
+          <div class="metric-label">CPU</div>
+          <div class="metric-value" id="metric-cpu">0%</div>
+          <div class="metric-sub" id="metric-cpu-sub">Per-process CPU usage</div>
+          <svg class="spark" id="spark-cpu" viewBox="0 0 120 38" preserveAspectRatio="none"></svg>
+        </div>
+        <div class="card">
+          <div class="metric-label">Memory</div>
+          <div class="metric-value" id="metric-memory">0 MB</div>
+          <div class="metric-sub" id="metric-memory-sub">RSS usage for the worker</div>
+          <svg class="spark" id="spark-memory" viewBox="0 0 120 38" preserveAspectRatio="none"></svg>
+        </div>
+        <div class="card">
+          <div class="metric-label">Threads</div>
+          <div class="metric-value" id="metric-threads">0</div>
+          <div class="metric-sub" id="metric-threads-sub">Worker thread count</div>
+          <svg class="spark" id="spark-threads" viewBox="0 0 120 38" preserveAspectRatio="none"></svg>
+        </div>
+        <div class="card">
+          <div class="metric-label">Uptime</div>
+          <div class="metric-value" id="metric-uptime">-</div>
+          <div class="metric-sub" id="metric-uptime-sub">Live process uptime</div>
+          <svg class="spark" id="spark-uptime" viewBox="0 0 120 38" preserveAspectRatio="none"></svg>
+        </div>
+      </section>
+
+      <section class="grid hero-grid">
+        <div class="card">
+          <div class="hero-status"><span class="dot stopped" id="hero-dot"></span><span id="hero-status-text">Stopped</span></div>
+          <div class="hero-title" id="bot-name">No bot selected</div>
+          <div class="hero-meta" id="bot-meta">Choose a bot from the left sidebar to open its control surface.</div>
+          <div class="info-grid">
+            <div class="info-box"><strong>Entrypoint</strong><span id="bot-entrypoint">-</span></div>
+            <div class="info-box"><strong>Runtime</strong><span id="bot-runtime">-</span></div>
+            <div class="info-box"><strong>PID</strong><span id="bot-pid">-</span></div>
+            <div class="info-box"><strong>Project Files</strong><span id="bot-file-count">-</span></div>
+            <div class="info-box"><strong>RAM Allowance</strong><span id="bot-ram">-</span></div>
+            <div class="info-box"><strong>Updated</strong><span id="bot-updated">-</span></div>
+          </div>
+          <div class="error-box" id="last-error-wrap" hidden>
+            <strong>Last startup error</strong>
+            <pre id="last-error"></pre>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <h2>Boot Controls</h2>
+              <p>Set process flags and trigger lifecycle actions from one place.</p>
+            </div>
+          </div>
+          <div class="inline-meta">
+            <span class="tag" id="tag-runtime">Runtime</span>
+            <span class="tag" id="tag-manager">Package manager</span>
+          </div>
+          <label for="start-flags" style="display:block;font-size:12px;color:var(--muted);margin-bottom:8px">Startup flags</label>
+          <input class="input" id="start-flags" placeholder="e.g. --debug --guild 1234" />
+          <div class="action-row">
+            <button class="btn primary" type="button" onclick="saveFlags()">Save Flags</button>
+            <button class="btn" type="button" onclick="botAction('restart')">Restart with Flags</button>
+            <button class="btn" type="button" onclick="loadLogs()">Refresh Logs</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid workspace-grid">
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <h2>Project Tree</h2>
+              <p>Browse folders and files with a real tree and keep the current path visible.</p>
+            </div>
+          </div>
+          <div class="tree-toolbar">
+            <input class="input" id="file-filter" placeholder="Filter files..." oninput="renderTree()" />
+          </div>
+          <div class="tree-wrap" id="file-tree"></div>
+        </div>
+
+        <div class="grid" style="gap:16px">
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h2>Editor</h2>
+                <p>Open a file from the tree, follow breadcrumbs, and save edits directly into the hosted project.</p>
+              </div>
+            </div>
+            <div class="crumbs" id="breadcrumbs"></div>
+            <div class="editor-meta">
+              <div>
+                <strong id="editor-path">Select a file</strong>
+                <span id="editor-path-meta">Choose a file from the tree to start editing.</span>
+              </div>
+            </div>
+            <textarea class="textarea" id="editor-content" placeholder="No file open"></textarea>
+            <div class="action-row">
+              <button class="btn primary" type="button" onclick="saveFile()">Save File</button>
+            </div>
+          </div>
+
+          <div class="grid stack-grid">
+            <div class="card">
+              <div class="section-head">
+                <div>
+                  <h2>Package Manager</h2>
+                  <p>Install dependencies using runtime-native tools (pip for Python, npm for Node.js).</p>
+                </div>
+              </div>
+              <div class="package-note" id="package-meta">No bot selected.</div>
+              <div class="action-row" style="margin-top:0;margin-bottom:12px">
+                <button class="btn" type="button" id="install-req-btn" onclick="installRequirements()">Install Manifest</button>
+              </div>
+              <label for="package-input" style="display:block;font-size:12px;color:var(--muted);margin-bottom:8px">Custom package specs</label>
+              <textarea class="textarea" id="package-input" style="min-height:120px" placeholder="discord.py==2.7.1\npython-dotenv"></textarea>
+              <div class="action-row">
+                <button class="btn primary" type="button" onclick="installCustomPackages()">Install Packages</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="section-head">
+                <div>
+                  <h2>Package Output</h2>
+                  <p>Latest install log from the per-bot package manager.</p>
+                </div>
+              </div>
+              <div class="mono-box" id="package-log">No package activity yet.</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <div>
+                <h2>Runtime Logs</h2>
+                <p>Recent stdout and stderr output from the hosted worker.</p>
+              </div>
+              <button class="btn" type="button" onclick="loadLogs()">Refresh</button>
+            </div>
+            <div class="mono-box" id="runtime-logs">No logs loaded.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast-wrap" id="toast-wrap"></div>
+
+  <script>
+    const AUTH_KEY = 'stacknest_auth_token';
+    let user = null;
+    let bots = [];
+    let selectedBotId = '';
+    let panelState = null;
+    let currentFilePath = '';
+    let metricsTimer = null;
+    let metricFailures = 0;
+    let metricsSeries = {
+      cpu: [],
+      memory: [],
+      threads: [],
+      uptime: [],
+    };
+    const expandedFolders = new Set();
+
+    function escHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function toast(message, type) {
+      const wrap = document.getElementById('toast-wrap');
+      const el = document.createElement('div');
+      el.className = `toast ${type || ''}`;
+      el.textContent = message;
+      wrap.appendChild(el);
+      setTimeout(() => el.remove(), 3200);
+    }
+
+    function showInlineAlert(message) {
+      const el = document.getElementById('dashboard-alert');
+      if (!message) {
+        el.classList.remove('show');
+        el.textContent = '';
+        return;
+      }
+      el.textContent = message;
+      el.classList.add('show');
+    }
+
+    function apiFetch(url, opts = {}) {
+      const token = localStorage.getItem(AUTH_KEY);
+      const headers = { ...(opts.headers || {}) };
+      if (token) headers.Authorization = 'Bearer ' + token;
+      if (!(opts.body instanceof FormData) && !headers['Content-Type']) {
+        headers['Content-Type'] = 'application/json';
+      }
+      return fetch(url, { ...opts, headers });
+    }
+
+    async function readJson(res) {
+      try {
+        return await res.json();
+      } catch (_) {
+        return {};
+      }
+    }
+
+    function showGate() {
+      document.getElementById('auth-gate').style.display = 'grid';
+      document.getElementById('dashboard-shell').style.display = 'none';
+    }
+
+    function showDashboard() {
+      document.getElementById('auth-gate').style.display = 'none';
+      document.getElementById('dashboard-shell').style.display = 'grid';
+    }
+
+    function logout() {
+      localStorage.removeItem(AUTH_KEY);
+      location.href = '/';
+    }
+
+    function setUser() {
+      const name = user.display_name || user.email || 'User';
+      document.getElementById('user-name').textContent = name;
+      document.getElementById('user-email').textContent = user.email || '';
+      const avatar = document.getElementById('user-avatar');
+      if (user.avatar_url) {
+        avatar.innerHTML = `<img src="${escHtml(user.avatar_url)}" alt="Avatar" />`;
+      } else {
+        avatar.textContent = name.charAt(0).toUpperCase();
+      }
+    }
+
+    function statusClass(status) {
+      const value = String(status || 'stopped').toLowerCase();
+      return value === 'running' ? 'running' : value === 'error' ? 'error' : 'stopped';
+    }
+
+    function formatWhen(ts) {
+      const num = Number(ts || 0);
+      if (!num) return '-';
+      return new Date(num * 1000).toLocaleString();
+    }
+
+    function formatUptime(seconds) {
+      const total = Math.max(0, Number(seconds || 0));
+      if (!total) return '-';
+      const h = Math.floor(total / 3600);
+      const m = Math.floor((total % 3600) / 60);
+      const s = Math.floor(total % 60);
+      if (h > 0) return `${h}h ${m}m`;
+      if (m > 0) return `${m}m ${s}s`;
+      return `${s}s`;
+    }
+
+    async function boot() {
+      const token = localStorage.getItem(AUTH_KEY);
+      if (!token) {
+        showGate();
+        return;
+      }
+      try {
+        const res = await apiFetch('/api/auth/me');
+        if (!res.ok) {
+          showGate();
+          return;
+        }
+        const data = await readJson(res);
+        user = data.user || {};
+        showDashboard();
+        setUser();
+        await loadBots();
+      } catch (_) {
+        showGate();
+      }
+    }
+
+    async function loadBots() {
+      const list = document.getElementById('bot-list');
+      list.innerHTML = '<div style="color:var(--muted);font-size:13px">Loading bots...</div>';
+      const res = await apiFetch('/api/bots');
+      const data = await readJson(res);
+      if (!res.ok) {
+        list.innerHTML = `<div style="color:var(--danger);font-size:13px">${escHtml(data.error || 'Failed to load bots')}</div>`;
+        return;
+      }
+      bots = data.bots || [];
+      renderBotList();
+      if (!bots.length) {
+        clearSelection('No hosted bots yet. Deploy a bot from /bots first.');
+        return;
+      }
+      if (!selectedBotId || !bots.some((bot) => bot.id === selectedBotId)) {
+        selectedBotId = bots[0].id;
+      }
+      await loadPanel(selectedBotId);
+    }
+
+    function renderBotList() {
+      const list = document.getElementById('bot-list');
+      if (!bots.length) {
+        list.innerHTML = '<div style="color:var(--muted);font-size:13px">No hosted bots yet.</div>';
+        return;
+      }
+      list.innerHTML = bots.map((bot) => {
+        const live = bot.live_status || bot.status || 'stopped';
+        const active = bot.id === selectedBotId ? 'active' : '';
+        return `
+          <button class="bot-switch ${active}" onclick="selectBot('${escHtml(bot.id)}')">
+            <strong>${escHtml(bot.bot_name || 'Bot')}</strong>
+            <span>${escHtml(formatWhen(bot.updated_at || bot.created_at))}</span>
+            <div class="status-line"><span class="dot ${statusClass(live)}"></span>${escHtml(String(live).toUpperCase())}</div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    async function selectBot(botId) {
+      selectedBotId = String(botId || '');
+      renderBotList();
+      await loadPanel(selectedBotId);
+    }
+
+    function clearSelection(message) {
+      stopMetricsPolling();
+      panelState = null;
+      currentFilePath = '';
+      metricsSeries = { cpu: [], memory: [], threads: [], uptime: [] };
+      document.getElementById('hero-heading').textContent = 'Select a hosted bot';
+      document.getElementById('hero-lead').textContent = message;
+      document.getElementById('bot-name').textContent = 'No bot selected';
+      document.getElementById('bot-meta').textContent = message;
+      document.getElementById('file-tree').innerHTML = `<div style="color:var(--muted);font-size:13px">${escHtml(message)}</div>`;
+      document.getElementById('editor-path').textContent = 'Select a file';
+      document.getElementById('editor-path-meta').textContent = 'Choose a file from the tree to start editing.';
+      document.getElementById('editor-content').value = '';
+      document.getElementById('breadcrumbs').innerHTML = '';
+      document.getElementById('runtime-logs').textContent = 'No logs loaded.';
+      document.getElementById('package-log').textContent = 'No package activity yet.';
+      document.getElementById('package-meta').textContent = 'No bot selected.';
+      document.getElementById('last-error-wrap').hidden = true;
+      renderMetrics({ available: false, live_status: 'stopped' });
+      document.getElementById('install-req-btn').disabled = true;
+      drawSparklines();
+      showInlineAlert('');
+    }
+
+    async function loadPanel(botId) {
+      if (!botId) {
+        clearSelection('Select a hosted bot from the left sidebar.');
+        return;
+      }
+      const res = await apiFetch(`/api/bots/${encodeURIComponent(botId)}/panel`);
+      const data = await readJson(res);
+      if (!res.ok) {
+        toast(data.error || 'Failed to load bot panel', 'err');
+        showInlineAlert(data.error || 'Dashboard failed to load this bot panel.');
+        return;
+      }
+      showInlineAlert('');
+      panelState = data;
+      ingestMetricHistory(data.metrics_history || []);
+      const bot = data.bot || {};
+      const preferredFile = (data.files || []).find((file) => file.path === bot.entrypoint) || (data.files || [])[0];
+      renderOverview();
+      renderPackages();
+      renderTree();
+      if (preferredFile && preferredFile.path) {
+        ensureTreePathExpanded(preferredFile.path);
+        await openFile(preferredFile.path);
+      } else {
+        currentFilePath = '';
+        document.getElementById('editor-content').value = '';
+        document.getElementById('breadcrumbs').innerHTML = '';
+      }
+      await loadLogs();
+      startMetricsPolling();
+    }
+
+    function renderOverview() {
+      const bot = (panelState && panelState.bot) || {};
+      const metrics = (panelState && panelState.metrics) || {};
+      const live = bot.live_status || bot.status || 'stopped';
+      const liveClass = statusClass(live);
+      document.getElementById('hero-heading').textContent = bot.name || 'Hosted bot';
+      document.getElementById('hero-lead').textContent = `${(panelState.files || []).length} project files indexed. Use the file tree, package manager, and live runtime cards to manage this bot.`;
+      document.getElementById('hero-dot').className = `dot ${liveClass}`;
+      document.getElementById('hero-status-text').textContent = String(live).toUpperCase();
+      document.getElementById('bot-name').textContent = bot.name || 'Hosted bot';
+      document.getElementById('bot-meta').textContent = `${bot.runtime || metrics.runtime || 'runtime'} runtime · PID ${bot.pid || '-'} · Updated ${formatWhen(bot.updated_at || bot.created_at)}`;
+      document.getElementById('bot-entrypoint').textContent = bot.entrypoint || '-';
+      document.getElementById('bot-runtime').textContent = String(bot.runtime || metrics.runtime || '-').toUpperCase();
+      document.getElementById('bot-pid').textContent = bot.pid || '-';
+      document.getElementById('bot-file-count').textContent = `${(panelState.files || []).length}`;
+      document.getElementById('bot-ram').textContent = `${bot.ram_gb || 1} GB`;
+      document.getElementById('bot-updated').textContent = formatWhen(bot.updated_at || bot.created_at);
+      document.getElementById('start-flags').value = bot.start_flags || '';
+      document.getElementById('tag-runtime').textContent = `${String(bot.runtime || metrics.runtime || 'runtime').toUpperCase()} runtime`;
+      const manager = panelState.packages && panelState.packages.manager ? panelState.packages.manager : 'no package manager';
+      document.getElementById('tag-manager').textContent = manager;
+      const error = String(bot.last_error || '').trim();
+      document.getElementById('last-error-wrap').hidden = !error;
+      document.getElementById('last-error').textContent = error;
+      renderMetrics(metrics);
+    }
+
+    function renderMetrics(metrics) {
+      const available = !!metrics.available;
+      document.getElementById('metric-cpu').textContent = available ? `${Number(metrics.cpu_pct || 0).toFixed(1)}%` : '0%';
+      document.getElementById('metric-memory').textContent = available ? `${Number(metrics.memory_mb || 0).toFixed(1)} MB` : '0 MB';
+      document.getElementById('metric-threads').textContent = available ? `${metrics.threads || 0}` : '0';
+      document.getElementById('metric-uptime').textContent = available ? formatUptime(metrics.uptime_s) : '-';
+      document.getElementById('metric-cpu-sub').textContent = available ? `Process memory share ${Number(metrics.memory_pct || 0).toFixed(2)}%` : 'Waiting for a running process';
+      document.getElementById('metric-memory-sub').textContent = available ? `Host memory share ${Number(metrics.memory_pct || 0).toFixed(2)}%` : 'RSS usage for the worker';
+      document.getElementById('metric-threads-sub').textContent = available ? `PID ${metrics.pid || '-'}` : 'Worker thread count';
+      document.getElementById('metric-uptime-sub').textContent = available ? 'Live process uptime' : 'No running process detected';
+      pushMetricSample(metrics);
+      drawSparklines();
+    }
+
+    function ingestMetricHistory(samples) {
+      metricsSeries = { cpu: [], memory: [], threads: [], uptime: [] };
+      if (!Array.isArray(samples)) return;
+      samples.forEach((sample) => {
+        if (!sample || !sample.available) return;
+        metricsSeries.cpu.push(Number(sample.cpu_pct || 0));
+        metricsSeries.memory.push(Number(sample.memory_mb || 0));
+        metricsSeries.threads.push(Number(sample.threads || 0));
+        metricsSeries.uptime.push(Number(sample.uptime_s || 0));
+      });
+      clampMetricSeries();
+    }
+
+    function clampMetricSeries() {
+      const maxPoints = 90;
+      ['cpu', 'memory', 'threads', 'uptime'].forEach((key) => {
+        if (metricsSeries[key].length > maxPoints) {
+          metricsSeries[key] = metricsSeries[key].slice(-maxPoints);
+        }
+      });
+    }
+
+    function pushMetricSample(metrics) {
+      if (!metrics || !metrics.available) return;
+      metricsSeries.cpu.push(Number(metrics.cpu_pct || 0));
+      metricsSeries.memory.push(Number(metrics.memory_mb || 0));
+      metricsSeries.threads.push(Number(metrics.threads || 0));
+      metricsSeries.uptime.push(Number(metrics.uptime_s || 0));
+      clampMetricSeries();
+    }
+
+    function drawSpark(svgId, values, color) {
+      const svg = document.getElementById(svgId);
+      if (!svg) return;
+      const width = 120;
+      const height = 38;
+      if (!values.length) {
+        svg.innerHTML = `<line x1="0" y1="${height - 7}" x2="${width}" y2="${height - 7}" stroke="rgba(151,186,224,0.25)" stroke-width="1.2" stroke-dasharray="3 3" />`;
+        return;
+      }
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      const span = Math.max(1e-6, max - min);
+      const points = values.map((v, i) => {
+        const x = values.length === 1 ? 0 : (i / (values.length - 1)) * width;
+        const y = height - 5 - ((v - min) / span) * (height - 10);
+        return `${x.toFixed(2)},${y.toFixed(2)}`;
+      }).join(' ');
+      const lastY = Number(points.split(' ').pop().split(',')[1] || height / 2);
+      svg.innerHTML = `
+        <polyline points="${points}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline>
+        <circle cx="${width}" cy="${lastY.toFixed(2)}" r="2.4" fill="${color}"></circle>
+      `;
+    }
+
+    function drawSparklines() {
+      drawSpark('spark-cpu', metricsSeries.cpu, '#58c4ff');
+      drawSpark('spark-memory', metricsSeries.memory, '#8cf5c9');
+      drawSpark('spark-threads', metricsSeries.threads, '#ffd166');
+      drawSpark('spark-uptime', metricsSeries.uptime, '#ff9f80');
+    }
+
+    function renderPackages() {
+      const pkg = (panelState && panelState.packages) || {};
+      const runtime = String((panelState && panelState.bot && panelState.bot.runtime) || pkg.runtime || '').toLowerCase();
+      const declared = Array.isArray(pkg.declared_packages) ? pkg.declared_packages : [];
+      const reqBtn = document.getElementById('install-req-btn');
+      reqBtn.disabled = !pkg.custom_install_supported || !pkg.requirements_path;
+      reqBtn.textContent = runtime === 'node' ? 'Install package.json' : 'Install requirements.txt';
+      document.getElementById('package-input').placeholder = runtime === 'node'
+        ? 'discord.js@14\naxios'
+        : 'discord.py==2.7.1\npython-dotenv';
+      document.getElementById('package-meta').textContent = pkg.custom_install_supported
+        ? `Runtime: ${String(pkg.runtime || 'python').toUpperCase()} · manager: ${pkg.manager || 'pip'} · requirements: ${pkg.requirements_path || 'none'} · declared packages: ${declared.length}`
+        : 'Package manager controls are unavailable for this runtime.';
+      document.getElementById('package-log').textContent = pkg.install_log || 'No package activity yet.';
+    }
+
+    function filteredTreeNodes() {
+      const tree = (panelState && panelState.file_tree) || [];
+      const term = document.getElementById('file-filter').value.trim().toLowerCase();
+      if (!term) return tree;
+      const filterNode = (node) => {
+        if (node.type === 'file') {
+          return node.path.toLowerCase().includes(term) ? node : null;
+        }
+        const children = (node.children || []).map(filterNode).filter(Boolean);
+        if (children.length || node.path.toLowerCase().includes(term)) {
+          return { ...node, children };
+        }
+        return null;
+      };
+      return tree.map(filterNode).filter(Boolean);
+    }
+
+    function renderTree() {
+      const wrap = document.getElementById('file-tree');
+      if (!panelState || !(panelState.file_tree || []).length) {
+        wrap.innerHTML = '<div style="color:var(--muted);font-size:13px">No editable files found.</div>';
+        return;
+      }
+      const nodes = filteredTreeNodes();
+      wrap.innerHTML = nodes.length ? nodes.map((node) => renderTreeNode(node, 0)).join('') : '<div style="color:var(--muted);font-size:13px">No files match that filter.</div>';
+    }
+
+    function renderTreeNode(node, depth) {
+      const indent = depth * 14;
+      const encodedPath = encodeURIComponent(node.path || '');
+      if (node.type === 'dir') {
+        const expanded = expandedFolders.has(node.path);
+        return `
+          <div class="tree-node">
+            <button class="tree-row" style="padding-left:${10 + indent}px" onclick="toggleFolderByEncoded('${encodedPath}')">
+              <span>${expanded ? '▾' : '▸'}</span>
+              <span>📁</span>
+              <span>${escHtml(node.name)}</span>
+            </button>
+            ${expanded ? `<div class="tree-children">${(node.children || []).map((child) => renderTreeNode(child, depth + 1)).join('')}</div>` : ''}
+          </div>
+        `;
+      }
+      const active = currentFilePath === node.path ? 'active' : '';
+      return `
+        <button class="tree-row ${active}" style="padding-left:${10 + indent}px" onclick="openFileFromTreeEncoded('${encodedPath}')">
+          <span>•</span>
+          <span>📄</span>
+          <span>${escHtml(node.name)}</span>
+        </button>
+      `;
+    }
+
+    function toggleFolderByEncoded(encodedPath) {
+      toggleFolder(decodeURIComponent(String(encodedPath || '')));
+    }
+
+    function toggleFolder(path) {
+      const key = String(path || '');
+      if (expandedFolders.has(key)) expandedFolders.delete(key);
+      else expandedFolders.add(key);
+      renderTree();
+    }
+
+    function ensureTreePathExpanded(path) {
+      const parts = String(path || '').split('/').filter(Boolean);
+      let current = '';
+      for (let i = 0; i < parts.length - 1; i += 1) {
+        current = current ? `${current}/${parts[i]}` : parts[i];
+        expandedFolders.add(current);
+      }
+    }
+
+    async function openFileFromTree(path) {
+      ensureTreePathExpanded(path);
+      renderTree();
+      await openFile(path);
+    }
+
+    async function openFileFromTreeEncoded(encodedPath) {
+      await openFileFromTree(decodeURIComponent(String(encodedPath || '')));
+    }
+
+    async function openFile(path) {
+      if (!selectedBotId) return;
+      const res = await apiFetch(`/api/bots/${encodeURIComponent(selectedBotId)}/file?path=${encodeURIComponent(path)}`);
+      const data = await readJson(res);
+      if (!res.ok) {
+        toast(data.error || 'Failed to open file', 'err');
+        return;
+      }
+      currentFilePath = data.path;
+      document.getElementById('editor-path').textContent = data.path;
+      document.getElementById('editor-path-meta').textContent = `${breadcrumbParts(data.path).slice(0, -1).join(' / ') || 'project root'}`;
+      document.getElementById('editor-content').value = data.content || '';
+      renderBreadcrumbs(data.path);
+      renderTree();
+    }
+
+    function breadcrumbParts(path) {
+      return String(path || '').split('/').filter(Boolean);
+    }
+
+    function renderBreadcrumbs(path) {
+      const wrap = document.getElementById('breadcrumbs');
+      const parts = breadcrumbParts(path);
+      if (!parts.length) {
+        wrap.innerHTML = '';
+        return;
+      }
+      const nodes = parts.map((part, index) => {
+        const sub = parts.slice(0, index + 1).join('/');
+        const isLast = index === parts.length - 1;
+        const encodedSub = encodeURIComponent(sub);
+        return isLast
+          ? `<span>${escHtml(part)}</span>`
+          : `<button type="button" onclick="focusFolderEncoded('${encodedSub}')">${escHtml(part)}</button><span>/</span>`;
+      });
+      wrap.innerHTML = nodes.join(' ');
+    }
+
+    function focusFolder(path) {
+      expandedFolders.add(String(path || ''));
+      renderTree();
+    }
+
+    function focusFolderEncoded(encodedPath) {
+      focusFolder(decodeURIComponent(String(encodedPath || '')));
+    }
+
+    async function saveFile() {
+      if (!selectedBotId || !currentFilePath) {
+        toast('Select a file first', 'err');
+        return;
+      }
+      const body = {
+        path: currentFilePath,
+        content: document.getElementById('editor-content').value,
+      };
+      const res = await apiFetch(`/api/bots/${encodeURIComponent(selectedBotId)}/file`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+      });
+      const data = await readJson(res);
+      if (!res.ok) {
+        toast(data.error || 'Failed to save file', 'err');
+        showInlineAlert(data.error || 'Saving file failed.');
+        return;
+      }
+      toast('File saved', 'ok');
+      await refreshPanel();
+    }
+
+    async function saveFlags() {
+      if (!selectedBotId) {
+        toast('Select a bot first', 'err');
+        return;
+      }
+      const res = await apiFetch(`/api/bots/${encodeURIComponent(selectedBotId)}/start-flags`, {
+        method: 'POST',
+        body: JSON.stringify({ flags: document.getElementById('start-flags').value.trim() }),
+      });
+      const data = await readJson(res);
+      if (!res.ok) {
+        toast(data.error || 'Failed to save flags', 'err');
+        showInlineAlert(data.error || 'Saving flags failed.');
+        return;
+      }
+      toast('Startup flags saved', 'ok');
+      await refreshPanel();
+    }
+
+    async function botAction(action) {
+      if (!selectedBotId) {
+        toast('Select a bot first', 'err');
+        return;
+      }
+      const res = await apiFetch(`/api/bots/${encodeURIComponent(selectedBotId)}/${action}`, { method: 'POST' });
+      const data = await readJson(res);
+      if (!res.ok) {
+        toast(data.error || `Failed to ${action} bot`, 'err');
+        showInlineAlert(data.error || `Action failed: ${action}`);
+        return;
+      }
+      showInlineAlert('');
+      toast(data.message || `Bot ${action}ed`, 'ok');
+      await loadBots();
+    }
+
+    async function loadLogs() {
+      if (!selectedBotId) return;
+      const logsEl = document.getElementById('runtime-logs');
+      logsEl.textContent = 'Loading logs...';
+      const res = await apiFetch(`/api/bots/${encodeURIComponent(selectedBotId)}/logs?lines=250`);
+      const data = await readJson(res);
+      if (!res.ok) {
+        logsEl.textContent = data.error || 'Failed to load logs';
+        showInlineAlert(data.error || 'Failed to refresh runtime logs.');
+        return;
+      }
+      showInlineAlert('');
+      logsEl.textContent = data.logs || '(no logs yet)';
+      logsEl.scrollTop = logsEl.scrollHeight;
+    }
+
+    async function refreshMetrics() {
+      if (!selectedBotId) return;
+      const res = await apiFetch(`/api/bots/${encodeURIComponent(selectedBotId)}/metrics`);
+      const data = await readJson(res);
+      if (!res.ok) {
+        metricFailures += 1;
+        if (metricFailures >= 3) {
+          showInlineAlert(data.error || 'Live metrics are temporarily unavailable. Retrying...');
+        }
+        return;
+      }
+      metricFailures = 0;
+      showInlineAlert('');
+      ingestMetricHistory(data.metrics_history || []);
+      renderMetrics(data.metrics || {});
+      const heroDot = document.getElementById('hero-dot');
+      const heroText = document.getElementById('hero-status-text');
+      const cls = statusClass(data.live_status || 'stopped');
+      heroDot.className = `dot ${cls}`;
+      heroText.textContent = String(data.live_status || 'stopped').toUpperCase();
+    }
+
+    function stopMetricsPolling() {
+      if (metricsTimer) {
+        clearInterval(metricsTimer);
+        metricsTimer = null;
+      }
+    }
+
+    function startMetricsPolling() {
+      stopMetricsPolling();
+      refreshMetrics();
+      metricsTimer = setInterval(refreshMetrics, 4000);
+    }
+
+    function customPackageSpecs() {
+      return document.getElementById('package-input').value
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean);
+    }
+
+    async function installRequirements() {
+      await installPackages('manifest', []);
+    }
+
+    async function installCustomPackages() {
+      const packages = customPackageSpecs();
+      if (!packages.length) {
+        toast('Enter one package spec per line', 'err');
+        return;
+      }
+      await installPackages('custom', packages);
+    }
+
+    async function installPackages(mode, packages) {
+      if (!selectedBotId) {
+        toast('Select a bot first', 'err');
+        return;
+      }
+      document.getElementById('package-log').textContent = 'Installing packages...';
+      const res = await apiFetch(`/api/bots/${encodeURIComponent(selectedBotId)}/packages/install`, {
+        method: 'POST',
+        body: JSON.stringify({ mode, packages }),
+      });
+      const data = await readJson(res);
+      if (!res.ok) {
+        document.getElementById('package-log').textContent = (data.packages && data.packages.install_log) || data.error || 'Install failed';
+        toast(data.error || 'Package install failed', 'err');
+        showInlineAlert(data.error || 'Package installation failed.');
+        return;
+      }
+      showInlineAlert('');
+      panelState.packages = data.packages || panelState.packages;
+      renderPackages();
+      toast('Packages installed. Restart the bot if needed.', 'ok');
+    }
+
+    async function refreshPanel() {
+      if (!selectedBotId) return;
+      await loadPanel(selectedBotId);
+    }
+
+    async function refreshDashboard() {
+      await loadBots();
+    }
+
+    boot();
+  </script>
+</body>
+</html>

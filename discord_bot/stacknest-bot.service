@@ -1,0 +1,18 @@
+[Unit]
+Description=StackNest Discord Bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/stacknest
+EnvironmentFile=/opt/stacknest/.env
+ExecStart=/opt/stacknest/.venv/bin/python3 /opt/stacknest/discord_bot/bot.py
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

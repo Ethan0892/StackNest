@@ -1,0 +1,1871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <title>Discord Bot Builder &mdash; StackNest</title>
+  <meta name="description" content="Generate, deploy, and manage custom Discord bots powered by AI. No coding required." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #080b12;
+      --bg2:         #0c0f1a;
+      --surface:     #131722;
+      --surface2:    #1b2030;
+      --surface3:    #212740;
+      --border:      #252d45;
+      --border-s:    #303858;
+      --accent:      #5c6fff;
+      --accent-h:    #7b8fff;
+      --accent-d:    #4352d9;
+      --accent-glow: rgba(98,114,255,.35);
+      --green:       #3ddc84;
+      --red:         #ff5c6a;
+      --yellow:      #ffc94d;
+      --text:        #dde1f5;
+      --subtext:     #6b739c;
+      --muted:       #6b739c;
+      --mono:        'JetBrains Mono', monospace;
+      --sans:        'Inter', sans-serif;
+      --radius:      8px;
+      --radius-lg:   12px;
+      --sidebar-w:   220px;
+      --header-h:    52px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── Header ─────────────────────────────────────────────── */
+    header {
+      height: var(--header-h);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 18px;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      z-index: 100;
+    }
+    .logo {
+      font-size: 1rem; font-weight: 700; letter-spacing: -0.3px;
+      text-decoration: none; color: var(--text);
+      display: flex; align-items: center; gap: 7px;
+    }
+    .logo img { width: 22px; height: 22px; }
+    .logo span { color: var(--accent); }
+    .badge {
+      font-size: .62rem; font-weight: 700; padding: 2px 7px; border-radius: 20px;
+      background: rgba(98,114,255,.1); color: var(--accent);
+      border: 1px solid rgba(98,114,255,.25);
+    }
+    .header-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    .hnav {
+      font-size: .78rem; color: var(--subtext); text-decoration: none;
+      padding: 4px 8px; border-radius: 6px; transition: color .15s, background .15s;
+    }
+    .hnav:hover { color: var(--text); background: var(--surface2); }
+    .header-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--accent); display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0; overflow: hidden;
+    }
+    .header-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+    /* ── Layout ─────────────────────────────────────────────── */
+    .page-body {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* ── Sidebar ─────────────────────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 16px 0;
+    }
+    .sb-section { padding: 0 12px; margin-bottom: 4px; }
+    .sb-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em; color: var(--muted); padding: 0 10px;
+      margin-bottom: 4px; display: block;
+    }
+    .sb-nav-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 8px 10px; border-radius: var(--radius);
+      font-size: 13px; color: var(--subtext); text-decoration: none;
+      cursor: pointer; border: none; background: none; width: 100%;
+      text-align: left; transition: background .15s, color .15s;
+    }
+    .sb-nav-item:hover { background: var(--surface2); color: var(--text); }
+    .sb-nav-item.active { background: rgba(98,114,255,.12); color: var(--accent); }
+    .sb-sep { height: 1px; background: var(--border); margin: 10px 12px; }
+    .sb-user {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-top: 1px solid var(--border); margin-top: auto;
+    }
+    .sb-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--accent); display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; flex-shrink: 0; overflow: hidden;
+    }
+    .sb-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .sb-user-info { flex: 1; min-width: 0; }
+    .sb-user-name { font-size: 12px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sb-user-email { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sb-logout-btn {
+      background: none; border: none; color: var(--muted); cursor: pointer; padding: 4px;
+      border-radius: 4px; transition: color .15s;
+    }
+    .sb-logout-btn:hover { color: var(--red); }
+
+    /* ── Main ─────────────────────────────────────────────── */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 32px 40px;
+      width: 100%;
+    }
+    .main-inner {
+      width: 100%;
+      max-width: 1360px;
+    }
+    @media (max-width: 700px) {
+      .main { padding: 20px 16px; }
+      .sidebar { display: none; }
+    }
+
+    /* ── Page chrome ─────────────────────────────────────────────── */
+    .page-title {
+      font-size: 22px; font-weight: 700; letter-spacing: -.4px; margin-bottom: 4px;
+    }
+    .page-sub { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+
+    /* ── Cards ─────────────────────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .card-title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .07em; color: var(--muted); margin-bottom: 16px;
+    }
+
+    /* ── Plan banner ─────────────────────────────────────────────── */
+    .plan-banner {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      background: rgba(98,114,255,.06);
+      border: 1px solid rgba(98,114,255,.18);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+    }
+    .plan-banner-left { display: flex; align-items: center; gap: 14px; }
+    .plan-pill {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+      padding: 3px 10px; border-radius: 20px;
+      background: rgba(98,114,255,.15); color: var(--accent);
+      border: 1px solid rgba(98,114,255,.3);
+    }
+    .plan-pill.pro    { background: rgba(92,111,255,.15); color: #7b8fff; border-color: rgba(92,111,255,.3); }
+    .plan-pill.studio { background: rgba(61,220,132,.12); color: var(--green); border-color: rgba(61,220,132,.3); }
+    .plan-pill.free, .plan-pill.starter { background: rgba(107,115,156,.1); color: var(--muted); border-color: rgba(107,115,156,.2); }
+
+    /* ── Upgrade gate ─────────────────────────────────────────────── */
+    .upgrade-gate {
+      text-align: center; padding: 48px 24px;
+    }
+    .upgrade-gate-icon { font-size: 40px; margin-bottom: 12px; }
+    .upgrade-gate h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .upgrade-gate p { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.6; max-width: 380px; margin-left: auto; margin-right: auto; }
+    .btn-upgrade {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: #fff; border: none;
+      padding: 10px 22px; border-radius: var(--radius); font-size: 13px; font-weight: 600;
+      cursor: pointer; text-decoration: none; transition: background .15s;
+    }
+    .btn-upgrade:hover { background: var(--accent-h); }
+
+    /* ── Value props (hosting positioning) ───────────────────────── */
+    .value-props {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin: 14px 0 22px;
+    }
+    @media (max-width: 900px) { .value-props { grid-template-columns: 1fr; } }
+    .vp {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+    .vp-title { font-size: 12px; font-weight: 700; margin-bottom: 3px; }
+    .vp-sub { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* ── Form elements ─────────────────────────────────────────────── */
+    .form-row { margin-bottom: 14px; }
+    .form-row label {
+      display: block; font-size: 12px; font-weight: 600;
+      color: var(--muted); margin-bottom: 6px;
+    }
+    .input, .textarea, .select {
+      width: 100%; padding: 9px 12px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius); color: var(--text); font-family: var(--sans);
+      font-size: 13px; transition: border-color .15s, box-shadow .15s;
+      resize: vertical;
+    }
+    .input:focus, .textarea:focus, .select:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(98,114,255,.12);
+    }
+    .textarea { min-height: 90px; font-size: 13px; line-height: 1.5; }
+    .textarea.code-area {
+      font-family: var(--mono); font-size: 12px; min-height: 260px; line-height: 1.6;
+    }
+    .upload-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .dropzone {
+      border: 1px dashed var(--border-s);
+      background: rgba(98,114,255,.05);
+      border-radius: var(--radius);
+      padding: 12px;
+      margin-bottom: 12px;
+      transition: border-color .15s, background .15s;
+    }
+    .dropzone.dragover {
+      border-color: var(--accent);
+      background: rgba(98,114,255,.1);
+    }
+    .dropzone-help {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .upload-file-name {
+      font-size: 12px;
+      color: var(--muted);
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .deploy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 900px) {
+      .deploy-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Buttons ─────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 9px 18px; border-radius: var(--radius); font-size: 13px;
+      font-weight: 600; border: none; cursor: pointer; transition: background .15s, opacity .15s;
+    }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: var(--accent-h); }
+    .btn-secondary {
+      background: var(--surface2); color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover:not(:disabled) { border-color: var(--border-s); }
+    .btn-danger { background: rgba(255,92,106,.1); color: var(--red); border: 1px solid rgba(255,92,106,.2); }
+    .btn-danger:hover:not(:disabled) { background: rgba(255,92,106,.2); }
+    .btn-success { background: rgba(61,220,132,.1); color: var(--green); border: 1px solid rgba(61,220,132,.2); }
+    .btn-success:hover:not(:disabled) { background: rgba(61,220,132,.2); }
+    .btn-sm { padding: 6px 12px; font-size: 12px; }
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+    /* ── Code block ─────────────────────────────────────────────── */
+    .code-wrap {
+      position: relative;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      margin-top: 12px;
+    }
+    .code-wrap pre {
+      font-family: var(--mono); font-size: 12px; line-height: 1.6;
+      color: var(--text); padding: 16px; overflow: auto; max-height: 380px;
+      white-space: pre-wrap; word-break: break-word;
+    }
+    .code-copy-btn {
+      position: absolute; top: 8px; right: 8px;
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--muted); font-size: 11px; padding: 4px 10px;
+      border-radius: 5px; cursor: pointer; transition: color .15s;
+    }
+    .code-copy-btn:hover { color: var(--text); }
+
+    /* ── Bot cards ─────────────────────────────────────────────── */
+    .bots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
+      gap: 16px;
+    }
+    .bot-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 18px;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .bot-card:hover { border-color: var(--border-s); box-shadow: 0 4px 20px rgba(0,0,0,.25); }
+    .bot-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .bot-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(98,114,255,.12); border: 1px solid rgba(98,114,255,.2);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent); flex-shrink: 0;
+    }
+    .bot-name { font-size: 14px; font-weight: 700; }
+    .bot-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .bot-status-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .status-dot.running { background: var(--green); box-shadow: 0 0 5px var(--green); }
+    .status-dot.stopped { background: var(--muted); }
+    .status-dot.error   { background: var(--red); box-shadow: 0 0 5px var(--red); }
+    .status-dot.unknown { background: var(--yellow); }
+    .status-text { font-size: 12px; font-weight: 600; }
+    .status-text.running { color: var(--green); }
+    .status-text.stopped { color: var(--muted); }
+    .status-text.error   { color: var(--red); }
+    .bot-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .bot-logs-panel {
+      display: none; margin-top: 12px;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 10px;
+      font-family: var(--mono); font-size: 11px; color: var(--text);
+      max-height: 200px; overflow-y: auto; line-height: 1.5;
+      white-space: pre-wrap; word-break: break-all;
+    }
+    .bot-logs-panel.open { display: block; }
+
+    .console-toolbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .console-toolbar-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-left: auto;
+    }
+    .console-shell {
+      display: grid;
+      grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+    .console-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 980px) {
+      .console-shell { grid-template-columns: 1fr; }
+      .console-grid { grid-template-columns: 1fr; }
+    }
+    .console-sidebar,
+    .console-main {
+      min-width: 0;
+    }
+    .console-panel,
+    .console-editor,
+    .console-files {
+      background: linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.012)), var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 14px 30px rgba(0,0,0,.18);
+    }
+    .console-overview {
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    .console-overview-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .console-kicker {
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent-h);
+      margin-bottom: 6px;
+    }
+    .console-title {
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+    .console-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 5px;
+      line-height: 1.5;
+    }
+    .console-badge-stack {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    .console-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--border);
+      color: var(--subtext);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .console-chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--muted);
+      box-shadow: 0 0 12px transparent;
+    }
+    .console-chip.running .console-chip-dot { background: var(--green); box-shadow: 0 0 12px rgba(61,220,132,.8); }
+    .console-chip.error .console-chip-dot { background: var(--red); box-shadow: 0 0 12px rgba(255,92,106,.75); }
+    .console-chip.stopped .console-chip-dot { background: var(--muted); }
+    .console-chip.code { text-transform: none; letter-spacing: 0; font-family: var(--mono); }
+    .console-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .console-stat {
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.025);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .console-stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 6px;
+    }
+    .console-stat-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+      word-break: break-word;
+    }
+    .console-error-card {
+      margin-top: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,92,106,.22);
+      background: rgba(255,92,106,.08);
+      padding: 12px;
+    }
+    .console-error-card[hidden] { display: none; }
+    .console-error-label {
+      font-size: 11px;
+      color: #ffb2ba;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 6px;
+    }
+    .console-error-body {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #ffd5da;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 160px;
+      overflow-y: auto;
+    }
+    .console-flag-card {
+      padding: 16px;
+    }
+    .console-panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .console-panel-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .console-panel-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .console-main {
+      display: grid;
+      gap: 14px;
+    }
+    .console-stage {
+      padding: 16px;
+    }
+    .console-stage-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .console-stage-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .console-stage-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .console-files {
+      max-height: 420px;
+      overflow-y: auto;
+      padding: 10px;
+    }
+    .console-files-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .console-file-count {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--subtext);
+    }
+    .console-file-search {
+      margin-bottom: 10px;
+      width: 100%;
+    }
+    .console-file-item {
+      width: 100%;
+      text-align: left;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--subtext);
+      border-radius: 6px;
+      padding: 7px 9px;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: var(--mono);
+      word-break: break-all;
+    }
+    .console-file-item small {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 10px;
+      font-family: inherit;
+    }
+    .console-file-item:hover { background: var(--surface3); color: var(--text); }
+    .console-file-item.active {
+      background: rgba(98,114,255,.12);
+      color: var(--accent-h);
+      border-color: rgba(98,114,255,.3);
+    }
+    .console-editor {
+      padding: 14px;
+    }
+    .console-editor-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .console-editor-path {
+      min-width: 0;
+    }
+    .console-editor-path strong {
+      display: block;
+      font-size: 13px;
+      color: var(--text);
+      font-family: var(--mono);
+      word-break: break-all;
+    }
+    .console-editor-path span {
+      display: block;
+      margin-top: 4px;
+    }
+    .console-status-badge {
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 4px 9px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .console-status-badge.running { color: var(--green); border-color: rgba(61,220,132,.35); }
+    .console-status-badge.error { color: var(--red); border-color: rgba(255,92,106,.35); }
+    .console-status-badge.stopped { color: var(--muted); }
+    .console-editor-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .console-logs {
+      margin-top: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--bg2);
+      padding: 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-all;
+      min-height: 260px;
+      max-height: 360px;
+      overflow-y: auto;
+    }
+    .console-log-wrap {
+      padding: 16px;
+    }
+    .console-log-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .console-log-head .btn-row {
+      margin-left: auto;
+    }
+
+    /* ── Step flow ─────────────────────────────────────────────── */
+    .step-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+    }
+    .step-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(98,114,255,.15); color: var(--accent);
+      font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-head-text { font-size: 14px; font-weight: 700; }
+    .step-head-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+    /* ── Deploy section (hidden until code generated) ─────────────── */
+    #deploy-section { display: none; }
+    #deploy-section.visible { display: block; }
+
+    /* ── Progress / messages ─────────────────────────────────────── */
+    .msg-box {
+      padding: 10px 14px; border-radius: var(--radius);
+      font-size: 13px; margin-top: 10px; display: none;
+    }
+    .msg-box.visible { display: block; }
+    .msg-box.err { background: rgba(255,92,106,.08); color: var(--red); border: 1px solid rgba(255,92,106,.2); }
+    .msg-box.ok  { background: rgba(61,220,132,.08); color: var(--green); border: 1px solid rgba(61,220,132,.2); }
+    .msg-box.info { background: rgba(98,114,255,.07); color: var(--accent); border: 1px solid rgba(98,114,255,.18); }
+
+    /* ── Token input hint ─────────────────────────────────────────── */
+    .token-hint {
+      font-size: 12px; color: var(--muted); margin-top: 5px; line-height: 1.5;
+    }
+    .token-hint a { color: var(--accent); text-decoration: none; }
+    .token-hint a:hover { text-decoration: underline; }
+
+    /* ── Empty state ─────────────────────────────────────────────── */
+    .empty-state {
+      text-align: center; padding: 48px 24px; color: var(--muted);
+    }
+    .empty-state svg { margin: 0 auto 14px; display: block; opacity: .3; }
+    .empty-state p { font-size: 13px; }
+
+    /* ── Toast ─────────────────────────────────────── */
+    .toast-wrap {
+      position: fixed; bottom: 20px; right: 20px; z-index: 999;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .toast {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 10px 16px; font-size: 13px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.4); max-width: 320px;
+      animation: slideUp .2s ease; color: var(--text);
+    }
+    .toast.ok  { border-color: rgba(61,220,132,.35); color: var(--green); }
+    .toast.err { border-color: rgba(255,92,106,.35); color: var(--red); }
+    @keyframes slideUp {
+      from { transform: translateY(12px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    /* ── Auth gate ─────────────────────────────────────────────── */
+    #auth-gate {
+      flex: 1; display: none; flex-direction: column; align-items: center;
+      justify-content: center; padding: 40px; text-align: center;
+    }
+    #auth-gate h2 { font-size: 22px; margin-bottom: 10px; }
+    #auth-gate p  { color: var(--muted); margin-bottom: 24px; }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <a href="/" class="logo">
+    <img src="/icon.svg" alt="StackNest" />
+    Stack<span>Nest</span>
+  </a>
+  <span class="badge">BETA</span>
+  <div class="header-right">
+    <a href="/app" class="hnav">Generator</a>
+    <a href="/dashboard" class="hnav">Dashboard</a>
+    <a href="/gallery" class="hnav">Gallery</a>
+    <a href="/pricing" class="hnav">Pricing</a>
+    <div class="header-avatar" id="header-avatar" style="display:none" onclick="window.location='/profile'">?</div>
+  </div>
+</header>
+
+<div class="page-body">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sb-section">
+      <a class="sb-nav-item" href="/app">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Plugin Generator
+      </a>
+      <a class="sb-nav-item active" href="/bots">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Discord Bots
+      </a>
+      <a class="sb-nav-item" href="/dashboard">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13h8V3H3zm10 8h8v-6h-8zM3 21h8v-6H3zm10-10h8V3h-8z"/></svg>
+        Hosting Dashboard
+      </a>
+      <a class="sb-nav-item" href="/gallery">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 15l-5-5L5 21"/></svg>
+        Gallery
+      </a>
+      <a class="sb-nav-item" href="/editor">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+        Code Editor
+      </a>
+    </div>
+    <div class="sb-sep"></div>
+    <div class="sb-section">
+      <span class="sb-label">Account</span>
+      <a class="sb-nav-item" href="/pricing">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><path stroke-linecap="round" d="M1 10h22"/></svg>
+        Billing
+      </a>
+      <a class="sb-nav-item" href="/profile">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Profile
+      </a>
+    </div>
+
+    <!-- User info -->
+    <div class="sb-user" id="sb-user">
+      <div class="sb-avatar" id="sb-avatar">?</div>
+      <div class="sb-user-info">
+        <div class="sb-user-name" id="sb-user-name">Loading…</div>
+        <div class="sb-user-email" id="sb-user-email"></div>
+      </div>
+      <button class="sb-logout-btn" onclick="doLogout()" title="Sign out">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Auth gate -->
+  <div id="auth-gate" style="display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center">
+    <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2" style="color:var(--muted);margin-bottom:16px"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+    <h2 style="font-size:20px;margin-bottom:8px">Sign in to use Discord Bots</h2>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Create an account or sign in to generate and host custom Discord bots.</p>
+    <a href="/app" class="btn-upgrade">Sign In &rarr;</a>
+  </div>
+
+  <!-- Main content -->
+  <main class="main" id="main-content" style="display:none">
+    <div class="main-inner">
+
+    <div class="page-title">Discord Bot Hosting</div>
+    <div class="page-sub">Generate, upload, deploy, and manage Discord bots with built-in hosting, logs, and lifecycle controls.</div>
+
+    <div class="value-props" aria-label="Hosting features">
+      <div class="vp">
+        <div class="vp-title">Deploy in minutes</div>
+        <div class="vp-sub">Describe the bot, generate code, and deploy from your dashboard. No local environment required.</div>
+      </div>
+      <div class="vp">
+        <div class="vp-title">Managed runtime</div>
+        <div class="vp-sub">Start, stop, restart, and review logs from StackNest. Designed for reliable 24/7 operation.</div>
+      </div>
+      <div class="vp">
+        <div class="vp-title">Built for iteration</div>
+        <div class="vp-sub">Edit generated code, upload your own Python bot, redeploy, and validate changes quickly while keeping operational control in one place.</div>
+      </div>
+    </div>
+
+    <!-- Plan banner -->
+    <div class="plan-banner" id="plan-banner">
+      <div class="plan-banner-left">
+        <div class="plan-pill" id="plan-pill">Free</div>
+        <div>
+          <div style="font-size:13px;font-weight:600" id="plan-desc">Bot hosting included</div>
+          <div style="font-size:12px;color:var(--muted)" id="plan-limit">Loading…</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <a href="/dashboard" class="btn btn-sm btn-secondary">Open Dashboard</a>
+        <a href="/pricing" class="btn btn-sm btn-secondary" id="plan-upgrade-btn" style="display:none">Upgrade &rarr;</a>
+      </div>
+    </div>
+
+    <!-- ── Upgrade gate for free/starter ── -->
+    <div class="card" id="upgrade-gate-card" style="display:none">
+      <div class="upgrade-gate">
+        <div class="upgrade-gate-icon" aria-hidden="true">●</div>
+        <h3>Bot hosting is available on paid plans</h3>
+        <p>Upgrade to <strong>Pro</strong> or <strong>Studio</strong> to generate and host custom Discord bots. Pro includes 1 hosted bot, Studio includes 3.</p>
+        <a href="/pricing" class="btn-upgrade">View Plans &rarr;</a>
+      </div>
+    </div>
+
+    <!-- ── Bot builder (shown for pro/studio) ── -->
+    <div id="builder-section">
+
+      <!-- Step 1: Generate -->
+      <div class="card">
+        <div class="step-header">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-head-text">Generate or upload your bot</div>
+            <div class="step-head-sub">Use AI generation or upload your own Python bot file</div>
+          </div>
+        </div>
+
+        <div class="dropzone" id="bot-dropzone">
+          <div class="upload-row">
+            <input id="bot-file-input" type="file" accept=".py,.zip,application/zip" style="display:none" onchange="handleBotFilePicked(event)" />
+            <button class="btn btn-secondary" type="button" onclick="document.getElementById('bot-file-input').click()">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+              Upload .py or .zip Bot File
+            </button>
+            <span class="upload-file-name" id="bot-file-name">Drop a .py/.zip file here or choose one</span>
+          </div>
+          <div class="dropzone-help">ZIP safety rules: no encrypted entries, no unsafe paths, and Python files only.</div>
+        </div>
+        <div class="token-hint" style="margin-top:-2px;margin-bottom:10px">
+          Uploaded code is validated and deployed the same way as generated code.
+        </div>
+
+        <div class="form-row">
+          <label for="bot-description">Bot description</label>
+          <textarea
+            class="textarea"
+            id="bot-description"
+            placeholder="e.g. A moderation bot with /kick, /ban, /mute commands. Also greet new members and log all mod actions to a #mod-log channel."
+            rows="4"
+          ></textarea>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" id="gen-btn" onclick="generateBot()">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Generate Bot
+          </button>
+          <span id="gen-status" style="font-size:12px;color:var(--muted);display:none">
+            Generating… <span id="gen-dots"></span>
+          </span>
+        </div>
+        <div class="msg-box" id="gen-msg"></div>
+
+        <!-- Generated code -->
+        <div id="gen-result" style="display:none;margin-top:20px">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em">Generated Code</div>
+          <div class="code-wrap">
+            <button class="code-copy-btn" onclick="copyCode()">Copy</button>
+            <pre id="code-display"></pre>
+          </div>
+          <div class="btn-row" style="margin-top:12px">
+            <button class="btn btn-sm btn-secondary" onclick="toggleCodeEdit()">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+              Edit Code
+            </button>
+            <button class="btn btn-sm btn-secondary" onclick="generateBot()">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              Regenerate
+            </button>
+          </div>
+
+          <!-- Inline code editor (hidden by default) -->
+          <div id="code-editor-wrap" style="display:none;margin-top:10px">
+            <textarea class="textarea code-area" id="code-editor"></textarea>
+            <div class="btn-row" style="margin-top:8px">
+              <button class="btn btn-sm btn-primary" onclick="applyCodeEdit()">Apply Changes</button>
+              <button class="btn btn-sm btn-secondary" onclick="cancelCodeEdit()">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Deploy (hidden until code generated) -->
+      <div class="card" id="deploy-section">
+        <div class="step-header">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-head-text">Deploy your bot</div>
+            <div class="step-head-sub">Give your bot a name and paste your Discord bot token</div>
+          </div>
+        </div>
+
+        <div class="deploy-grid">
+          <div class="form-row" style="margin-bottom:0">
+            <label for="bot-name">Bot name</label>
+            <input class="input" id="bot-name" type="text" placeholder="My Awesome Bot" maxlength="60" />
+          </div>
+          <div class="form-row" style="margin-bottom:0">
+            <label for="bot-token">Discord bot token</label>
+            <input class="input" id="bot-token" type="password" placeholder="Paste your bot token…" maxlength="200" />
+          </div>
+        </div>
+        <div class="token-hint">
+          Get your token from the
+          <a href="https://discord.com/developers/applications" target="_blank" rel="noopener noreferrer">Discord Developer Portal</a>
+          &rarr; Your App &rarr; Bot &rarr; Reset Token. Never share it.
+        </div>
+
+        <div class="btn-row" style="margin-top:16px">
+          <button class="btn btn-primary" id="deploy-btn" onclick="deployBot()">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+            Deploy Bot
+          </button>
+          <span id="deploy-status" style="font-size:12px;color:var(--muted);display:none">Deploying…</span>
+        </div>
+        <div class="msg-box" id="deploy-msg"></div>
+      </div>
+
+    </div><!-- /builder-section -->
+
+    <!-- ── My Bots dashboard ── -->
+    <div class="card" id="bots-dashboard">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div class="card-title" style="margin-bottom:0">My Bots</div>
+        <button class="btn btn-sm btn-secondary" onclick="loadBots()">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          Refresh
+        </button>
+      </div>
+      <div id="bots-grid" class="bots-grid">
+        <div class="empty-state" style="grid-column:1/-1">
+          <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2"><rect x="3" y="11" width="18" height="11" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          <p>No bots yet. Generate and deploy your first bot above.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="bot-console-card">
+      <div class="card-title">Bot Control Panel</div>
+      <div class="console-toolbar">
+        <select class="select" id="console-bot-select" style="max-width:360px" onchange="openBotConsole(this.value)">
+          <option value="">Select a bot...</option>
+        </select>
+        <button class="btn btn-sm btn-secondary" type="button" onclick="refreshBotConsole()">Refresh</button>
+        <button class="btn btn-sm btn-success" type="button" onclick="botConsoleAction('start')">Start</button>
+        <button class="btn btn-sm btn-secondary" type="button" onclick="botConsoleAction('stop')">Stop</button>
+        <button class="btn btn-sm btn-secondary" type="button" onclick="botConsoleAction('restart')">Restart</button>
+        <span class="console-toolbar-meta" id="console-meta">No bot selected</span>
+      </div>
+
+      <div class="console-shell">
+        <aside class="console-sidebar">
+          <div class="console-panel console-overview">
+            <div class="console-overview-top">
+              <div>
+                <div class="console-kicker">Managed runtime</div>
+                <div class="console-title" id="console-name">Select a bot</div>
+                <div class="console-subtitle" id="console-subtitle">Pick a hosted bot to inspect files, flags, and runtime logs.</div>
+              </div>
+              <div class="console-badge-stack">
+                <span class="console-chip stopped" id="console-hero-status"><span class="console-chip-dot"></span><span>Stopped</span></span>
+                <span class="console-chip code" id="console-runtime-chip">Runtime</span>
+              </div>
+            </div>
+            <div class="console-stat-grid">
+              <div class="console-stat">
+                <div class="console-stat-label">Entrypoint</div>
+                <div class="console-stat-value" id="console-stat-entrypoint">-</div>
+              </div>
+              <div class="console-stat">
+                <div class="console-stat-label">Memory</div>
+                <div class="console-stat-value" id="console-stat-ram">-</div>
+              </div>
+              <div class="console-stat">
+                <div class="console-stat-label">Files</div>
+                <div class="console-stat-value" id="console-stat-files">-</div>
+              </div>
+              <div class="console-stat">
+                <div class="console-stat-label">Updated</div>
+                <div class="console-stat-value" id="console-stat-updated">-</div>
+              </div>
+            </div>
+            <div class="console-error-card" id="console-error-card" hidden>
+              <div class="console-error-label">Last startup error</div>
+              <div class="console-error-body" id="console-last-error"></div>
+            </div>
+          </div>
+
+          <div class="console-panel console-flag-card">
+            <div class="console-panel-head">
+              <div>
+                <div class="console-panel-title">Startup flags</div>
+                <div class="console-panel-sub">Passed directly to the process when you start or restart.</div>
+              </div>
+            </div>
+            <label for="console-start-flags" class="sr-only">Start flags</label>
+            <input class="input" id="console-start-flags" placeholder="e.g. --debug --guild 1234" />
+            <div class="console-editor-actions">
+              <button class="btn btn-sm btn-primary" type="button" onclick="saveConsoleFlags()">Save Flags</button>
+              <button class="btn btn-sm btn-secondary" type="button" onclick="botConsoleAction('restart')">Restart with Flags</button>
+            </div>
+          </div>
+        </aside>
+
+        <section class="console-main">
+          <div class="console-panel console-stage">
+            <div class="console-stage-header">
+              <div>
+                <div class="console-stage-title">Project navigator</div>
+                <div class="console-stage-sub">Browse hosted files like a control panel, then edit and save in place.</div>
+              </div>
+            </div>
+
+            <div class="console-grid">
+              <div class="console-files" id="console-files">
+                <div class="console-files-head">
+                  <span>Files</span>
+                  <span class="console-file-count" id="console-file-count">0 items</span>
+                </div>
+                <input class="input console-file-search" id="console-file-search" placeholder="Filter files..." oninput="renderConsoleFiles()" />
+                <div id="console-files-list">
+                  <div style="padding:14px;font-size:12px;color:var(--muted)">No files loaded.</div>
+                </div>
+              </div>
+              <div class="console-editor">
+                <div class="console-editor-head">
+                  <div class="console-editor-path">
+                    <strong id="console-file-path">Select a file to view/edit</strong>
+                    <span id="console-file-meta">Choose the entrypoint or any editable project file.</span>
+                  </div>
+                  <span class="console-status-badge stopped" id="console-status">stopped</span>
+                </div>
+                <textarea class="textarea code-area" id="console-file-content" placeholder="Select a file from the list..." style="min-height:320px"></textarea>
+                <div class="console-editor-actions">
+                  <button class="btn btn-sm btn-primary" type="button" onclick="saveConsoleFile()">Save File</button>
+                  <button class="btn btn-sm btn-secondary" type="button" onclick="loadConsoleLogs()">Refresh Logs</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="console-panel console-log-wrap">
+            <div class="console-log-head">
+              <div>
+                <div class="console-stage-title" style="font-size:15px">Runtime logs</div>
+                <div class="console-stage-sub">Latest stdout and stderr output from this hosted bot.</div>
+              </div>
+              <div class="btn-row">
+                <button class="btn btn-sm btn-secondary" type="button" onclick="loadConsoleLogs()">Refresh Logs</button>
+              </div>
+            </div>
+            <div class="console-logs" id="console-logs">No logs loaded.</div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    </div>
+
+  </main><!-- /main-content -->
+
+</div><!-- /page-body -->
+
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<script>
+  const AUTH_KEY = 'stacknest_auth_token';
+  let _user = null;
+  let _tier = 'free';
+  let _botHostingAllowed = false;
+  let _botHostingLimit = 0;
+  let _botHostingSource = 'plan';
+  let _generatedCode = '';
+  let _genDotsTimer = null;
+  let _uploadedProjectFiles = null;
+  let _uploadedEntrypointPath = '';
+  let _uploadedProjectId = '';
+  let _botsCache = [];
+  let _consoleBotId = '';
+  let _consoleFiles = [];
+  let _consoleFilePath = '';
+  let _consoleBotMeta = null;
+
+  function initUploadDropzone() {
+    const zone = document.getElementById('bot-dropzone');
+    if (!zone) return;
+
+    const prevent = (ev) => { ev.preventDefault(); ev.stopPropagation(); };
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach((evt) => {
+      zone.addEventListener(evt, prevent);
+    });
+
+    ['dragenter', 'dragover'].forEach((evt) => {
+      zone.addEventListener(evt, () => zone.classList.add('dragover'));
+    });
+    ['dragleave', 'drop'].forEach((evt) => {
+      zone.addEventListener(evt, () => zone.classList.remove('dragover'));
+    });
+
+    zone.addEventListener('drop', async (ev) => {
+      const file = ev.dataTransfer && ev.dataTransfer.files ? ev.dataTransfer.files[0] : null;
+      if (!file) return;
+      await processUploadedBotFile(file);
+    });
+  }
+
+  // ── Bootstrap ─────────────────────────────────────────────
+
+  async function boot() {
+    const token = localStorage.getItem(AUTH_KEY);
+    if (!token) {
+      showGate();
+      return;
+    }
+    try {
+      const res = await fetch('/api/auth/me', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res.ok) { localStorage.removeItem(AUTH_KEY); showGate(); return; }
+      const data = await res.json();
+      _user = data.user;
+      _tier = (data.user.plan || 'free').toLowerCase();
+      _botHostingAllowed = !!data.user.bot_hosting_allowed;
+      _botHostingLimit = Number(data.user.bot_hosting_limit || 0);
+      _botHostingSource = String(data.user.bot_hosting_source || 'plan');
+      renderUser();
+      renderPlanBanner();
+      initUploadDropzone();
+      document.getElementById('auth-gate').style.display  = 'none';
+      document.getElementById('main-content').style.display = 'block';
+      loadBots();
+    } catch (e) {
+      showGate();
+    }
+  }
+
+  function showGate() {
+    document.getElementById('auth-gate').style.display = 'flex';
+    document.getElementById('main-content').style.display = 'none';
+  }
+
+  function doLogout() {
+    localStorage.removeItem(AUTH_KEY);
+    window.location.href = '/';
+  }
+
+  // ── User / plan rendering ─────────────────────────────────
+
+  function renderUser() {
+    const u = _user;
+    const name = u.display_name || u.email || 'User';
+    document.getElementById('sb-user-name').textContent  = name;
+    document.getElementById('sb-user-email').textContent = u.email || '';
+    const initials = name.charAt(0).toUpperCase();
+    const avEl  = document.getElementById('sb-avatar');
+    const havEl = document.getElementById('header-avatar');
+    if (u.avatar_url) {
+      avEl.innerHTML  = `<img src="${escHtml(u.avatar_url)}" alt="Avatar" />`;
+      havEl.innerHTML = `<img src="${escHtml(u.avatar_url)}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%" />`;
+    } else {
+      avEl.style.background  = u.avatar_color || '#5c6fff';
+      havEl.style.background = u.avatar_color || '#5c6fff';
+      avEl.textContent  = initials;
+      havEl.textContent = initials;
+    }
+    havEl.style.display = 'flex';
+  }
+
+  const _BOT_LIMITS = { free: 0, starter: 0, pro: 1, studio: 3 };
+
+  function renderPlanBanner() {
+    const planLimit = _BOT_LIMITS[_tier] ?? 0;
+    const limit = _botHostingAllowed ? (_botHostingLimit || planLimit || 1) : planLimit;
+    const pillEl   = document.getElementById('plan-pill');
+    const descEl   = document.getElementById('plan-desc');
+    const limitEl  = document.getElementById('plan-limit');
+    const upBtn    = document.getElementById('plan-upgrade-btn');
+    const gateCard = document.getElementById('upgrade-gate-card');
+    const builderS = document.getElementById('builder-section');
+
+    pillEl.textContent = _tier.charAt(0).toUpperCase() + _tier.slice(1);
+    pillEl.className   = 'plan-pill ' + _tier;
+
+    if (limit === 0) {
+      descEl.textContent  = 'Bot hosting not included';
+      limitEl.textContent = 'Upgrade to Pro or Studio to host a bot';
+      upBtn.style.display = 'inline-flex';
+      gateCard.style.display  = 'block';
+      builderS.style.display  = 'none';
+    } else {
+      if (_botHostingSource === 'override' && planLimit === 0) {
+        descEl.textContent = 'Bot hosting test access enabled by admin';
+      } else {
+        descEl.textContent = `Up to ${limit} hosted bot${limit > 1 ? 's' : ''}`;
+      }
+      limitEl.textContent = 'Deployed bots stay online 24/7';
+      upBtn.style.display = 'none';
+      gateCard.style.display = 'none';
+      builderS.style.display = 'block';
+    }
+  }
+
+  // ── Generate ─────────────────────────────────────────────
+
+  async function generateBot() {
+    const desc = document.getElementById('bot-description').value.trim();
+    if (!desc) { showMsg('gen-msg', 'Please describe what your bot should do.', 'err'); return; }
+    if (desc.length > 1500) { showMsg('gen-msg', 'Description too long (max 1500 chars).', 'err'); return; }
+
+    const btn = document.getElementById('gen-btn');
+    const statusEl = document.getElementById('gen-status');
+    btn.disabled = true;
+    statusEl.style.display = 'inline';
+    clearMsg('gen-msg');
+    _generatedCode = '';
+    _uploadedProjectFiles = null;
+    _uploadedEntrypointPath = '';
+    _uploadedProjectId = '';
+    document.getElementById('gen-result').style.display = 'none';
+    document.getElementById('deploy-section').classList.remove('visible');
+
+    startDots('gen-dots');
+
+    try {
+      const res = await apiFetch('/api/bots/generate', {
+        method: 'POST',
+        body: JSON.stringify({ description: desc }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Generation failed.');
+      _generatedCode = data.code || '';
+      _uploadedProjectFiles = Array.isArray(data.project_files) ? data.project_files : null;
+      _uploadedEntrypointPath = String(data.entrypoint_path || '');
+      _uploadedProjectId = String(data.upload_id || '');
+      showGeneratedCode(_generatedCode);
+      document.getElementById('deploy-section').classList.add('visible');
+      document.getElementById('deploy-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (e) {
+      showMsg('gen-msg', e.message, 'err');
+    } finally {
+      btn.disabled = false;
+      statusEl.style.display = 'none';
+      stopDots();
+    }
+  }
+
+  function showGeneratedCode(code) {
+    document.getElementById('code-display').textContent = code;
+    document.getElementById('gen-result').style.display = 'block';
+    // hide editor if open
+    document.getElementById('code-editor-wrap').style.display = 'none';
+  }
+
+  function sanitizeBotName(raw) {
+    const name = String(raw || '').replace(/\.[^.]+$/, '').replace(/[^\w\- ]+/g, ' ').trim();
+    return name.slice(0, 60) || 'Uploaded Bot';
+  }
+
+  async function handleBotFilePicked(event) {
+    const file = event && event.target && event.target.files ? event.target.files[0] : null;
+    if (!file) return;
+
+    await processUploadedBotFile(file);
+    event.target.value = '';
+  }
+
+  async function processUploadedBotFile(file) {
+    const nameEl = document.getElementById('bot-file-name');
+    nameEl.textContent = file.name;
+
+    const lower = file.name.toLowerCase();
+    if (!lower.endsWith('.py') && !lower.endsWith('.zip')) {
+      showMsg('gen-msg', 'Please upload a .py or .zip file.', 'err');
+      return;
+    }
+
+    const fd = new FormData();
+    fd.append('bot_file', file);
+
+    clearMsg('gen-msg');
+    showMsg('gen-msg', 'Uploading and validating file…', 'info');
+
+    try {
+      const token = localStorage.getItem(AUTH_KEY);
+      const res = await fetch('/api/bots/upload', {
+        method: 'POST',
+        headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+        body: fd,
+      });
+      const data = await readApiResponse(res);
+      if (!res.ok && res.status === 413) {
+        throw new Error('Upload is too large. Please upload a smaller file or trim your zip archive.');
+      }
+      if (!res.ok) throw new Error(data.error || 'Upload failed');
+
+      _generatedCode = data.code || '';
+      showGeneratedCode(_generatedCode);
+      document.getElementById('deploy-section').classList.add('visible');
+
+      const botNameEl = document.getElementById('bot-name');
+      if (!botNameEl.value.trim()) {
+        botNameEl.value = sanitizeBotName(data.bot_name_suggestion || file.name);
+      }
+
+      showMsg('gen-msg', 'Custom bot file loaded. Continue to Step 2 to deploy.', 'ok');
+      document.getElementById('deploy-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (e) {
+      showMsg('gen-msg', 'Upload failed: ' + e.message, 'err');
+    }
+  }
+
+  function copyCode() {
+    const code = _generatedCode || document.getElementById('code-display').textContent;
+    navigator.clipboard.writeText(code).then(() => toast('Copied to clipboard', 'ok'));
+  }
+
+  function toggleCodeEdit() {
+    const wrap = document.getElementById('code-editor-wrap');
+    const isOpen = wrap.style.display !== 'none';
+    if (isOpen) {
+      wrap.style.display = 'none';
+    } else {
+      document.getElementById('code-editor').value = _generatedCode;
+      wrap.style.display = 'block';
+    }
+  }
+
+  function applyCodeEdit() {
+    const edited = document.getElementById('code-editor').value.trim();
+    if (!edited) return;
+    _generatedCode = edited;
+    if (_uploadedProjectFiles && _uploadedProjectFiles.length && _uploadedEntrypointPath) {
+      const idx = _uploadedProjectFiles.findIndex((f) => f && f.path === _uploadedEntrypointPath);
+      if (idx >= 0) _uploadedProjectFiles[idx].content = edited;
+    }
+    document.getElementById('code-display').textContent = edited;
+    document.getElementById('code-editor-wrap').style.display = 'none';
+    toast('Code updated', 'ok');
+  }
+
+  function cancelCodeEdit() {
+    document.getElementById('code-editor-wrap').style.display = 'none';
+  }
+
+  // ── Deploy ─────────────────────────────────────────────
+
+  async function deployBot() {
+    const name  = document.getElementById('bot-name').value.trim();
+    const token = document.getElementById('bot-token').value.trim();
+    const code  = _generatedCode;
+
+    if (!name)  { showMsg('deploy-msg', 'Enter a name for your bot.', 'err'); return; }
+    if (!token) { showMsg('deploy-msg', 'Enter your Discord bot token.', 'err'); return; }
+    if (!code)  { showMsg('deploy-msg', 'Generate bot code first (Step 1).', 'err'); return; }
+
+    const btn = document.getElementById('deploy-btn');
+    const statusEl = document.getElementById('deploy-status');
+    btn.disabled = true;
+    statusEl.style.display = 'inline';
+    clearMsg('deploy-msg');
+
+    try {
+      const payload = { bot_name: name, token, code };
+      if (_uploadedProjectFiles && _uploadedProjectFiles.length) {
+        payload.project_files = _uploadedProjectFiles;
+        payload.entrypoint_path = _uploadedEntrypointPath || '';
+      }
+      if (_uploadedProjectId) payload.upload_id = _uploadedProjectId;
+
+      const res = await apiFetch('/api/bots/deploy', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Deploy failed.');
+      toast('Bot deployed and running.', 'ok');
+      showMsg('deploy-msg', `Bot "${escHtml(name)}" is now online. It may take a moment to connect to Discord.`, 'ok');
+      // Clear form
+      document.getElementById('bot-name').value  = '';
+      document.getElementById('bot-token').value = '';
+      document.getElementById('bot-description').value = '';
+      _generatedCode = '';
+      _uploadedProjectFiles = null;
+      _uploadedEntrypointPath = '';
+      _uploadedProjectId = '';
+      document.getElementById('gen-result').style.display = 'none';
+      document.getElementById('deploy-section').classList.remove('visible');
+      // Reload bots list
+      await loadBots();
+      document.getElementById('bots-dashboard').scrollIntoView({ behavior: 'smooth' });
+    } catch (e) {
+      showMsg('deploy-msg', e.message, 'err');
+    } finally {
+      btn.disabled = false;
+      statusEl.style.display = 'none';
+    }
+  }
+
+  // ── Load & render bots ─────────────────────────────────────────────
+
+  async function loadBots() {
+    const grid = document.getElementById('bots-grid');
+    grid.innerHTML = '<div style="color:var(--muted);padding:24px;text-align:center;grid-column:1/-1;font-size:13px">Loading…</div>';
+    try {
+      const res = await apiFetch('/api/bots');
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to load bots');
+      const bots = data.bots || [];
+      _botsCache = bots;
+      renderConsoleBotSelector();
+      if (!bots.length) {
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+          <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2"><rect x="3" y="11" width="18" height="11" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          <p>No bots yet. Generate and deploy your first bot above.</p>
+        </div>`;
+        return;
+      }
+      grid.innerHTML = bots.map(renderBotCard).join('');
+    } catch (e) {
+      grid.innerHTML = `<div style="color:var(--red);padding:24px;text-align:center;grid-column:1/-1;font-size:13px">Failed to load bots: ${escHtml(e.message)}</div>`;
+    }
+  }
+
+  function renderBotCard(b) {
+    const status = b.live_status || b.status || 'unknown';
+    const sClass = status === 'running' ? 'running' : status === 'error' ? 'error' : 'stopped';
+    const sLabel = status.charAt(0).toUpperCase() + status.slice(1);
+    const created = b.created_at ? new Date(b.created_at * 1000).toLocaleDateString() : '';
+    const id = escHtml(b.id);
+    return `
+<div class="bot-card" id="bot-card-${id}">
+  <div class="bot-card-header">
+    <div class="bot-icon"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><rect x="3" y="8" width="18" height="13" rx="3"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 13h.01M15 13h.01M9.5 17.5h5"/><path d="M12 5a2 2 0 100 3.5A2 2 0 0012 5z"/></svg></div>
+    <div>
+      <div class="bot-name">${escHtml(b.bot_name)}</div>
+      <div class="bot-meta">${created ? 'Deployed ' + created : ''}</div>
+    </div>
+  </div>
+  <div class="bot-status-row">
+    <div class="status-dot ${sClass}"></div>
+    <span class="status-text ${sClass}">${sLabel}</span>
+    <span style="font-size:11px;color:var(--muted);margin-left:4px">RAM: ${b.ram_gb || 1}GB</span>
+  </div>
+  <div class="bot-actions">
+    <button class="btn btn-sm btn-success" onclick="botAction('${id}','start')" ${status === 'running' ? 'disabled' : ''}>Start</button>
+    <button class="btn btn-sm btn-secondary" onclick="botAction('${id}','stop')" ${status !== 'running' ? 'disabled' : ''}>Stop</button>
+    <button class="btn btn-sm btn-secondary" onclick="openBotConsole('${id}')">Console</button>
+    <button class="btn btn-sm btn-secondary" onclick="toggleLogs('${id}')">Logs</button>
+    <button class="btn btn-sm btn-danger" onclick="deleteBotConfirm('${id}', '${escHtml(b.bot_name).replace(/'/g,"\\'")}')">Delete</button>
+  </div>
+  <div class="bot-logs-panel" id="bot-logs-${id}"></div>
+</div>`;
+  }
+
+  async function botAction(botId, action) {
+    const method = 'POST';
+    try {
+      const res = await apiFetch(`/api/bots/${encodeURIComponent(botId)}/${action}`, { method });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Action failed');
+      toast(`Bot ${action === 'start' ? 'started' : 'stopped'}`, 'ok');
+      await loadBots();
+    } catch (e) {
+      toast(e.message, 'err');
+    }
+  }
+
+  async function deleteBotConfirm(botId, botName) {
+    if (!confirm(`Delete "${botName}"? This will permanently remove the bot and stop it running. This cannot be undone.`)) return;
+    try {
+      const res = await apiFetch(`/api/bots/${encodeURIComponent(botId)}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Delete failed');
+      toast('Bot deleted', 'ok');
+      await loadBots();
+    } catch (e) {
+      toast(e.message, 'err');
+    }
+  }
+
+  async function toggleLogs(botId) {
+    const panel = document.getElementById(`bot-logs-${botId}`);
+    if (!panel) return;
+    if (panel.classList.contains('open')) {
+      panel.classList.remove('open');
+      return;
+    }
+    panel.classList.add('open');
+    panel.textContent = 'Loading logs…';
+    try {
+      const res = await apiFetch(`/api/bots/${encodeURIComponent(botId)}/logs?lines=150`);
+      const data = await res.json();
+      panel.textContent = data.logs || '(no logs yet)';
+      // scroll to bottom
+      panel.scrollTop = panel.scrollHeight;
+    } catch (e) {
+      panel.textContent = 'Error loading logs: ' + e.message;
+    }
+  }
+
+  function renderConsoleBotSelector() {
+    const sel = document.getElementById('console-bot-select');
+    if (!sel) return;
+    const current = _consoleBotId;
+    sel.innerHTML = '<option value="">Select a bot...</option>' + _botsCache.map((b) => {
+      const id = escHtml(b.id);
+      const st = escHtml((b.live_status || b.status || 'unknown').toUpperCase());
+      return `<option value="${id}">${escHtml(b.bot_name)} (${st})</option>`;
+    }).join('');
+    if (current) sel.value = current;
+  }
+
+  function detectBotRuntime(bot) {
+    const entry = String((bot && bot.entrypoint) || '').toLowerCase();
+    if (entry.endsWith('.py')) return 'Python';
+    if (entry.endsWith('.js') || entry.endsWith('.mjs') || entry.endsWith('.cjs')) return 'Node.js';
+    if (entry.endsWith('.jar') || entry.endsWith('.java')) return 'Java';
+    return 'Custom';
+  }
+
+  function formatConsoleTime(ts) {
+    const num = Number(ts || 0);
+    if (!num) return '—';
+    try {
+      return new Date(num * 1000).toLocaleString();
+    } catch (_) {
+      return '—';
+    }
+  }
+
+  function summarizeFilePath(path) {
+    const value = String(path || '');
+    const parts = value.split('/').filter(Boolean);
+    if (parts.length <= 1) return 'project root';
+    return parts.slice(0, -1).join('/');
+  }
+
+  function setConsoleStatus(status) {
+    const normalized = String(status || 'stopped').toLowerCase();
+    const state = normalized === 'running' ? 'running' : normalized === 'error' ? 'error' : 'stopped';
+    const label = state.charAt(0).toUpperCase() + state.slice(1);
+
+    const stEl = document.getElementById('console-status');
+    stEl.textContent = state;
+    stEl.className = `console-status-badge ${state}`;
+
+    const hero = document.getElementById('console-hero-status');
+    hero.className = `console-chip ${state}`;
+    hero.innerHTML = `<span class="console-chip-dot"></span><span>${label}</span>`;
+  }
+
+  function updateConsoleOverview(bot, files) {
+    _consoleBotMeta = bot || {};
+    const fileCount = Array.isArray(files) ? files.length : 0;
+    const runtime = detectBotRuntime(bot);
+    const lastError = String((bot && bot.last_error) || '').trim();
+
+    document.getElementById('console-name').textContent = bot.name || 'Bot';
+    document.getElementById('console-subtitle').textContent = `${runtime} runtime · PID ${bot.pid || '-'} · Bot ID ${bot.id || '-'}`;
+    document.getElementById('console-runtime-chip').textContent = runtime;
+    document.getElementById('console-stat-entrypoint').textContent = bot.entrypoint || 'bot.py';
+    document.getElementById('console-stat-ram').textContent = `${bot.ram_gb || 1} GB`;
+    document.getElementById('console-stat-files').textContent = `${fileCount} file${fileCount === 1 ? '' : 's'}`;
+    document.getElementById('console-stat-updated').textContent = formatConsoleTime(bot.updated_at || bot.created_at);
+    document.getElementById('console-meta').textContent = `${bot.name || 'Bot'} · ${runtime} · entrypoint ${bot.entrypoint || 'bot.py'} · pid ${bot.pid || '-'} · ${fileCount} files`;
+    document.getElementById('console-file-count').textContent = `${fileCount} item${fileCount === 1 ? '' : 's'}`;
+
+    const errCard = document.getElementById('console-error-card');
+    const errBody = document.getElementById('console-last-error');
+    if (lastError) {
+      errBody.textContent = lastError;
+      errCard.hidden = false;
+    } else {
+      errBody.textContent = '';
+      errCard.hidden = true;
+    }
+
+    setConsoleStatus(bot.live_status || bot.status || 'stopped');
+  }
+
+  async function openBotConsole(botId) {
+    const id = String(botId || '').trim();
+    if (!id) return;
+    _consoleBotId = id;
+    const sel = document.getElementById('console-bot-select');
+    if (sel) sel.value = id;
+    document.getElementById('console-meta').textContent = 'Loading bot panel...';
+
+    try {
+      const res = await apiFetch(`/api/bots/${encodeURIComponent(id)}/panel`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to load bot panel');
+
+      const bot = data.bot || {};
+      _consoleFiles = data.files || [];
+      _consoleFilePath = '';
+      document.getElementById('console-start-flags').value = bot.start_flags || '';
+      updateConsoleOverview(bot, _consoleFiles);
+      renderConsoleFiles();
+      document.getElementById('console-file-path').textContent = 'Select a file to view/edit';
+      document.getElementById('console-file-meta').textContent = 'Choose the entrypoint or any editable project file.';
+      document.getElementById('console-file-content').value = '';
+      await loadConsoleLogs();
+      const preferredFile = _consoleFiles.find((f) => f.path === bot.entrypoint) || _consoleFiles[0];
+      if (preferredFile && preferredFile.path) {
+        await openConsoleFile(preferredFile.path);
+      }
+      document.getElementById('bot-console-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (e) {
+      toast(e.message, 'err');
+      document.getElementById('console-meta').textContent = 'Failed to load bot panel';
+    }
+  }
+
+  function renderConsoleFiles() {
+    const wrap = document.getElementById('console-files-list');
+    const searchEl = document.getElementById('console-file-search');
+    const term = (searchEl && searchEl.value ? searchEl.value : '').trim().toLowerCase();
+    const files = term
+      ? _consoleFiles.filter((f) => String(f.path || '').toLowerCase().includes(term))
+      : _consoleFiles;
+    document.getElementById('console-file-count').textContent = `${files.length} item${files.length === 1 ? '' : 's'}`;
+    if (!files.length) {
+      wrap.innerHTML = `<div style="padding:14px;font-size:12px;color:var(--muted)">${term ? 'No files match that filter.' : 'No editable files found.'}</div>`;
+      return;
+    }
+    wrap.innerHTML = files.map((f) => {
+      const p = escHtml(f.path);
+      const encoded = encodeURIComponent(f.path || '');
+      const active = _consoleFilePath === f.path ? 'active' : '';
+      return `<button class="console-file-item ${active}" onclick="openConsoleFileByEncoded('${encoded}')">${p}<small>${escHtml(summarizeFilePath(f.path))}</small></button>`;
+    }).join('');
+  }
+
+  function openConsoleFileByEncoded(encodedPath) {
+    openConsoleFile(decodeURIComponent(String(encodedPath || '')));
+  }
+
+  async function openConsoleFile(path) {
+    if (!_consoleBotId) return;
+    const safePath = String(path || '');
+    try {
+      const res = await apiFetch(`/api/bots/${encodeURIComponent(_consoleBotId)}/file?path=${encodeURIComponent(safePath)}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to open file');
+      _consoleFilePath = data.path;
+      document.getElementById('console-file-path').textContent = data.path;
+      document.getElementById('console-file-meta').textContent = `Editing ${summarizeFilePath(data.path)}`;
+      document.getElementById('console-file-content').value = data.content || '';
+      renderConsoleFiles();
+    } catch (e) {
+      toast(e.message, 'err');
+    }
+  }
+
+  async function saveConsoleFile() {
+    if (!_consoleBotId || !_consoleFilePath) {
+      toast('Select a file first', 'err');
+      return;
+    }
+    try {
+      const content = document.getElementById('console-file-content').value;
+      const res = await apiFetch(`/api/bots/${encodeURIComponent(_consoleBotId)}/file`, {
+        method: 'POST',
+        body: JSON.stringify({ path: _consoleFilePath, content }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to save file');
+      toast('File saved', 'ok');
+    } catch (e) {
+      toast(e.message, 'err');
+    }
+  }
+
+  async function saveConsoleFlags() {
+    if (!_consoleBotId) {
+      toast('Select a bot first', 'err');
+      return;
+    }
+    try {
+      const flags = document.getElementById('console-start-flags').value.trim();
+      const res = await apiFetch(`/api/bots/${encodeURIComponent(_consoleBotId)}/start-flags`, {
+        method: 'POST',
+        body: JSON.stringify({ flags }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to save start flags');
+      toast('Start flags saved', 'ok');
+    } catch (e) {
+      toast(e.message, 'err');
+    }
+  }
+
+  async function botConsoleAction(action) {
+    if (!_consoleBotId) {
+      toast('Select a bot first', 'err');
+      return;
+    }
+    await botAction(_consoleBotId, action);
+    await openBotConsole(_consoleBotId);
+  }
+
+  async function loadConsoleLogs() {
+    if (!_consoleBotId) {
+      document.getElementById('console-logs').textContent = 'No logs loaded.';
+      return;
+    }
+    const logsEl = document.getElementById('console-logs');
+    logsEl.textContent = 'Loading logs...';
+    try {
+      const res = await apiFetch(`/api/bots/${encodeURIComponent(_consoleBotId)}/logs?lines=250`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to load logs');
+      logsEl.textContent = data.logs || '(no logs yet)';
+      logsEl.scrollTop = logsEl.scrollHeight;
+    } catch (e) {
+      logsEl.textContent = 'Error loading logs: ' + e.message;
+    }
+  }
+
+  async function refreshBotConsole() {
+    await loadBots();
+    if (_consoleBotId) await openBotConsole(_consoleBotId);
+  }
+
+  // ── Helpers ─────────────────────────────────────────────
+
+  function apiFetch(url, opts = {}) {
+    const token = localStorage.getItem(AUTH_KEY);
+    const headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    return fetch(url, Object.assign({}, opts, { headers }));
+  }
+
+  async function readApiResponse(res) {
+    const ctype = (res.headers.get('content-type') || '').toLowerCase();
+    if (ctype.includes('application/json')) {
+      try {
+        return await res.json();
+      } catch (_) {
+        return {};
+      }
+    }
+    const txt = await res.text();
+    return { error: (txt || '').trim() || `Request failed (${res.status})` };
+  }
+
+  function escHtml(s) {
+    return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  function showMsg(id, text, type) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = escHtml(text);
+    el.className = 'msg-box visible ' + (type || 'info');
+  }
+
+  function clearMsg(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.className = 'msg-box';
+    el.textContent = '';
+  }
+
+  function toast(msg, type) {
+    const wrap = document.getElementById('toast-wrap');
+    const t = document.createElement('div');
+    t.className = 'toast ' + (type || '');
+    t.textContent = msg;
+    wrap.appendChild(t);
+    setTimeout(() => t.remove(), 3200);
+  }
+
+  function startDots(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    let n = 0;
+    _genDotsTimer = setInterval(() => {
+      el.textContent = '.'.repeat((n++ % 3) + 1);
+    }, 400);
+  }
+
+  function stopDots() {
+    if (_genDotsTimer) { clearInterval(_genDotsTimer); _genDotsTimer = null; }
+  }
+
+  // ── Init ─────────────────────────────────────────────
+
+  document.addEventListener('DOMContentLoaded', boot);
+</script>
+<footer style="border-top:1px solid #2e3350;padding:16px 24px;text-align:center;font-size:12px;color:#8891b4;margin-top:40px">
+  &copy; 2026 StackNest &nbsp;&middot;&nbsp; <a href="/terms" style="color:#8891b4">Terms</a> &nbsp;&middot;&nbsp; <a href="/privacy" style="color:#8891b4">Privacy</a>
+  <p style="margin-top:8px;font-size:11px;color:#8891b4;text-align:center">StackNest is not affiliated with or endorsed by Mojang Studios, Microsoft, or Discord Inc. Minecraft is a trademark of Mojang Studios.</p>
+</footer>
+</body>
+</html>

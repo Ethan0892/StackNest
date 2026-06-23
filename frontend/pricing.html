@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing — StackNest AI Minecraft Plugin Generator</title>
+  <meta name="description" content="Simple, transparent pricing for StackNest. Free: 2 gens/month. Starter: £4/mo for 15 gens + Folia/Velocity. Pro: £9/mo for 100 gens + Claude AI + API access. Studio: £29/mo for 300 gens + team seats." />
+  <meta name="keywords" content="stacknest pricing, minecraft plugin generator price, AI plugin generator cost, paper plugin generator free, stacknest pro, stacknest starter, minecraft plugin tool, AI minecraft plugin generator, folia plugin generator, Paper Spigot Folia AI, free minecraft plugin generator, auto-fixing compile errors, compile minecraft plugin online, minecraft coding assistant, best minecraft AI plugin generator pricing 2026" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://stacknests.com/pricing" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://stacknests.com/pricing" />
+  <meta property="og:title" content="Pricing — StackNest" />
+  <meta property="og:description" content="Free: 2 gens/month. Starter: £4/mo, 15 gens + Folia/Velocity. Pro: £9/mo, 100 gens + Claude + API access. Studio: £29/mo, 300 gens + team seats. No credit card to start." />
+  <meta property="og:image" content="https://stacknests.com/og-image.png" />
+  <meta property="og:site_name" content="StackNest" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Pricing — StackNest" />
+  <meta name="twitter:description" content="Free plan with 2 generations/month. Pro unlocks Claude AI + REST API access. No credit card to start." />
+  <meta name="twitter:image" content="https://stacknests.com/og-image.png" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is StackNest free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The Free plan gives you 2 plugin generations per month at no cost, forever. No credit card required to sign up."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is included in the Pro plan?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Pro (£9/month) includes 100 plugin generations per month, Claude AI, deep code validation (Kimi K2), all platforms including Folia and Velocity, REST API access for CI/CD and automation, and no watermarks on generated code. The Starter plan (£4/month) offers 15 generations with Folia/Velocity support as a budget option."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I cancel my subscription anytime?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, you can cancel your StackNest subscription at any time. Your plan remains active until the end of your current billing period."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What Minecraft versions does StackNest support?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "StackNest generates plugins for Paper 1.18 through 1.21.4, Spigot, Folia, Purpur, Velocity, and BungeeCord."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f1117; --bg2: #080a0f; --surface: #1a1d26; --surface2: #222638;
+      --border: #2e3350; --border-s: #3d4468; --text: #e8eaf6; --muted: #8891b4;
+      --accent: #5c6fff; --accent-h: #7b8fff; --accent-d: #4352d9;
+      --green: #3ddc84; --yellow: #ffd370; --red: #ff5c6a; --radius: 12px;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    .grad { background: linear-gradient(135deg, #fff 30%, var(--accent-h) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    /* Navbar */
+    .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 64px; display: flex; align-items: center; }
+    .navbar.scrolled { background: rgba(15,17,23,.88); border-bottom: 1px solid var(--border); backdrop-filter: blur(16px); }
+    .nav-inner { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; gap: 8px; }
+    .nav-logo { display: flex; align-items: center; gap: 9px; font-size: 17px; font-weight: 700; margin-right: auto; }
+    .nav-logo img { width: 28px; height: 28px; }
+    .nav-link { padding: 7px 14px; border-radius: 8px; font-size: 14px; font-weight: 500; color: var(--muted); transition: color .15s, background .15s; }
+    .nav-link:hover { color: var(--text); background: var(--surface); }
+    .nav-cta { padding: 8px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; background: var(--accent); color: #fff; transition: background .15s; }
+    .nav-cta:hover { background: var(--accent-h); }
+
+    /* Hero */
+    .hero { padding: 140px 0 60px; text-align: center; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 7px; padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border-s); font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+    .hero h1 { font-size: clamp(36px, 5vw, 56px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; }
+    .hero p { font-size: 18px; color: var(--muted); max-width: 520px; margin: 0 auto 40px; }
+
+    /* Toggle */
+    .billing-toggle { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 52px; font-size: 14px; color: var(--muted); }
+    .toggle-switch { position: relative; width: 44px; height: 24px; cursor: pointer; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; inset: 0; background: var(--surface2); border-radius: 24px; border: 1px solid var(--border-s); transition: background .2s; }
+    .toggle-slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 2px; background: var(--muted); border-radius: 50%; transition: transform .2s, background .2s; }
+    .toggle-switch input:checked + .toggle-slider { background: var(--accent); border-color: var(--accent); }
+    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); background: #fff; }
+    .annual-badge { background: rgba(61,220,132,.12); color: var(--green); border: 1px solid rgba(61,220,132,.25); padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: 600; }
+
+    /* Cards */
+    .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-width: 1120px; margin: 0 auto; }
+    @media (max-width: 1080px) { .cards { grid-template-columns: 1fr 1fr; max-width: 800px; } }
+    @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 32px 28px; display: flex; flex-direction: column; }
+    .card.featured { border-color: var(--accent); background: linear-gradient(135deg, rgba(92,111,255,.08) 0%, var(--surface) 60%); position: relative; }
+    .card.studio  { border-color: var(--yellow); background: linear-gradient(135deg, rgba(255,211,112,.06) 0%, var(--surface) 60%); position: relative; }
+    .featured-badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 14px; border-radius: 20px; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
+    .card-tier { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 10px; }
+    .card-tier.studio-label { color: var(--yellow); }
+    .card-price { display: flex; align-items: flex-end; gap: 4px; margin-bottom: 6px; }
+    .price-val { font-size: 52px; font-weight: 800; line-height: 1; letter-spacing: -0.03em; }
+    .price-unit { font-size: 15px; color: var(--muted); padding-bottom: 8px; }
+    .price-annual { font-size: 13px; color: var(--muted); margin-bottom: 24px; min-height: 20px; }
+    .price-annual .save { color: var(--green); font-weight: 600; }
+    .card-desc { font-size: 14px; color: var(--muted); margin-bottom: 28px; line-height: 1.55; flex: 1; }
+    .card-btn { display: block; width: 100%; padding: 13px; border-radius: 10px; text-align: center; font-size: 15px; font-weight: 600; border: none; cursor: pointer; transition: background .15s, transform .1s; }
+    .card-btn:active { transform: scale(.98); }
+    .btn-free { background: var(--surface2); color: var(--text); border: 1px solid var(--border-s); }
+    .btn-free:hover { background: var(--border); }
+    .btn-pro { background: var(--accent); color: #fff; }
+    .btn-pro:hover { background: var(--accent-h); }
+    .btn-studio { background: var(--yellow); color: #0f1117; }
+    .btn-studio:hover { background: #ffd24d; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+    .features { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .features li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; }
+    .feat-icon { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; }
+    .feat-icon.ok  { color: var(--green); }
+    .feat-icon.no  { color: var(--border-s); }
+    .feat-muted { color: var(--muted); }
+    .model-tag { display: inline-block; padding: 1px 7px; border-radius: 6px; font-size: 11px; font-weight: 700; vertical-align: middle; margin-left: 4px; }
+    .model-tag.gemini { background: rgba(66,133,244,.15); color: #4285f4; border: 1px solid rgba(66,133,244,.25); }
+    .model-tag.claude { background: rgba(217,119,6,.15);  color: #d97706; border: 1px solid rgba(217,119,6,.25); }
+    .model-tag.kimi   { background: rgba(120,80,220,.15); color: #7850dc; border: 1px solid rgba(120,80,220,.25); }
+
+    /* Comparison table */
+    .compare { max-width: 920px; margin: 80px auto 0; }
+    .compare h2 { font-size: 26px; font-weight: 700; text-align: center; margin-bottom: 32px; }
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .compare-table th { padding: 12px 16px; text-align: left; color: var(--muted); font-weight: 600; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+    .compare-table th:not(:first-child) { text-align: center; }
+    .compare-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .compare-table td:not(:first-child) { text-align: center; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: rgba(255,255,255,.02); }
+    .check { color: var(--green); font-size: 17px; }
+    .cross { color: var(--border-s); font-size: 17px; }
+    .col-starter{ color: var(--green);  font-weight: 700; }
+    .col-pro    { color: var(--accent); font-weight: 700; }
+    .col-studio { color: var(--yellow); font-weight: 700; }
+
+    /* vs-competitor */
+    .vs-section { max-width: 860px; margin: 80px auto 0; }
+    .vs-section .vs-header { text-align: center; margin-bottom: 40px; }
+    .vs-section .vs-header .vs-badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-h); background: rgba(92,111,255,.12); border: 1px solid rgba(92,111,255,.25); border-radius: 20px; padding: 4px 14px; margin-bottom: 14px; }
+    .vs-section .vs-header h2 { font-size: 26px; font-weight: 700; margin-bottom: 10px; }
+    .vs-section .vs-header p { color: var(--muted); font-size: 15px; max-width: 500px; margin: 0 auto; }
+    .vs-table-wrap { overflow-x: auto; }
+    .vs-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .vs-table th { padding: 12px 18px; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); }
+    .vs-table th.col-sn  { color: var(--accent); }
+    .vs-table th.col-ko  { color: var(--muted); }
+    .vs-table th:not(:first-child) { text-align: center; }
+    .vs-table td { padding: 14px 18px; border-bottom: 1px solid var(--border); vertical-align: middle; line-height: 1.4; }
+    .vs-table td:not(:first-child) { text-align: center; font-size: 13px; }
+    .vs-table tr:last-child td { border-bottom: none; }
+    .vs-table tr:hover td { background: rgba(255,255,255,.02); }
+    .vs-win  { color: var(--green); font-size: 17px; }
+    .vs-lose { color: var(--border-s); font-size: 17px; }
+    .vs-sn   { color: var(--green); font-weight: 600; }
+    .vs-ko   { color: var(--muted); }
+    .vs-note { font-size: 11px; color: var(--muted); display: block; margin-top: 3px; font-weight: 400; }
+    .vs-footer-note { text-align: center; margin-top: 18px; font-size: 12px; color: var(--muted); }
+    .vs-footer-note a { color: var(--accent-h); text-decoration: underline; }
+
+    /* FAQ */
+    .faq { max-width: 680px; margin: 80px auto 0; }
+    .faq h2 { font-size: 26px; font-weight: 700; text-align: center; margin-bottom: 36px; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q { width: 100%; background: none; border: none; color: var(--text); text-align: left; font-size: 15px; font-weight: 600; padding: 20px 0; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .faq-q:hover { color: var(--accent); }
+    .faq-arrow { transition: transform .2s; flex-shrink: 0; }
+    .faq-item.open .faq-arrow { transform: rotate(90deg); }
+    .faq-a { font-size: 14px; color: var(--muted); line-height: 1.7; max-height: 0; overflow: hidden; transition: max-height .3s ease, padding .3s ease; }
+    .faq-item.open .faq-a { max-height: 300px; padding-bottom: 20px; }
+
+    /* Pay As You Go */
+    .payg-section { padding: 40px 0 0; }
+    .payg-header { text-align: center; margin-bottom: 36px; }
+    .payg-eyebrow { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border-s); border-radius: 20px; padding: 4px 16px; margin-bottom: 18px; }
+    .payg-header h2 { font-size: clamp(26px, 3.5vw, 36px); font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 10px; }
+    .payg-header p { font-size: 15px; color: var(--muted); max-width: 440px; margin: 0 auto; }
+    .payg-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 820px; margin: 0 auto; }
+    @media (max-width: 700px) { .payg-cards { grid-template-columns: 1fr; } }
+    .payg-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 28px 24px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; transition: border-color .2s; }
+    .payg-card:hover { border-color: var(--border-s); }
+    .payg-card.best { border-color: var(--accent); background: linear-gradient(135deg, rgba(92,111,255,.1) 0%, var(--surface) 70%); }
+    .payg-best-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; padding: 3px 12px; border-radius: 20px; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+    .payg-tier { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+    .payg-count-row { display: flex; align-items: flex-end; gap: 6px; justify-content: center; margin-bottom: 4px; }
+    .payg-count { font-size: 64px; font-weight: 800; line-height: 1; letter-spacing: -0.04em; }
+    .payg-unit { font-size: 15px; color: var(--green); font-weight: 600; padding-bottom: 6px; }
+    .payg-price { font-size: 28px; font-weight: 800; color: var(--green); margin: 10px 0 2px; }
+    .payg-per { font-size: 12px; color: var(--muted); margin-bottom: 22px; }
+    .payg-btn { display: block; width: 100%; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 700; border: none; cursor: pointer; transition: background .15s, transform .1s; }
+    .payg-btn:active { transform: scale(.97); }
+    .payg-btn-default { background: var(--surface2); color: var(--text); border: 1px solid var(--border-s); }
+    .payg-btn-default:hover { background: var(--border); }
+    .payg-btn-best { background: var(--accent); color: #fff; }
+    .payg-btn-best:hover { background: var(--accent-h); }
+    .payg-btn-bundle { background: transparent; color: #f0a500; border: 1.5px solid #f0a500; }
+    .payg-btn-bundle:hover { background: rgba(240,165,0,.1); }
+    .payg-footer-note { text-align: center; margin-top: 18px; font-size: 12.5px; color: var(--muted); }
+    .payg-footer-note span { margin: 0 6px; }
+
+    /* Top-up banner */
+    .topup-banner {
+      max-width: 1120px;
+      margin: 40px auto 0;
+      background: var(--surface);
+      border: 1px solid var(--border-s);
+      border-radius: 14px;
+      padding: 22px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .topup-banner:hover { border-color: var(--yellow); transition: border-color .2s; }
+    .topup-left h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .topup-left p  { font-size: 13.5px; color: var(--muted); line-height: 1.5; max-width: 520px; }
+    .topup-right { text-align: right; flex-shrink: 0; }
+    .topup-price { font-size: 36px; font-weight: 800; color: var(--yellow); line-height: 1; letter-spacing: -0.02em; }
+    .topup-unit  { font-size: 13px; color: var(--muted); margin-top: 3px; white-space: nowrap; }
+    @media (max-width: 600px) {
+      .topup-banner { flex-direction: column; align-items: flex-start; text-align: left; padding: 20px; }
+      .topup-right { text-align: left; }
+    }
+
+    /* Carbon strip */
+    .carbon-strip { max-width: 680px; margin: 60px auto 0; background: linear-gradient(135deg, rgba(61,220,132,.08) 0%, rgba(61,220,132,.04) 100%); border: 1px solid rgba(61,220,132,.22); border-radius: 16px; padding: 28px 32px; text-align: center; }
+    .carbon-strip .carbon-emoji { width: 36px; height: 36px; margin: 0 auto 10px; color: var(--green); display: block; }
+    .carbon-strip h3 { font-size: 17px; font-weight: 700; color: var(--green); margin-bottom: 8px; }
+    .carbon-strip p { font-size: 13.5px; color: var(--muted); line-height: 1.7; max-width: 480px; margin: 0 auto; }
+    .carbon-pill { display: flex; align-items: center; gap: 5px; justify-content: center; margin-top: 14px; font-size: 12px; color: var(--green); font-weight: 600; background: rgba(61,220,132,.1); border: 1px solid rgba(61,220,132,.2); border-radius: 20px; padding: 5px 14px; width: fit-content; margin-left: auto; margin-right: auto; }
+    .card-carbon-note { font-size: 11.5px; color: var(--green); text-align: center; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 4px; opacity: .85; }
+
+    /* CTA strip */
+    .cta-strip { margin: 80px 0; text-align: center; }
+    .cta-strip h2 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+    .cta-strip p { color: var(--muted); margin-bottom: 28px; }
+    .cta-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 36px; background: var(--accent); color: #fff; border-radius: 12px; font-size: 15px; font-weight: 700; transition: background .15s, transform .15s; }
+    .cta-btn:hover { background: var(--accent-h); transform: translateY(-1px); }
+    .discord-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; background: #5865F2; color: #fff; border-radius: 12px; font-size: 15px; font-weight: 700; transition: background .15s, transform .15s, box-shadow .15s; }
+    .discord-btn:hover { background: #4752c4; transform: translateY(-1px); box-shadow: 0 4px 18px rgba(88,101,242,0.35); }
+    .cta-strip-actions { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+    /* Footer */
+    .footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; color: var(--muted); font-size: 13px; }
+    .footer a { color: var(--muted); margin: 0 10px; }
+    .footer a:hover { color: var(--text); }
+
+    /* Toast */
+    #toast { position: fixed; bottom: 24px; right: 24px; z-index: 999; background: var(--surface); border: 1px solid var(--border-s); padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 500; display: none; box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+    #toast.err { border-color: var(--red); color: var(--red); }
+    #toast.ok  { border-color: var(--green); color: var(--green); }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <img src="/icon.svg" alt="StackNest logo" />
+      StackNest
+    </a>
+    <a href="/" class="nav-link">Home</a>
+    <a href="/docs" class="nav-link">Docs</a>
+    <a href="/hosting-bots" class="nav-link">Bot Hosting</a>
+    <a href="/bots" class="nav-link">Discord Bots</a>
+    <a href="/gallery" class="nav-link">Gallery</a>
+    <a href="https://discord.gg/vebvd8PRzv" target="_blank" rel="noopener"
+       style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;background:rgba(88,101,242,0.12);border:1px solid rgba(88,101,242,0.3);color:#5865F2;font-size:14px;font-weight:600;transition:background .15s"
+       onmouseover="this.style.background='rgba(88,101,242,0.22)'" onmouseout="this.style.background='rgba(88,101,242,0.12)'"
+       title="Join our Discord">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.2 13.2 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125 13.28 13.28 0 0 1-1.873.877.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/></svg>
+      Discord
+    </a>
+    <a href="/app" class="nav-cta">Open App</a>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Simple, transparent pricing
+      </div>
+      <h1>Start free.<br /><span class="grad">Upgrade when ready.</span></h1>
+      <p>No contracts. No hidden fees. Cancel any time.</p>
+
+      <div class="billing-toggle">
+        <span>Monthly</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="annual-toggle" onchange="toggleBilling()" />
+          <span class="toggle-slider"></span>
+        </label>
+        <span>Annual <span class="annual-badge">2 months free</span></span>
+      </div>
+
+      <div class="cards">
+        <!-- Free -->
+        <div class="card">
+          <div class="card-tier">Free</div>
+          <div class="card-price">
+            <span class="price-val">£0</span>
+            <span class="price-unit">/ mo</span>
+          </div>
+          <div class="price-annual">forever — no card needed</div>
+          <p class="card-desc">Perfect for trying StackNest out or small personal server plugins.</p>
+          <a href="/app" class="card-btn btn-free">Get Started Free</a>
+          <hr class="divider" />
+          <ul class="features">
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span><strong>2 plugin generations</strong> / month</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>20 prompt previews / month</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Paper &amp; Spigot support</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Built-in plugin editor</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Maven &amp; Gradle export</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Server log analyser (50 lines)</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>AI generation <span class="model-tag gemini">Gemini</span></span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Multi-file plugin output <span class="vs-note">(up to 3 classes)</span></span>
+            </li>
+            <li>
+              <svg class="feat-icon no" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              <span class="feat-muted">Code refinement (modify existing)</span>
+            </li>
+            <li>
+              <svg class="feat-icon no" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              <span class="feat-muted">Folia / Velocity support</span>
+            </li>
+            <li>
+              <svg class="feat-icon no" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              <span class="feat-muted">Deep code validation</span>
+            </li>
+            <li>
+              <svg class="feat-icon no" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              <span class="feat-muted">Claude AI quality</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Starter -->
+        <div class="card">
+          <div class="card-tier">Starter</div>
+          <div class="card-price">
+            <span class="price-val" id="starter-price">£4</span>
+            <span class="price-unit">/ mo</span>
+          </div>
+          <div class="price-annual" id="starter-annual">per month, billed monthly</div>
+          <p class="card-desc">For hobbyists who need Folia or Velocity support without committing to Pro.</p>
+          <button class="card-btn btn-free" onclick="startStarterCheckout()" id="starter-btn">Start Starter — £4/mo</button>
+          <p class="card-carbon-note">1% of this goes to carbon removal</p>
+          <hr class="divider" />
+          <ul class="features">
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span><strong>15 generations</strong> / month</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>20 prompt previews / month</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Folia &amp; Velocity support</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Built-in plugin editor</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Maven &amp; Gradle export</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Server log analyser (50 lines)</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>AI generation <span class="model-tag gemini">Gemini</span></span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Multi-file plugin output <span class="vs-note">(up to 5 classes)</span></span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Code refinement (modify existing)</span>
+            </li>
+            <li>
+              <svg class="feat-icon no" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              <span class="feat-muted">Deep code validation</span>
+            </li>
+            <li>
+              <svg class="feat-icon no" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              <span class="feat-muted">Claude AI quality</span>
+            </li>
+            <li>
+              <svg class="feat-icon no" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              <span class="feat-muted">Priority queue</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Pro -->
+        <div class="card featured">
+          <div class="featured-badge">Most popular</div>
+          <div class="card-tier">Pro</div>
+          <div class="card-price">
+            <span class="price-val" id="pro-price">£9</span>
+            <span class="price-unit">/ mo</span>
+          </div>
+          <div class="price-annual" id="pro-annual">per month, billed monthly</div>
+          <p class="card-desc">For serious server owners and marketplace sellers who need consistent, high quality output.</p>
+          <button class="card-btn btn-pro" onclick="startCheckout()" id="upgrade-btn">Start Pro — £9/mo</button>
+          <p class="card-carbon-note">1% of this goes to carbon removal</p>
+          <hr class="divider" />
+          <ul class="features">
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span><strong>100 generations</strong> / month</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Unlimited prompt previews</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>All platforms — Paper, Folia, Velocity, Spigot</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Claude AI generation <span class="model-tag claude">Claude</span></span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Multi-file plugins &amp; JUnit tests generated</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Code refinement (modify existing)</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Deep code validation <span class="model-tag kimi">Kimi K2</span></span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Context-aware auto-healing</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Full server log analyser</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Version history (30 days)</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Priority queue</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>REST API access &mdash; <a href="/docs#api-access" style="color:inherit">generate via HTTP</a></span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Discord support</span>
+            </li>
+            <li>
+              <svg class="feat-icon no" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              <span class="feat-muted">Team seats</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Studio -->
+        <div class="card studio">
+          <div class="card-tier studio-label">Studio</div>
+          <div class="card-price">
+            <span class="price-val" id="studio-price">£29</span>
+            <span class="price-unit">/ mo</span>
+          </div>
+          <div class="price-annual" id="studio-annual">per workspace / month</div>
+          <p class="card-desc">Built for plugin studios, marketplaces, and professional server networks.</p>
+          <button class="card-btn btn-studio" onclick="startStudioCheckout()" id="studio-btn">Start Studio — £29/mo</button>
+          <p class="card-carbon-note">1% of this goes to carbon removal</p>
+          <hr class="divider" />
+          <ul class="features">
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span><strong>300 generations</strong> / month</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Everything in Pro</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Up to 5 team seats</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Shared plugin history</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Custom plugin templates</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Claude remembers your code style</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Full API access &mdash; <a href="/docs#api-access" style="color:inherit">generate via HTTP</a></span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Unlimited version history</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>SLA uptime guarantee</span>
+            </li>
+            <li>
+              <svg class="feat-icon ok" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Priority Discord support</span>
+            </li>
+            <li style="color:var(--muted)">
+              <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;margin-top:1px;color:var(--yellow)"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              <span>Extra credits available</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pay As You Go -->
+  <section class="payg-section">
+    <div class="container">
+      <div class="payg-header">
+        <div class="payg-eyebrow">Pay As You Go &mdash; No Subscription Needed</div>
+        <h2>Just a few plugins?</h2>
+        <p>Buy generations without committing to a subscription. Credits never expire. Uses Gemini.</p>
+      </div>
+      <div class="payg-cards">
+        <!-- Starter -->
+        <div class="payg-card">
+          <div class="payg-tier">Starter</div>
+          <div class="payg-count-row">
+            <span class="payg-count">5</span>
+            <span class="payg-unit">generations</span>
+          </div>
+          <div class="payg-price">&pound;1</div>
+          <div class="payg-per">&pound;0.20 per gen</div>
+          <button class="payg-btn payg-btn-default" onclick="buyCredits('starter')">Buy Starter</button>
+        </div>
+        <!-- Basic -->
+        <div class="payg-card best">
+          <div class="payg-best-badge">Best Value</div>
+          <div class="payg-tier">Basic</div>
+          <div class="payg-count-row">
+            <span class="payg-count">15</span>
+            <span class="payg-unit">generations</span>
+          </div>
+          <div class="payg-price">&pound;2.50</div>
+          <div class="payg-per">&pound;0.17 per gen</div>
+          <button class="payg-btn payg-btn-best" onclick="buyCredits('basic')">Buy Basic</button>
+        </div>
+        <!-- Bundle -->
+        <div class="payg-card">
+          <div class="payg-tier">Bundle</div>
+          <div class="payg-count-row">
+            <span class="payg-count">35</span>
+            <span class="payg-unit">generations</span>
+          </div>
+          <div class="payg-price">&pound;5</div>
+          <div class="payg-per">&pound;0.14 per gen</div>
+          <button class="payg-btn payg-btn-bundle" onclick="buyCredits('bundle')">Buy Bundle</button>
+        </div>
+      </div>
+      <p class="payg-footer-note">
+        <span>Credits never expire</span>&middot;
+        <span>Gemini AI</span>&middot;
+        <span>No card saved</span>&middot;
+        <span>Upgrade to Pro anytime</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- Top-up banner -->
+  <div class="container">
+    <div class="topup-banner">
+      <div class="topup-left">
+        <h3>Need more generations?</h3>
+        <p>Pro and Studio users can top up with generation credits. No subscription upgrade needed.</p>
+      </div>
+      <div class="topup-right">
+        <div class="topup-price">&pound;2</div>
+        <div class="topup-unit">per 50 extra generations</div>
+        <button class="btn btn-primary" style="margin-top:14px" onclick="buyCredits('topup')">Top up now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison table -->
+  <section class="compare">
+    <div class="container">
+      <h2>Full comparison</h2>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="width:30%">Feature</th>
+            <th>Free</th>
+            <th>Starter</th>
+            <th class="col-pro">Pro</th>
+            <th class="col-studio">Studio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Monthly generations</td><td>2</td><td>15</td><td class="col-pro">100</td><td class="col-studio">300</td></tr>
+          <tr><td>Prompt previews</td><td>20 / month</td><td>20 / month</td><td class="col-pro">Unlimited</td><td class="col-studio">Unlimited</td></tr>
+          <tr><td>AI model</td><td>Gemini</td><td>Gemini</td><td class="col-pro">Claude</td><td class="col-studio">Claude</td></tr>
+          <tr><td>Deep code validation</td><td><span class="cross">&mdash;</span></td><td><span class="cross">&mdash;</span></td><td class="col-pro">Kimi K2</td><td class="col-studio">Kimi K2</td></tr>
+          <tr><td>Platforms</td><td>Paper, Spigot</td><td>All incl. Folia, Velocity</td><td class="col-pro">All platforms</td><td class="col-studio">All platforms</td></tr>
+          <tr><td>Java compile check</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Download JAR</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Server log analyser</td><td>50 lines</td><td>50 lines</td><td class="col-pro">Full</td><td class="col-studio">Full</td></tr>
+          <tr><td>Version history</td><td><span class="cross">&mdash;</span></td><td><span class="cross">&mdash;</span></td><td class="col-pro">30 days</td><td class="col-studio">Unlimited</td></tr>
+          <tr><td>StackNest branding</td><td>Added to output</td><td>Added to output</td><td class="col-pro">None</td><td class="col-studio">None</td></tr>
+          <tr><td>Priority queue</td><td><span class="cross">&mdash;</span></td><td><span class="cross">&mdash;</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Team seats</td><td><span class="cross">&mdash;</span></td><td><span class="cross">&mdash;</span></td><td><span class="cross">&mdash;</span></td><td class="col-studio">Up to 5</td></tr>
+          <tr><td><a href="/docs#api-access" style="color:inherit">API access</a></td><td><span class="cross">&mdash;</span></td><td><span class="cross">&mdash;</span></td><td class="col-pro"><a href="/docs#api-access" style="color:var(--accent-h)">API key</a></td><td class="col-studio"><a href="/docs#api-access" style="color:var(--yellow)">API key</a></td></tr>
+          <tr><td>Custom templates</td><td><span class="cross">&mdash;</span></td><td><span class="cross">&mdash;</span></td><td><span class="cross">&mdash;</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Support</td><td>Community</td><td>Community</td><td class="col-pro">Discord</td><td class="col-studio">Priority Discord</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- VS Competitor -->
+  <section class="vs-section">
+    <div class="container">
+      <div class="vs-header">
+        <div class="vs-badge">Why StackNest</div>
+        <h2>StackNest vs Kodari.ai</h2>
+        <p>Tired of watching your token balance drain with every generation? Here's why developers are switching.</p>
+      </div>
+      <div class="vs-table-wrap">
+        <table class="vs-table">
+          <thead>
+            <tr>
+              <th style="width:42%">Feature</th>
+              <th class="col-sn">StackNest</th>
+              <th class="col-ko">Kodari.ai</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Pricing model</strong><span class="vs-note">How you pay</span></td>
+              <td class="vs-sn">Flat monthly subscription<br><span class="vs-note">Always know what you'll pay</span></td>
+              <td class="vs-ko">One-time token packs<br><span class="vs-note">$9.99–$99.99 · tokens never expire</span></td>
+            </tr>
+            <tr>
+              <td><strong>Free tier</strong></td>
+              <td class="vs-sn">2 generations / month, forever</td>
+              <td class="vs-ko">100K welcome tokens + ~5K daily<br><span class="vs-note">Streak bonuses up to day 30</span></td>
+            </tr>
+            <tr>
+              <td><strong>Predictable monthly cost</strong><span class="vs-note">No surprise bills</span></td>
+              <td><span class="vs-win">✓</span><span class="vs-note"> Fixed plan price</span></td>
+              <td><span class="vs-lose">&mdash;</span><span class="vs-note"> Varies with token consumption</span></td>
+            </tr>
+            <tr>
+              <td><strong>Java compilation</strong><span class="vs-note">Code that actually compiles</span></td>
+              <td><span class="vs-win">✓</span><span class="vs-note"> Every plan, every time</span></td>
+              <td><span class="vs-win">✓</span><span class="vs-note"> Under 5s · auto-retries on fail</span></td>
+            </tr>
+            <tr>
+              <td><strong>Download compiled JAR</strong></td>
+              <td><span class="vs-win">✓</span><span class="vs-note"> All plans</span></td>
+              <td><span class="vs-win">✓</span></td>
+            </tr>
+            <tr>
+              <td><strong>Paper, Spigot &amp; Folia</strong><span class="vs-note">Modern server platforms</span></td>
+              <td><span class="vs-win">✓</span><span class="vs-note"> Optimised &amp; first-class</span></td>
+              <td><span class="vs-win">✓</span></td>
+            </tr>
+            <tr>
+              <td><strong>Fabric mod generation</strong></td>
+              <td><span class="vs-win">✓</span><span class="vs-note"> 1.20.1 – 1.21.4</span></td>
+              <td><span class="vs-win">✓</span><span class="vs-note"> Experimental · Fabric &amp; Quilt</span></td>
+            </tr>
+            <tr>
+              <td><strong>Forge &amp; NeoForge mods</strong></td>
+              <td><span class="vs-win">✓</span><span class="vs-note"> All three loaders</span></td>
+              <td><span class="vs-lose">&mdash;</span><span class="vs-note"> Not supported</span></td>
+            </tr>
+            <tr>
+              <td><strong>Server log analyser</strong><span class="vs-note">Diagnose crashes &amp; errors</span></td>
+              <td><span class="vs-win">✓</span><span class="vs-note"> Built in, all plans</span></td>
+              <td><span class="vs-lose">&mdash;</span><span class="vs-note"> Not available</span></td>
+            </tr>
+            <tr>
+              <td><strong>Deep code validation</strong><span class="vs-note">AI reviews &amp; scores generated code</span></td>
+              <td><span class="vs-win">✓</span><span class="vs-note"> Kimi K2 on Pro+</span></td>
+              <td><span class="vs-lose">&mdash;</span><span class="vs-note"> Compile-error retry only</span></td>
+            </tr>
+            <tr>
+              <td><strong>Community gallery</strong><span class="vs-note">Browse &amp; share creations</span></td>
+              <td><span class="vs-win">✓</span><span class="vs-note"> Public gallery</span></td>
+              <td><span class="vs-lose">&mdash;</span></td>
+            </tr>
+            <tr>
+              <td><strong>Real-time collaboration</strong><span class="vs-note">Build with teammates</span></td>
+              <td><span class="vs-lose">&mdash;</span></td>
+              <td><span class="vs-win">✓</span><span class="vs-note"> Live cursors, shared editing</span></td>
+            </tr>
+            <tr>
+              <td><strong>Online IDE</strong><span class="vs-note">Edit code in the browser</span></td>
+              <td><span class="vs-lose">&mdash;</span><span class="vs-note"> Download &amp; edit locally</span></td>
+              <td><span class="vs-win">✓</span><span class="vs-note"> Full IDE with file tree</span></td>
+            </tr>
+            <tr>
+              <td><strong>Privacy — no training on your code</strong></td>
+              <td><span class="vs-win">✓</span></td>
+              <td class="vs-ko">Not stated</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="vs-footer-note">Competitor info based on publicly available data from <a href="https://kodari.ai" target="_blank" rel="noopener noreferrer">kodari.ai</a> as of April 2026. Subject to change.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="container">
+      <h2>Frequently asked questions</h2>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Can I cancel my subscription at any time?
+          <svg class="faq-arrow" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+        <div class="faq-a">Yes, absolutely. You can cancel any time from your billing portal. You'll keep Pro access until the end of your current billing period, then automatically move back to the free plan — with no charges.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What happens to my plugins if I cancel?
+          <svg class="faq-arrow" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+        <div class="faq-a">All plugins you've already generated and downloaded are yours to keep — cancelling has no effect on files already on your computer. Your saved projects in the app will still be visible but generation will be limited to 3/month.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What AI model does Pro use?
+          <svg class="faq-arrow" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+        <div class="faq-a">Pro subscribers get access to Claude by Anthropic — currently one of the best coding models available. Free users get Gemini, which is great for most plugins but Claude typically produces cleaner, more complex code with better error handling.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What does "StackNest branding" on the free plan mean?
+          <svg class="faq-arrow" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+        <div class="faq-a">On the free plan, <code>authors: [StackNest]</code> is added to your plugin.yml file. This is just our way of staying visible — it doesn't affect functionality. On Pro, only your own name appears.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Is payment secure?
+          <svg class="faq-arrow" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+        <div class="faq-a">Payments are processed entirely by Stripe — we never see or store your card details. Stripe is PCI-DSS Level 1 certified and used by millions of businesses.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Do I need an account to use the free plan?
+          <svg class="faq-arrow" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+        <div class="faq-a">You need a free account (email + password) to generate plugins so we can enforce the monthly limit fairly. Signing up is free and takes under a minute.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Carbon removal -->
+  <div class="container">
+    <div class="carbon-strip">
+      <svg class="carbon-emoji" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22V12m0 0C12 7 8 4 4 4c0 5 2 9 8 8zm0 0c0-5 4-8 8-8 0 5-2 9-8 8z"/></svg>
+      <h3>1% for the planet</h3>
+      <p>1% of every paid StackNest subscription goes toward permanent carbon removal. We contribute to certified projects that pull CO₂ out of the atmosphere — because building great tools shouldn't cost the Earth.</p>
+      <div class="carbon-pill">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        Verified carbon removal on every paid plan
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta-strip">
+    <div class="container">
+      <h2>Ready to build your first plugin?</h2>
+      <p>Join server developers worldwide and start generating plugins in seconds.</p>
+      <div class="cta-strip-actions">
+        <a href="/app" class="cta-btn">Start for free →</a>
+        <a href="https://discord.gg/vebvd8PRzv" target="_blank" rel="noopener" class="discord-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.2 13.2 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125 13.28 13.28 0 0 1-1.873.877.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/></svg>
+          Join our Discord
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p style="margin-bottom:12px">
+      <a href="/terms">Terms</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/docs">Docs</a>
+      <a href="/gallery">Gallery</a>
+      <a href="https://discord.gg/vebvd8PRzv" target="_blank" rel="noopener" style="color:#5865F2">Discord</a>
+    </p>
+    <p>&copy; 2026 StackNest. All rights reserved.</p>
+  </div>
+<p style="margin-top:8px;font-size:11px;color:#8891b4;text-align:center">StackNest is not affiliated with or endorsed by Mojang Studios, Microsoft, or Discord Inc. Minecraft is a trademark of Mojang Studios.</p>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+  // Navbar scroll
+  window.addEventListener('scroll', () => document.getElementById('navbar').classList.toggle('scrolled', scrollY > 10), { passive: true });
+
+  // Billing toggle
+  const STR_M = 4, STR_A = 3, STR_AT = 36;
+  const PRO_M = 9, PRO_A = 7, PRO_AT = 84;
+  const STU_M = 29, STU_A = 24, STU_AT = 288;
+  function toggleBilling() {
+    const annual = document.getElementById('annual-toggle').checked;
+    const strBtn = document.getElementById('starter-btn');
+    if (document.getElementById('starter-price')) {
+      document.getElementById('starter-price').textContent = '\u00a3' + (annual ? STR_A : STR_M);
+      document.getElementById('starter-annual').innerHTML = annual
+        ? `Billed \u00a3${STR_AT}/yr &nbsp;<span class="save">Save \u00a3${STR_M*12 - STR_AT}</span>`
+        : 'per month, billed monthly';
+    }
+    if (strBtn && !strBtn.textContent.startsWith('Manage')) {
+      strBtn.textContent = annual ? 'Start Starter \u2014 \u00a33/mo' : 'Start Starter \u2014 \u00a34/mo';
+    }
+    document.getElementById('pro-price').textContent = '\u00a3' + (annual ? PRO_A : PRO_M);
+    document.getElementById('pro-annual').innerHTML = annual
+      ? `Billed \u00a3${PRO_AT}/yr &nbsp;<span class="save">Save \u00a3${PRO_M*12 - PRO_AT}</span>`
+      : 'per month, billed monthly';
+    document.getElementById('studio-price').textContent = '\u00a3' + (annual ? STU_A : STU_M);
+    document.getElementById('studio-annual').innerHTML = annual
+      ? `Billed \u00a3${STU_AT}/yr &nbsp;<span class="save">Save \u00a3${STU_M*12 - STU_AT}</span>`
+      : 'per workspace / month';
+    const proBtn = document.getElementById('upgrade-btn');
+    if (proBtn && !proBtn.textContent.startsWith('Manage')) {
+      proBtn.textContent = annual ? 'Start Pro \u2014 \u00a37/mo' : 'Start Pro \u2014 \u00a39/mo';
+    }
+    const stuBtn = document.getElementById('studio-btn');
+    if (stuBtn && !stuBtn.textContent.startsWith('Manage')) {
+      stuBtn.textContent = annual ? 'Start Studio \u2014 \u00a324/mo' : 'Start Studio \u2014 \u00a329/mo';
+    }
+  }
+
+  // FAQ accordion
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  }
+
+  // Toast helper
+  function toast(msg, type='ok') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = type;
+    t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 4000);
+  }
+
+  // Checkout
+  async function startCheckout() {
+    const token = localStorage.getItem('stacknest_auth_token');
+    if (!token) {
+      // Open auth modal if auth.js is loaded, otherwise redirect
+      if (typeof window.snOpenAuthModal === 'function') {
+        window.snOpenAuthModal();
+      } else {
+        window.location.href = '/app?redirect=pricing';
+      }
+      return;
+    }
+    const annual = document.getElementById('annual-toggle').checked;
+    const btn = document.getElementById('upgrade-btn');
+    btn.textContent = 'Redirecting…';
+    btn.disabled = true;
+    try {
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan: 'pro', billing: annual ? 'annual' : 'monthly' }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        toast(data.error || 'Could not start checkout.', 'err');
+        btn.textContent = annual ? 'Start Pro \u2014 \u00a37/mo' : 'Start Pro \u2014 \u00a39/mo';
+        btn.disabled = false;
+      }
+    } catch {
+      toast('Network error \u2014 please try again.', 'err');
+      btn.textContent = annual ? 'Start Pro \u2014 \u00a37/mo' : 'Start Pro \u2014 \u00a39/mo';
+      btn.disabled = false;
+    }
+  }
+
+  async function startStarterCheckout() {
+    const token = localStorage.getItem('stacknest_auth_token');
+    if (!token) {
+      if (typeof window.snOpenAuthModal === 'function') window.snOpenAuthModal();
+      else window.location.href = '/app?redirect=pricing';
+      return;
+    }
+    const annual = document.getElementById('annual-toggle').checked;
+    const btn = document.getElementById('starter-btn');
+    btn.textContent = 'Redirecting\u2026';
+    btn.disabled = true;
+    try {
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan: 'starter', billing: annual ? 'annual' : 'monthly' }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        toast(data.error || 'Could not start checkout.', 'err');
+        btn.textContent = annual ? 'Start Starter \u2014 \u00a33/mo' : 'Start Starter \u2014 \u00a34/mo';
+        btn.disabled = false;
+      }
+    } catch {
+      toast('Network error \u2014 please try again.', 'err');
+      btn.textContent = annual ? 'Start Starter \u2014 \u00a33/mo' : 'Start Starter \u2014 \u00a34/mo';
+      btn.disabled = false;
+    }
+  }
+
+  async function startStudioCheckout() {
+    const token = localStorage.getItem('stacknest_auth_token');
+    if (!token) {
+      if (typeof window.snOpenAuthModal === 'function') {
+        window.snOpenAuthModal();
+      } else {
+        window.location.href = '/app?redirect=pricing';
+      }
+      return;
+    }
+    const annual = document.getElementById('annual-toggle').checked;
+    const btn = document.getElementById('studio-btn');
+    btn.textContent = 'Redirecting…';
+    btn.disabled = true;
+    try {
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan: 'studio', billing: annual ? 'annual' : 'monthly' }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        toast(data.error || 'Could not start checkout.', 'err');
+        btn.textContent = annual ? 'Start Studio \u2014 \u00a324/mo' : 'Start Studio \u2014 \u00a329/mo';
+        btn.disabled = false;
+      }
+    } catch {
+      toast('Network error \u2014 please try again.', 'err');
+      btn.textContent = annual ? 'Start Studio \u2014 \u00a324/mo' : 'Start Studio \u2014 \u00a329/mo';
+      btn.disabled = false;
+    }
+  }
+  (async () => {
+    const token = localStorage.getItem('stacknest_auth_token');
+    if (!token) return;
+    try {
+      const res = await fetch('/api/profile', { headers: { 'Authorization': 'Bearer ' + token } });
+      if (!res.ok) return;
+      const { user } = await res.json();
+      const plan = user?.plan;
+      if (plan === 'starter') {
+        const btn = document.getElementById('starter-btn');
+        if (btn) { btn.textContent = 'Manage Billing'; btn.onclick = openPortal; btn.classList.replace('btn-pro','btn-free'); }
+      }
+      if (plan === 'pro' || plan === 'starter') {
+        const btn = document.getElementById('upgrade-btn');
+        if (plan === 'pro') {
+          btn.textContent = 'Manage Billing';
+          btn.onclick = openPortal;
+          btn.classList.remove('btn-pro');
+          btn.classList.add('btn-free');
+        }
+      }
+      if (plan === 'studio') {
+        const btn = document.getElementById('studio-btn');
+        if (btn) { btn.textContent = 'Manage Billing'; btn.onclick = openPortal; }
+      }
+    } catch {}
+  })();
+
+  async function buyCredits(pack) {
+    const token = localStorage.getItem('stacknest_auth_token');
+    if (!token) {
+      if (typeof window.snOpenAuthModal === 'function') window.snOpenAuthModal();
+      else window.location.href = '/app?redirect=pricing';
+      return;
+    }
+    const btns = document.querySelectorAll('.payg-btn');
+    btns.forEach(b => b.disabled = true);
+    try {
+      const res = await fetch('/api/stripe/credits/checkout', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pack })
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        toast(data.error || 'Could not start checkout.', 'err');
+        btns.forEach(b => b.disabled = false);
+      }
+    } catch {
+      toast('Network error — please try again.', 'err');
+      btns.forEach(b => b.disabled = false);
+    }
+  }
+
+  async function openPortal() {
+    const token = localStorage.getItem('stacknest_auth_token');
+    const res = await fetch('/api/stripe/portal', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const data = await res.json();
+    if (data.url) window.location.href = data.url;
+    else toast(data.error || 'Could not open billing portal.', 'err');
+  }
+
+  // Show success banner if redirected back from Stripe
+  if (location.search.includes('upgraded=1')) {
+    toast('Welcome to Pro. Your account has been upgraded.', 'ok');
+    history.replaceState(null, '', location.pathname);
+  }
+</script>
+<script src="/auth.js"></script>
+</body>
+</html>

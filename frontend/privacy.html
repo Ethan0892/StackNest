@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <title>Privacy Policy — StackNest</title>
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://stacknests.com/privacy" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0c12; --surface: #111420; --border: #252843;
+      --accent: #5c6fff; --text: #e4e6f4; --subtext: #7279a0;
+      --sans: 'Inter', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav {
+      width: 100%; padding: 0 40px; height: 60px;
+      display: flex; align-items: center; gap: 20px;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-size: 1.1rem; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .nav-logo img { width: 28px; height: 28px; }
+    .nav-back { font-size: 0.84rem; color: var(--subtext); margin-left: auto; }
+
+    .content {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 52px 24px 80px;
+    }
+
+    .doc-label {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--accent); margin-bottom: 10px;
+    }
+
+    h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+    .effective { font-size: 0.85rem; color: var(--subtext); margin-bottom: 40px; }
+
+    h2 { font-size: 1.1rem; font-weight: 700; margin: 36px 0 10px; }
+    h3 { font-size: 0.95rem; font-weight: 700; color: var(--text); margin: 20px 0 6px; }
+    p  { font-size: 0.92rem; color: var(--subtext); line-height: 1.75; margin-bottom: 12px; }
+    ul { padding-left: 20px; margin-bottom: 12px; }
+    li { font-size: 0.92rem; color: var(--subtext); line-height: 1.75; margin-bottom: 6px; }
+    strong { color: var(--text); }
+
+    .divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+    .processor-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+    }
+
+    .processor-block h3 { margin-top: 0; }
+    .processor-block p { margin-bottom: 4px; }
+
+    .change-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: #ff5c5c22;
+      color: #ff5c5c;
+      border: 1px solid #ff5c5c44;
+      border-radius: 4px;
+      padding: 2px 7px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--subtext);
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/"><img src="/icon.svg" alt="StackNest logo" />StackNest</a>
+  <a class="nav-back" href="/">← Back to home</a>
+</nav>
+<main>
+
+<div class="content">
+  <div class="doc-label">Legal</div>
+  <h1>Privacy Policy</h1>
+  <p class="effective">Effective date: 1 March 2026 &nbsp;&middot;&nbsp; Last updated: 7 March 2026</p>
+
+  <p>This Privacy Policy describes how StackNest ("we", "us", or "our") collects, uses, and shares information when you use our website and AI plugin generation service (the "Service"). We are committed to handling your information with care and transparency.</p>
+
+  <h2>1. Information We Collect <span class="change-badge">Updated</span></h2>
+
+  <p><strong>Usage data collected automatically:</strong></p>
+  <ul>
+    <li>IP address (used for rate limiting and fraud prevention; not stored longer than 24 hours in memory).</li>
+    <li>HTTP request metadata (method, path, status code, timestamp) for server diagnostics.</li>
+    <li>API key identifier (for Pro/Studio users) to enforce plan limits.</li>
+  </ul>
+
+  <p><strong>Account information (required to use the Service):</strong></p>
+  <ul>
+    <li>Email address — used to identify your account and enforce monthly generation limits.</li>
+    <li>Password — stored as a one-way bcrypt hash. We never store your plaintext password.</li>
+    <li>Subscription tier (Free, Pro, or Studio) and billing status.</li>
+  </ul>
+
+  <p><strong>Content you provide:</strong></p>
+  <ul>
+    <li>Plugin descriptions ("prompts") you type into the generator.</li>
+    <li>Plugin name and configuration options you select (type, features, target API).</li>
+  </ul>
+
+  <p><strong>We do not collect:</strong></p>
+  <ul>
+    <li>Payment card details — handled entirely by Stripe (see Section 6).</li>
+    <li>Cookies or browser tracking identifiers.</li>
+    <li>Your real name or postal address.</li>
+  </ul>
+
+  <h2>2. How We Use Your Information</h2>
+  <ul>
+    <li><strong>To provide the Service:</strong> Your prompt is transmitted to one of our third-party AI providers depending on your plan tier (see Section 6). Prompts are not stored by StackNest after your session ends, however they are subject to the data handling policies of the relevant AI provider.</li>
+    <li><strong>Account management:</strong> Your email address is used to authenticate your account, send essential transactional emails (e.g. password reset, subscription confirmation), and enforce plan limits.</li>
+    <li><strong>Rate limiting:</strong> Your IP address is temporarily held in memory to enforce free-tier limits. It is not written to disk or associated with personally identifiable information.</li>
+    <li><strong>Service improvement:</strong> We may analyse anonymised, aggregated prompt patterns (e.g., "most-requested plugin types") to improve generation quality. No individual prompt is stored or attributable to you.</li>
+    <li><strong>Security and fraud prevention:</strong> Server logs may retain request metadata for up to 7 days to investigate abuse.</li>
+  </ul>
+
+  <h2>3. How We Share Your Information</h2>
+  <p>We do not sell, rent, or trade your information. We may share information only in these limited circumstances:</p>
+  <ul>
+    <li><strong>Legal requirements:</strong> If required by law, court order, or governmental authority.</li>
+    <li><strong>Protection of rights:</strong> To enforce our Terms of Service or protect the safety of our users or the public.</li>
+    <li><strong>Business transfer:</strong> In the event of a merger or acquisition, your information may transfer to the successor entity, subject to the same privacy protections.</li>
+  </ul>
+
+  <h2>4. Data Retention</h2>
+  <ul>
+    <li><strong>Prompts:</strong> Not retained after your request is completed.</li>
+    <li><strong>IP addresses (rate limiting):</strong> Cleared from memory every 24 hours.</li>
+    <li><strong>Server access logs:</strong> Retained for up to 7 days, then deleted.</li>
+    <li><strong>Email address and account data:</strong> Retained for as long as your account is active, then deleted within 30 days of account deletion request.</li>
+    <li><strong>Pro/Studio API keys:</strong> Stored securely in a hashed format for as long as your subscription is active, then deleted within 30 days of cancellation.</li>
+  </ul>
+
+  <h2>5. Cookies and Tracking</h2>
+  <p>StackNest does not use cookies, web beacons, pixel trackers, or any third-party analytics scripts (e.g., Google Analytics). The Service loads web fonts from Google Fonts; please refer to <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a> for how font requests are handled.</p>
+  <p>We may use a single session cookie strictly necessary for keeping you logged in to your account. This cookie contains no tracking identifiers and expires when you close your browser or log out.</p>
+
+  <h2>6. Third-Party Service Providers <span class="change-badge">Updated</span></h2>
+  <p>StackNest uses the following third-party processors to deliver the Service. By using StackNest you acknowledge your prompts and generated code may be transmitted to these providers as described:</p>
+
+  <div class="processor-block">
+    <h3>Anthropic (Claude API)</h3>
+    <p>Used for plugin generation on <strong>Pro and Studio plans</strong>.</p>
+    <p>Your prompt is sent to Anthropic's API to generate plugin code. Anthropic does not use API inputs to train their models by default.</p>
+    <p><a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener">Privacy policy →</a></p>
+  </div>
+
+  <div class="processor-block">
+    <h3>Google (Gemini API)</h3>
+    <p>Used for plugin generation on the <strong>Free plan</strong> and for <strong>Pay As You Go credit purchases</strong>.</p>
+    <p>Your prompt is sent to Google's Gemini API. Please review Google's API data usage terms for details on how prompts are handled.</p>
+    <p><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy policy →</a></p>
+  </div>
+
+  <div class="processor-block">
+    <h3>Moonshot AI (Kimi K2.5 API)</h3>
+    <p>Used for <strong>deep code validation on Pro and Studio plans</strong>.</p>
+    <p>Generated code (not your original prompt) is sent to Kimi K2.5 for validation and error analysis.</p>
+    <p><a href="https://www.moonshot.ai/privacy" target="_blank" rel="noopener">Privacy policy →</a></p>
+  </div>
+
+  <div class="processor-block">
+    <h3>Stripe</h3>
+    <p>Used for <strong>payment processing</strong> on Pro, Studio, and Pay As You Go purchases.</p>
+    <p>StackNest never sees or stores your card details. All payment data is handled directly by Stripe, which is PCI-DSS Level 1 certified and used by millions of businesses worldwide.</p>
+    <p><a href="https://stripe.com/gb/privacy" target="_blank" rel="noopener">Privacy policy →</a></p>
+  </div>
+
+  <div class="processor-block">
+    <h3>Google Fonts</h3>
+    <p>Web fonts are loaded from Google's CDN on page load. This involves a network request to Google servers which may log your IP address.</p>
+    <p><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy policy →</a></p>
+  </div>
+
+  <p>We do not use Google Analytics, Meta Pixel, or any other behavioural tracking or advertising tools.</p>
+
+  <h2>7. Security</h2>
+  <p>We take reasonable technical and organisational measures to protect the Service and any information processed by it, including bcrypt password hashing, HTTPS-only transmission, and restricted database access. However, no internet transmission is completely secure. Use the Service at your own risk and do not submit prompts containing sensitive personal information.</p>
+
+  <h2>8. Children's Privacy <span class="change-badge">Updated</span></h2>
+  <p>The Service is not directed at children under 13. Users between the ages of 13 and 17 may use the Service with the awareness and consent of a parent or guardian. We do not knowingly collect personal information from children under 13. If you believe a child under 13 has submitted personal information to us, please contact us at <a href="mailto:hello@stacknest.dev">hello@stacknest.dev</a> and we will delete it promptly.</p>
+
+  <h2>9. Your Rights (UK / EEA Users)</h2>
+  <p>If you are located in the United Kingdom or European Economic Area, you have rights under applicable data protection law (UK GDPR / GDPR), including:</p>
+  <ul>
+    <li><strong>Right of access</strong> — request a copy of the personal data we hold about you.</li>
+    <li><strong>Right to rectification</strong> — request correction of inaccurate data.</li>
+    <li><strong>Right to erasure</strong> — request deletion of your account and associated data.</li>
+    <li><strong>Right to restrict processing</strong> — ask us to limit how we use your data.</li>
+    <li><strong>Right to data portability</strong> — receive your data in a structured, machine-readable format.</li>
+  </ul>
+  <p>To exercise any of these rights, contact us at <a href="mailto:hello@stacknest.dev">hello@stacknest.dev</a>. We will respond within 30 days.</p>
+
+  <h2>10. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. We will note the updated effective date at the top of this page. For material changes, we will notify registered users by email. Continued use of the Service after changes constitutes acceptance of the revised policy.</p>
+
+  <h2>11. Contact</h2>
+  <p>Questions about this Privacy Policy or your data may be directed to <a href="mailto:hello@stacknest.dev">hello@stacknest.dev</a>.</p>
+
+  <div class="divider"></div>
+  <p style="font-size:0.82rem">See also: <a href="/terms">Terms of Service</a></p>
+</div>
+
+</main>
+<footer>
+  &copy; 2026 StackNest &nbsp;&middot;&nbsp;
+  <a href="/terms">Terms</a> &nbsp;&middot;&nbsp;
+  <a href="/privacy">Privacy</a> &nbsp;&middot;&nbsp;
+  <a href="mailto:hello@stacknest.dev">Contact</a>
+<p style="margin-top:8px;font-size:11px;color:#8891b4;text-align:center">StackNest is not affiliated with or endorsed by Mojang Studios, Microsoft, or Discord Inc. Minecraft is a trademark of Mojang Studios.</p>
+</footer>
+
+</body>
+</html>

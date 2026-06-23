@@ -1,0 +1,2620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <title>Admin — StackNest</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg:       #0b0d14;
+      --surface:  #11141c;
+      --surface2: #181b28;
+      --border:   #21253a;
+      --border-s: #2e3358;
+      --text:     #e1e4f3;
+      --muted:    #737ba8;
+      --accent:   #6172ff;
+      --accent-h: #8b99ff;
+      --green:    #3ddc84;
+      --yellow:   #ffd370;
+      --red:      #ff5c6a;
+      --orange:   #ff9050;
+      --radius:   10px;
+      --mono:     'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.5; min-height: 100vh; }
+    a { color: var(--accent); text-decoration: none; }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .hidden { display: none !important; }
+
+    /* ── Login screen ─────────────────────────────────────────────────── */
+    #login-screen {
+      display: flex; align-items: center; justify-content: center;
+      height: 100vh;
+    }
+    .login-box {
+      width: 340px; padding: 40px 36px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+    }
+    .login-logo {
+      display: flex; align-items: center; gap: 9px;
+      font-size: 18px; font-weight: 700; margin-bottom: 6px;
+    }
+    .login-logo-icon {
+      width: 30px; height: 30px; background: var(--accent); border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .login-sub { font-size: 12px; color: var(--muted); margin-bottom: 28px; }
+    .login-label { font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 7px; display: block; }
+    .login-input {
+      width: 100%; padding: 10px 14px; border-radius: 8px;
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--text); font-family: var(--mono); font-size: 13px;
+      outline: none; transition: border-color .15s;
+      margin-bottom: 16px;
+    }
+    .login-input:focus { border-color: var(--accent); }
+    .login-btn {
+      width: 100%; padding: 11px; border-radius: 8px;
+      background: var(--accent); border: none; color: #fff;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: background .15s;
+    }
+    .login-btn:hover { background: #7b8fff; }
+    .login-err { color: var(--red); font-size: 13px; margin-top: 12px; text-align: center; }
+
+    /* ── App shell ────────────────────────────────────────────────────── */
+    #app-screen { display: flex; height: 100vh; }
+
+    /* Sidebar */
+    .sidebar {
+      width: 210px; min-width: 210px;
+      background: var(--surface); border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; padding: 0;
+      transition: width .22s cubic-bezier(.4,0,.2,1), min-width .22s cubic-bezier(.4,0,.2,1);
+      overflow: hidden;
+    }
+    .sidebar.collapsed { width: 0; min-width: 0; border-right: none; }
+    .sidebar-logo {
+      display: flex; align-items: center; gap: 8px;
+      padding: 18px 20px; font-size: 15px; font-weight: 700;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-logo-icon {
+      width: 24px; height: 24px; background: var(--accent); border-radius: 6px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .sidebar-section { padding: 16px 12px 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+    .nav-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 9px 12px; border-radius: 7px; margin: 1px 8px;
+      color: var(--muted); font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: background .12s, color .12s;
+    }
+    .nav-item:hover { background: var(--surface2); color: var(--text); }
+    .nav-item.active { background: rgba(92,111,255,.12); color: var(--accent); }
+    .nav-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .sidebar-footer {
+      margin-top: auto; padding: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .logout-btn {
+      width: 100%; padding: 8px; border-radius: 7px;
+      background: none; border: 1px solid var(--border);
+      color: var(--muted); font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: all .15s;
+    }
+    .logout-btn:hover { border-color: var(--red); color: var(--red); }
+
+    /* Main content */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .topbar {
+      height: 56px; padding: 0 28px;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 14px;
+      flex-shrink: 0;
+    }
+    .topbar-title { font-size: 15px; font-weight: 700; }
+    .topbar-sub   { font-size: 12px; color: var(--muted); }
+    .topbar-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+    .refresh-btn  {
+      padding: 6px 14px; border-radius: 7px;
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--muted); font-size: 12px; font-weight: 600; cursor: pointer;
+      transition: all .15s;
+    }
+    .refresh-btn:hover { border-color: var(--border-s); color: var(--text); }
+
+    /* Content area */
+    .content { flex: 1; overflow-y: auto; padding: 24px 28px; }
+
+    /* ── Pages ─────────────────────────────────────────────────────────── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── Stats grid ────────────────────────────────────────────────────── */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+    .stat-card {
+      padding: 20px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+    }
+    .stat-card .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-bottom: 8px; }
+    .stat-card .value { font-size: 28px; font-weight: 700; letter-spacing: -1px; }
+    .stat-card .sub   { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .stat-card { border-top: 2px solid var(--border); transition: border-top-color .2s; }
+    .stat-card.ok   .value { color: var(--green); }
+    .stat-card.warn .value { color: var(--yellow); }
+    .stat-card.err  .value { color: var(--red); }
+    .stat-card.ok   { border-top-color: rgba(61,220,132,.55); }
+    .stat-card.warn { border-top-color: rgba(255,211,112,.55); }
+    .stat-card.err  { border-top-color: rgba(255,92,106,.55); }
+
+    /* ── System status ─────────────────────────────────────────────────── */
+    .system-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 24px; }
+    .status-card {
+      padding: 18px 20px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      display: flex; align-items: center; gap: 14px;
+    }
+    .status-dot-lg { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .dot-green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .dot-red   { background: var(--red);   box-shadow: 0 0 6px var(--red); }
+    .dot-gray  { background: var(--muted); }
+    .status-card h4 { font-size: 13px; font-weight: 600; }
+    .status-card p  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* ── Section headers ───────────────────────────────────────────────── */
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .section-header h3 { font-size: 14px; font-weight: 700; }
+
+    /* ── Table ─────────────────────────────────────────────────────────── */
+    .table-wrap {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+    }
+    .table-controls {
+      padding: 12px 16px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .filter-input {
+      padding: 7px 12px; border-radius: 7px;
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--text); font-size: 12px; outline: none;
+      transition: border-color .15s; width: 180px;
+    }
+    .filter-input:focus { border-color: var(--accent); }
+    .filter-select {
+      padding: 7px 10px; border-radius: 7px;
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--text); font-size: 12px; outline: none; cursor: pointer;
+    }
+    .apply-btn {
+      padding: 7px 14px; border-radius: 7px;
+      background: var(--accent); border: none; color: #fff;
+      font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      padding: 10px 14px; text-align: left;
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: .06em; color: var(--muted);
+      background: var(--surface2); border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,.025); }
+    .mono { font-family: var(--mono); font-size: 12px; }
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 2px 8px; border-radius: 5px;
+      font-size: 11px; font-weight: 600;
+    }
+    .badge.ok     { background: rgba(61,220,132,.12); color: var(--green); border: 1px solid rgba(61,220,132,.2); }
+    .badge.fail   { background: rgba(255,92,106,.12);  color: var(--red);   border: 1px solid rgba(255,92,106,.2); }
+    .badge.warn   { background: rgba(255,211,112,.12); color: var(--yellow); border: 1px solid rgba(255,211,112,.2); }
+    .badge.pro    { background: rgba(92,111,255,.12); color: var(--accent); border: 1px solid rgba(92,111,255,.2); }
+    .badge.free   { background: rgba(120,130,170,.1); color: var(--muted); border: 1px solid var(--border); }
+    .badge.banned { background: rgba(255,92,106,.15); color: var(--red);   border: 1px solid rgba(255,92,106,.3); }
+    .badge.bypass { background: rgba(61,220,132,.12); color: var(--green); border: 1px solid rgba(61,220,132,.2); }
+    .action-btn {
+      padding: 4px 10px; border-radius: 5px;
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--muted); font-size: 11px; font-weight: 600;
+      cursor: pointer; transition: all .12s; margin-right: 4px;
+    }
+    .action-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .action-btn.danger:hover { border-color: var(--red); color: var(--red); }
+    .action-btn.heal:hover   { border-color: var(--yellow); color: var(--yellow); }
+    .pagination {
+      padding: 12px 16px; border-top: 1px solid var(--border);
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12px; color: var(--muted);
+    }
+    .page-btn {
+      padding: 5px 12px; border-radius: 6px;
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--muted); font-size: 12px; cursor: pointer; transition: all .12s;
+    }
+    .page-btn:hover:not(:disabled) { border-color: var(--border-s); color: var(--text); }
+    .page-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+    /* ── Detail modal ──────────────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.7); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200;
+    }
+    .modal-overlay.hidden { display: none; }
+    .modal {
+      width: 800px; max-width: 95vw; max-height: 88vh;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .modal-header {
+      padding: 18px 22px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .modal-header h3 { font-size: 15px; font-weight: 700; }
+    .modal-close {
+      width: 28px; height: 28px; border-radius: 7px;
+      background: none; border: 1px solid var(--border);
+      color: var(--muted); cursor: pointer; font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .12s;
+    }
+    .modal-close:hover { border-color: var(--red); color: var(--red); }
+    .modal-body { padding: 22px; overflow-y: auto; flex: 1; }
+    .modal-footer {
+      padding: 14px 22px; border-top: 1px solid var(--border);
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+    .meta-item .key { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 4px; }
+    .meta-item .val { font-size: 13px; }
+    .code-block {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 16px; overflow: auto;
+      font-family: var(--mono); font-size: 12px; line-height: 1.7;
+      max-height: 320px; white-space: pre; color: #c9d1d9;
+    }
+    .modal-action {
+      padding: 8px 18px; border-radius: 7px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      border: 1px solid var(--border); background: var(--surface2);
+      color: var(--text); transition: all .12s;
+    }
+    .modal-action.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .modal-action.primary:hover { background: #7b8fff; }
+    .modal-action.warn { border-color: var(--yellow); color: var(--yellow); background: rgba(255,211,112,.06); }
+    .modal-action.danger { border-color: var(--red); color: var(--red); background: rgba(255,92,106,.06); }
+    .modal-spinner { text-align: center; padding: 24px; color: var(--muted); }
+
+    /* ── IP management page ────────────────────────────────────────────── */
+    .ip-form {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px; margin-bottom: 20px;
+    }
+    .ip-form h4 { font-size: 14px; font-weight: 700; margin-bottom: 16px; }
+    .form-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+    .form-input {
+      padding: 8px 12px; border-radius: 7px;
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--text); font-size: 13px; outline: none; transition: border-color .15s;
+      width: 200px;
+    }
+    .form-input:focus { border-color: var(--accent); }
+    .form-check { display: flex; align-items: center; gap: 7px; font-size: 13px; cursor: pointer; }
+    .form-check input { cursor: pointer; accent-color: var(--accent); }
+    .form-submit {
+      padding: 9px 18px; border-radius: 7px;
+      background: var(--accent); border: none; color: #fff;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: background .15s;
+    }
+    .form-submit:hover { background: #7b8fff; }
+
+    /* ── Top IPs list ──────────────────────────────────────────────────── */
+    .top-ips { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+    .top-ip-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: 8px;
+    }
+    .top-ip-addr { font-family: var(--mono); font-size: 13px; flex: 1; }
+    .top-ip-count { font-size: 12px; color: var(--muted); }
+    .top-ip-actions { display: flex; gap: 6px; }
+
+    /* ── Toast ─────────────────────────────────────────────────────────── */
+    .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
+    .toast {
+      padding: 11px 18px; border-radius: 9px;
+      background: var(--surface2); border: 1px solid var(--border);
+      font-size: 13px; font-weight: 500; color: var(--text);
+      box-shadow: 0 8px 24px rgba(0,0,0,.3);
+      animation: slideIn .2s ease;
+    }
+    .toast.ok  { border-color: var(--green); color: var(--green); }
+    .toast.err { border-color: var(--red);   color: var(--red); }
+    @keyframes slideIn { from { transform: translateX(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+    /* ── Responsive ────────────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .system-row { grid-template-columns: 1fr; }
+    }
+
+    /* ── Activity charts ─────────────────────────────────────────────────── */
+    .chart-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+    .chart-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 18px 20px;
+    }
+    .chart-card-title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .07em; color: var(--muted); margin-bottom: 14px;
+    }
+    .chart-wrap { position: relative; height: 130px; }
+    @media (max-width: 700px) { .chart-row { grid-template-columns: 1fr; } }
+
+    /* ── Sparklines (God View) ─────────────────────────────────────────── */
+    .spark-row {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;
+      margin-bottom: 20px;
+    }
+    .spark-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 18px;
+    }
+    .spark-card .chart-card-title { margin-bottom: 8px; }
+    .spark-wrap { position: relative; height: 56px; }
+
+    /* Sidebar active indicator */
+    .nav-item.active {
+      background: rgba(97,115,255,.13);
+      color: var(--accent);
+      border-left: 2px solid var(--accent);
+      padding-left: 10px;
+    }
+    .nav-item:not(.active) { border-left: 2px solid transparent; padding-left: 10px; }
+
+    /* Sidebar toggle */
+    .sidebar-toggle {
+      width: 32px; height: 32px; border-radius: 7px;
+      background: none; border: 1px solid var(--border);
+      color: var(--muted); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s, color .15s, border-color .15s;
+      flex-shrink: 0;
+    }
+    .sidebar-toggle:hover { background: var(--surface2); color: var(--text); border-color: var(--accent); }
+    .sidebar-toggle svg { width: 16px; height: 16px; pointer-events: none; }
+
+    /* Topbar clock */
+    .topbar-clock {
+      font-family: var(--mono); font-size: 12px; color: var(--muted);
+      border-left: 1px solid var(--border); padding-left: 12px;
+    }
+
+    /* Stat-card hover lift */
+    .stat-card {
+      transition: box-shadow .18s, border-top-color .2s;
+    }
+    .stat-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,.35); }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+  </style>
+</head>
+<body>
+
+<!-- ── Login screen ──────────────────────────────────────────────────────── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      StackNest
+    </div>
+    <div class="login-sub">Admin panel — authorised access only</div>
+    <label class="login-label" for="pwd">Admin password</label>
+    <input class="login-input" id="pwd" type="password" placeholder="••••••••••••" autocomplete="current-password" />
+    <button class="login-btn" id="login-btn" onclick="doLogin()">Sign in</button>
+    <div class="login-err hidden" id="login-err"></div>
+  </div>
+</div>
+
+<!-- ── App shell ─────────────────────────────────────────────────────────── -->
+<div id="app-screen" class="hidden">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      Admin
+    </div>
+    <div class="sidebar-section">Overview</div>
+    <div class="nav-item active" id="nav-dashboard" onclick="showPage('dashboard')">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      Dashboard
+    </div>
+    <div class="sidebar-section">Data</div>
+    <div class="nav-item" id="nav-logs" onclick="showPage('logs')">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      Request Logs
+    </div>
+    <div class="nav-item" id="nav-users" onclick="showPage('users')">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      Users
+    </div>
+    <div class="nav-item" id="nav-ips" onclick="showPage('ips')">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+      IP Management
+    </div>
+    <div class="sidebar-section">Tools</div>
+    <div class="nav-item" id="nav-heal" onclick="showPage('heal')">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      Fix on the fly
+    </div>
+    <div class="nav-item" id="nav-arti" onclick="showPage('arti')">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 8h.01M15 8h.01"/></svg>
+      Arti
+    </div>
+    <div class="sidebar-section">Monitoring</div>
+    <div class="nav-item" id="nav-godview" onclick="showPage('godview')">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+      God View
+    </div>
+    <div class="nav-item" id="nav-bot-hosting" onclick="showPage('bot-hosting')">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="4" y="8" width="16" height="12" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 13h.01M15 13h.01M9.5 17h5M12 4v4"/></svg>
+      Bot Hosting
+    </div>
+    <div class="nav-item" id="nav-tickets" onclick="showPage('tickets')">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/></svg>
+      Support Tickets
+    </div>
+    <div class="nav-item" id="nav-backups" onclick="showPage('backups')">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>
+      DB Backups
+    </div>
+    <div class="nav-item" id="nav-server-log" onclick="showPage('server-log')">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      Server Log
+    </div>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="doLogout()">Sign out</button>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <button class="sidebar-toggle" id="sidebar-toggle-btn" onclick="toggleSidebar()" title="Toggle sidebar" aria-label="Toggle sidebar">
+        <svg id="sidebar-toggle-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+      <div>
+        <div class="topbar-title" id="topbar-title">Dashboard</div>
+        <div class="topbar-sub" id="topbar-sub">System overview</div>
+      </div>
+      <div class="topbar-right">
+        <button class="refresh-btn" onclick="refreshCurrentPage()">&#8635; Refresh</button>
+        <a href="/" style="font-size:12px;color:var(--muted)" target="_blank">View site</a>
+        <span class="topbar-clock" id="admin-clock"></span>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ── Dashboard page ───────────────────────────────────────────── -->
+      <div class="page active" id="page-dashboard">
+        <div class="stats-grid" id="stats-cards">
+          <div class="stat-card"><div class="label">Total Generations</div><div class="value" id="s-total">—</div><div class="sub">all time</div></div>
+          <div class="stat-card ok"><div class="label">Success Rate</div><div class="value" id="s-rate">—</div><div class="sub" id="s-rate-sub">0 success / 0 fail</div></div>
+          <div class="stat-card"><div class="label">Today</div><div class="value" id="s-today">—</div><div class="sub" id="s-today-sub">last 24 hours</div></div>
+          <div class="stat-card"><div class="label">Avg. Elapsed</div><div class="value" id="s-elapsed">—</div><div class="sub">seconds per generation</div></div>
+          <div class="stat-card ok"><div class="label">Compile Rate</div><div class="value" id="s-compile-rate">—</div><div class="sub" id="s-compile-sub">of generated plugins</div></div>
+          <div class="stat-card"><div class="label">Discord Linked</div><div class="value" id="s-discord">—</div><div class="sub" id="s-discord-sub">accounts</div></div>
+          <div class="stat-card warn"><div class="label">Open Tickets</div><div class="value" id="s-open-tickets">—</div><div class="sub"><a href="#" onclick="showPage('tickets');return false" style="color:var(--yellow)">view all</a></div></div>
+          <div class="stat-card" id="s-bots-card"><div class="label">Hosted Bots</div><div class="value" id="s-bots-total">—</div><div class="sub" id="s-bots-sub">loading…</div></div>
+          <div class="stat-card"><div class="label">Mod Generations</div><div class="value" id="s-mods-total">—</div><div class="sub" id="s-mods-sub">all time</div></div>
+        </div>
+
+        <div class="system-row" id="system-row">
+          <div class="status-card">
+            <div class="status-dot-lg dot-gray" id="sys-api-dot"></div>
+            <div><h4>API Server</h4><p id="sys-api-text">Checking...</p></div>
+          </div>
+          <div class="status-card">
+            <div class="status-dot-lg dot-gray" id="sys-inf-dot"></div>
+            <div><h4>Inference (llama.cpp)</h4><p id="sys-inf-text">Checking...</p></div>
+          </div>
+          <div class="status-card">
+            <div class="status-dot-lg dot-gray" id="sys-freeai-dot"></div>
+            <div><h4>Free AI (Gemini)</h4><p id="sys-freeai-text">Checking...</p></div>
+          </div>
+          <div class="status-card">
+            <div class="status-dot-lg dot-gray" id="sys-premiumai-dot"></div>
+            <div><h4>Premium AI (Claude)</h4><p id="sys-premiumai-text">Checking...</p></div>
+          </div>
+          <div class="status-card">
+            <div class="status-dot-lg dot-gray" id="sys-sec-dot"></div>
+            <div>
+              <h4>Admin Security</h4>
+              <p id="sys-sec-text">Checking...</p>
+              <p id="sys-sec-access" style="font-size:11px;color:var(--muted);margin-top:3px"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-row" id="chart-row">
+          <div class="chart-card">
+            <div class="chart-card-title">Successful Generations &mdash; 14 days</div>
+            <div class="chart-wrap"><canvas id="chart-gens"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-title">New Signups &mdash; 14 days</div>
+            <div class="chart-wrap"><canvas id="chart-signups"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-title">Failed Generations &mdash; 14 days</div>
+            <div class="chart-wrap"><canvas id="chart-errors"></canvas></div>
+          </div>
+        </div>
+
+        <div class="section-header">
+          <h3>Top IPs (all time)</h3>
+        </div>
+        <div class="table-wrap" style="margin-bottom:24px">
+          <table>
+            <thead><tr><th>IP Address</th><th>Requests</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="top-ips-body"><tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px">Loading...</td></tr></tbody>
+          </table>
+        </div>
+
+        <div class="section-header"><h3>Recent Failures</h3></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Time</th><th>IP</th><th>Instruction</th><th>Errors</th><th></th></tr></thead>
+            <tbody id="recent-errors-body"><tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── Logs page ─────────────────────────────────────────────────── -->
+      <div class="page" id="page-logs">
+        <div class="table-wrap">
+          <div class="table-controls" style="flex-wrap:wrap;gap:8px">
+            <input class="filter-input" id="log-ip-filter" placeholder="Filter by IP" onkeydown="if(event.key==='Enter')loadLogs(0)" />
+            <input class="filter-input" id="log-id-jump" placeholder="Jump to ID #" type="number" style="width:110px" onkeydown="if(event.key==='Enter')jumpToLogId()" title="Enter a log ID and press Enter to open it" />
+            <select class="filter-select" id="log-ep-filter">
+              <option value="">All endpoints</option>
+              <option value="/api/generate">/api/generate</option>
+              <option value="/api/generate-progress">/api/generate-progress</option>
+              <option value="/api/generate-skript">/api/generate-skript</option>
+              <option value="/api/generate-datapack">/api/generate-datapack</option>
+              <option value="/api/generate-mod-progress">/api/generate-mod-progress</option>
+              <option value="/api/stream">/api/stream</option>
+              <option value="/api/validate">/api/validate</option>
+              <option value="/api/heal">/api/heal</option>
+              <option value="/api/logs/analyze">/api/logs/analyze</option>
+            </select>
+            <select class="filter-select" id="log-ok-filter">
+              <option value="">All results</option>
+              <option value="true">Success only</option>
+              <option value="false">Failures only</option>
+            </select>
+            <input class="filter-input" id="log-from" type="date" title="From date" style="width:136px;cursor:pointer;color-scheme:dark" />
+            <input class="filter-input" id="log-to" type="date" title="To date" style="width:136px;cursor:pointer;color-scheme:dark" />
+            <button class="apply-btn" onclick="loadLogs(0)">Apply</button>
+            <button class="apply-btn" style="background:var(--surface2);border:1px solid var(--border-s);color:var(--muted)" onclick="clearLogFilters()">Clear</button>
+          </div>
+          <table>
+            <thead><tr><th>ID</th><th>Time</th><th>IP</th><th>Endpoint</th><th>Tier</th><th>Instruction</th><th>Result</th><th>Attempts</th><th>Elapsed</th><th>Actions</th></tr></thead>
+            <tbody id="logs-body"><tr><td colspan="10" style="text-align:center;color:var(--muted);padding:24px">Loading...</td></tr></tbody>
+          </table>
+          <div class="pagination">
+            <button class="page-btn" id="logs-prev" onclick="logsPage(-1)" disabled>← Prev</button>
+            <span id="logs-page-info">Page 1</span>
+            <button class="page-btn" id="logs-next" onclick="logsPage(1)">Next →</button>
+            <span style="margin-left:auto" id="logs-count"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── IP Management page ────────────────────────────────────────── -->
+      <div class="page" id="page-ips">
+        <div class="ip-form">
+          <h4>Add / Update IP Rule</h4>
+          <div class="form-row">
+            <div class="form-group">
+              <div class="form-label">IP Address</div>
+              <input class="form-input" id="ip-addr" type="text" placeholder="e.g. 1.2.3.4" />
+            </div>
+            <div class="form-group">
+              <div class="form-label">Note</div>
+              <input class="form-input" id="ip-note" type="text" placeholder="Reason / description" style="width:260px" />
+            </div>
+            <div class="form-group" style="justify-content:flex-end;padding-bottom:8px">
+              <label class="form-check"><input type="checkbox" id="ip-banned" /> Ban (block all requests)</label>
+            </div>
+            <div class="form-group" style="justify-content:flex-end;padding-bottom:8px">
+              <label class="form-check"><input type="checkbox" id="ip-bypass" /> Bypass rate limits</label>
+            </div>
+            <button class="form-submit" onclick="setIp()">Save rule</button>
+          </div>
+        </div>
+
+        <div class="section-header"><h3>Active IP Rules</h3></div>
+        <div class="table-wrap" style="margin-bottom:24px">
+          <table>
+            <thead><tr><th>IP Address</th><th>Note</th><th>Status</th><th>Updated</th><th>Actions</th></tr></thead>
+            <tbody id="ips-body"><tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px">Loading...</td></tr></tbody>
+          </table>
+        </div>
+
+        <div class="section-header"><h3>Top Requesters</h3></div>
+        <div class="top-ips" id="top-requesters">
+          <div style="color:var(--muted);font-size:13px">Loading...</div>
+        </div>
+      </div>
+
+      <!-- ── Users page ─────────────────────────────────────────────────── -->
+      <div class="page" id="page-users">
+        <div class="table-wrap">
+          <div class="table-controls">
+            <input class="filter-input" id="user-search" placeholder="Search by email" onkeydown="if(event.key==='Enter')loadUsers(0)" style="width:240px" />
+            <select class="filter-select" id="user-plan-filter">
+              <option value="">All plans</option>
+              <option value="studio">Studio</option>
+              <option value="pro">Pro</option>
+              <option value="starter">Starter</option>
+              <option value="free">Free</option>
+            </select>
+            <button class="apply-btn" onclick="loadUsers(0)">Search</button>
+            <span id="users-count" style="margin-left:auto;font-size:12px;color:var(--muted)"></span>
+          </div>
+          <table>
+            <thead><tr><th>Email / IP</th><th>Plan</th><th>Joined</th><th>Projects</th><th>Stripe Customer</th><th>Actions</th></tr></thead>
+            <tbody id="users-body"><tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">Loading...</td></tr></tbody>
+          </table>
+          <div class="pagination">
+            <button class="page-btn" id="users-prev" onclick="usersPage(-1)" disabled>← Prev</button>
+            <span id="users-page-info">Page 1</span>
+            <button class="page-btn" id="users-next" onclick="usersPage(1)">Next →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Fix on the fly ─────────────────────────────────────────────── -->
+      <div class="page" id="page-heal">
+        <div style="max-width:760px">
+          <div class="ip-form">
+            <h4>Heal by Log ID</h4>
+            <p style="color:var(--muted);font-size:13px;margin-bottom:16px">Run Context-Aware Healing (via Kimi K2.5) on a specific logged generation. Requires KIMI_API_KEY.</p>
+            <div class="form-row">
+              <div class="form-group">
+                <div class="form-label">Log Entry ID</div>
+                <input class="form-input" id="heal-log-id" type="number" placeholder="42" style="width:140px" />
+              </div>
+              <button class="form-submit" id="heal-run-btn" onclick="runAdminHeal()">Run Healing</button>
+            </div>
+          </div>
+
+          <div class="ip-form">
+            <h4>Regenerate Plugin</h4>
+            <p style="color:var(--muted);font-size:13px;margin-bottom:16px">Re-run the full generation + validation loop for a saved instruction.</p>
+            <div class="form-row">
+              <div class="form-group">
+                <div class="form-label">Log Entry ID</div>
+                <input class="form-input" id="regen-log-id" type="number" placeholder="42" style="width:140px" />
+              </div>
+              <button class="form-submit" id="regen-run-btn" onclick="runAdminRegen()">Regenerate</button>
+            </div>
+          </div>
+
+          <div id="heal-result" class="hidden">
+            <div class="section-header"><h3 id="heal-result-title">Result</h3></div>
+            <div id="heal-result-body"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── God View ──────────────────────────────────────────────────── -->
+      <div class="page" id="page-godview">
+
+        <!-- Live counters strip -->
+        <div class="stats-grid" id="gv-stats-grid" style="margin-bottom:20px;grid-template-columns:repeat(4,1fr)">
+          <div class="stat-card ok"><div class="label">Active IPs (1h)</div><div class="value" id="gv-active-ips">—</div><div class="sub">unique IPs last hour</div></div>
+          <div class="stat-card"><div class="label">Gens/hr</div><div class="value" id="gv-gen-hour">—</div><div class="sub" id="gv-gen-hour-sub">last 60 min</div></div>
+          <div class="stat-card ok"><div class="label">Success/hr</div><div class="value" id="gv-ok-hour">—</div><div class="sub" id="gv-ok-hour-sub">succeeded</div></div>
+          <div class="stat-card err" id="gv-fail-card"><div class="label">Fail/hr</div><div class="value" id="gv-fail-hour">—</div><div class="sub" id="gv-fail-hour-sub">failed</div></div>
+          <div class="stat-card"><div class="label">CPU</div><div class="value" id="gv-cpu">—</div><div class="sub">utilisation %</div></div>
+          <div class="stat-card"><div class="label">RAM</div><div class="value" id="gv-ram">—</div><div class="sub" id="gv-ram-sub">used / total</div></div>
+          <div class="stat-card"><div class="label">Disk</div><div class="value" id="gv-disk">—</div><div class="sub" id="gv-disk-sub">used / total</div></div>
+          <div class="stat-card"><div class="label">Uptime</div><div class="value" id="gv-uptime">—</div><div class="sub">server uptime</div></div>
+        </div>
+
+        <!-- CPU/RAM/Disk sparklines -->
+        <div class="spark-row">
+          <div class="spark-card">
+            <div class="chart-card-title">CPU % &mdash; live</div>
+            <div class="spark-wrap">
+              <svg id="spark-cpu" viewBox="0 0 240 44" preserveAspectRatio="none" style="width:100%;height:44px;display:block;overflow:visible">
+                <defs><linearGradient id="sg-cpu" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6172ff" stop-opacity="0.35"/><stop offset="100%" stop-color="#6172ff" stop-opacity="0"/></linearGradient></defs>
+                <polygon class="spark-fill" fill="url(#sg-cpu)" points="0,44 240,44"/>
+                <polyline class="spark-line" fill="none" stroke="#6172ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points=""/>
+              </svg>
+            </div>
+          </div>
+          <div class="spark-card">
+            <div class="chart-card-title">RAM % &mdash; live</div>
+            <div class="spark-wrap">
+              <svg id="spark-ram" viewBox="0 0 240 44" preserveAspectRatio="none" style="width:100%;height:44px;display:block;overflow:visible">
+                <defs><linearGradient id="sg-ram" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3ddc84" stop-opacity="0.35"/><stop offset="100%" stop-color="#3ddc84" stop-opacity="0"/></linearGradient></defs>
+                <polygon class="spark-fill" fill="url(#sg-ram)" points="0,44 240,44"/>
+                <polyline class="spark-line" fill="none" stroke="#3ddc84" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points=""/>
+              </svg>
+            </div>
+          </div>
+          <div class="spark-card">
+            <div class="chart-card-title">Disk % &mdash; snapshot</div>
+            <div class="spark-wrap">
+              <svg id="spark-disk" viewBox="0 0 240 44" preserveAspectRatio="none" style="width:100%;height:44px;display:block;overflow:visible">
+                <defs><linearGradient id="sg-disk" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffd370" stop-opacity="0.35"/><stop offset="100%" stop-color="#ffd370" stop-opacity="0"/></linearGradient></defs>
+                <polygon class="spark-fill" fill="url(#sg-disk)" points="0,44 240,44"/>
+                <polyline class="spark-line" fill="none" stroke="#ffd370" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points=""/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <!-- Live generation feed -->
+          <div>
+            <div class="section-header" style="display:flex;align-items:center;justify-content:space-between">
+              <h3>Live Generation Feed <span style="font-size:11px;color:var(--muted);font-weight:400">(last 40)</span></h3>
+              <div id="gv-live-dot" style="width:8px;height:8px;border-radius:50%;background:var(--green);animation:blink 1.5s infinite"></div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>ID</th><th>Time</th><th>IP</th><th>Platform</th><th>Tier</th><th>Result</th><th>Elapsed</th><th>Instruction</th></tr></thead>
+                <tbody id="gv-feed-body"><tr><td colspan="8" style="text-align:center;color:var(--muted);padding:20px">Loading…</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Recent signups -->
+          <div>
+            <div class="section-header"><h3>Recent Signups <span style="font-size:11px;color:var(--muted);font-weight:400">(last 20)</span></h3></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Email</th><th>Plan</th><th>Joined</th><th>Projects</th></tr></thead>
+                <tbody id="gv-users-body"><tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px">Loading…</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── Bot Hosting page ─────────────────────────────────────────── -->
+      <div class="page" id="page-bot-hosting">
+        <div class="stats-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:16px">
+          <div class="stat-card"><div class="label">Total Bots</div><div class="value" id="bh-total">—</div><div class="sub">all hosted entries</div></div>
+          <div class="stat-card ok"><div class="label">Running</div><div class="value" id="bh-running">—</div><div class="sub">active workers</div></div>
+          <div class="stat-card"><div class="label">Stopped</div><div class="value" id="bh-stopped">—</div><div class="sub">inactive workers</div></div>
+          <div class="stat-card warn"><div class="label">Zombie PIDs</div><div class="value" id="bh-zombie">—</div><div class="sub">status says running, process dead</div></div>
+          <div class="stat-card err"><div class="label">Missing Files</div><div class="value" id="bh-missing">—</div><div class="sub">missing code/token files</div></div>
+        </div>
+
+        <div class="table-wrap" style="margin-bottom:16px">
+          <div class="table-controls">
+            <input class="filter-input" id="bh-search" placeholder="Search by email" onkeydown="if(event.key==='Enter')loadBotHostingAdmin(0)" style="width:260px" />
+            <button class="apply-btn" onclick="loadBotHostingAdmin(0)">Search</button>
+            <span id="bh-meta" style="margin-left:auto;font-size:12px;color:var(--muted)">Loading...</span>
+          </div>
+          <table>
+            <thead><tr><th>User</th><th>Plan</th><th>Hosting Access</th><th>Hosted Bots</th><th>Actions</th></tr></thead>
+            <tbody id="bh-users-body"><tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Loading...</td></tr></tbody>
+          </table>
+          <div class="pagination">
+            <button class="page-btn" id="bh-prev" onclick="bhPage(-1)" disabled>← Prev</button>
+            <span id="bh-page-info">Page 1</span>
+            <button class="page-btn" id="bh-next" onclick="bhPage(1)">Next →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Support Tickets ──────────────────────────────────────────────── -->
+      <div class="page" id="page-tickets">
+        <div class="table-wrap">
+          <div class="table-controls">
+            <select class="filter-select" id="ticket-status-filter">
+              <option value="">All statuses</option>
+              <option value="open">Open</option>
+              <option value="in_progress">In Progress</option>
+              <option value="closed">Closed</option>
+            </select>
+            <button class="apply-btn" onclick="loadTickets(0)">Filter</button>
+            <span id="tickets-count" style="margin-left:auto;font-size:12px;color:var(--muted)"></span>
+          </div>
+          <table>
+            <thead><tr><th>#</th><th>Time</th><th>Email</th><th>Subject</th><th>Status</th><th>Admin Note</th><th>Actions</th></tr></thead>
+            <tbody id="tickets-body"><tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px">Loading...</td></tr></tbody>
+          </table>
+          <div class="pagination">
+            <button class="page-btn" id="tickets-prev" onclick="ticketsPage(-1)" disabled>← Prev</button>
+            <span id="tickets-page-info">Page 1</span>
+            <button class="page-btn" id="tickets-next" onclick="ticketsPage(1)">Next →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── DB Backups ────────────────────────────────────────────────── -->
+      <div class="page" id="page-backups">
+
+        <!-- Health row -->
+        <div class="stats-grid" id="backup-health-cards" style="margin-bottom:18px">
+          <div class="stat-card" id="bh-integrity-card"><div class="label">DB Integrity</div><div class="value" id="bh-integrity">—</div><div class="sub">PRAGMA integrity_check</div></div>
+          <div class="stat-card" id="bh-size-card"><div class="label">DB Size</div><div class="value" id="bh-size">—</div><div class="sub">live database</div></div>
+          <div class="stat-card ok"><div class="label">Users</div><div class="value" id="bh-users">—</div><div class="sub" id="bh-users-sub">—</div></div>
+          <div class="stat-card"><div class="label">Projects</div><div class="value" id="bh-projects">—</div><div class="sub">user projects</div></div>
+          <div class="stat-card"><div class="label">Total Backups</div><div class="value" id="bh-count">—</div><div class="sub">in data/backups/</div></div>
+        </div>
+
+        <!-- Actions bar -->
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px">
+          <button class="apply-btn" onclick="createBackup()">+ Create Backup Now</button>
+          <button class="apply-btn" style="background:var(--surface2);border-color:var(--border-s)" onclick="loadBackupHealth()">↺ Refresh Health</button>
+          <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+            <span style="font-size:12px;color:var(--muted)">Retention:</span>
+            <input type="number" id="bk-keep" value="10" min="3" max="100" style="width:52px;padding:5px 8px;border-radius:6px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:12px" title="Keep N most recent">
+            <span style="font-size:12px;color:var(--muted)">keep,</span>
+            <input type="number" id="bk-age" value="30" min="1" max="365" style="width:52px;padding:5px 8px;border-radius:6px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:12px" title="Max age days">
+            <span style="font-size:12px;color:var(--muted)">days max</span>
+            <button class="apply-btn" style="background:var(--orange);border-color:var(--orange)" onclick="runCleanup()">Run Cleanup</button>
+          </div>
+        </div>
+
+        <!-- Backups table -->
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Filename</th><th>Size</th><th>Age</th><th>SHA-256</th><th>Actions</th></tr></thead>
+            <tbody id="backups-body"><tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Loading...</td></tr></tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- ── Arti page ─────────────────────────────────────────────────── -->
+      <div class="page" id="page-arti">
+
+        <!-- Toggle card -->
+        <div id="arti-banner" style="border-radius:12px;padding:22px 24px;margin-bottom:20px;display:flex;align-items:flex-start;gap:18px;border:1px solid var(--border);background:var(--surface);transition:border-color .3s,background .3s">
+          <div id="arti-avatar" style="width:52px;height:52px;border-radius:50%;background:var(--accent);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:24px;transition:background .3s">🤖</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px">
+              <span style="font-size:17px;font-weight:700">Arti</span>
+              <span id="arti-status-badge" style="font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600;background:rgba(255,92,106,.12);color:var(--red);border:1px solid rgba(255,92,106,.3)">Inactive</span>
+              <span id="arti-since-label" style="font-size:12px;color:var(--muted);display:none"></span>
+            </div>
+            <div style="font-size:13px;color:var(--muted);margin-bottom:14px">When enabled, Arti monitors open tickets and replies to them automatically, and keeps StackNest maintained while you're away.</div>
+            <textarea id="arti-message" rows="2" placeholder="Away message / reason (optional — shown in activity log)" style="width:100%;padding:8px 12px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:13px;font-family:inherit;resize:vertical;outline:none;margin-bottom:12px;transition:border-color .15s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button id="arti-enable-btn" onclick="artiEnable()" style="padding:9px 20px;border-radius:8px;background:var(--green);border:none;color:#0b0d14;font-size:13px;font-weight:700;cursor:pointer;transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Enable Arti</button>
+              <button id="arti-disable-btn" onclick="artiDisable()" style="display:none;padding:9px 20px;border-radius:8px;background:var(--red);border:none;color:#fff;font-size:13px;font-weight:700;cursor:pointer;transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Disable Arti</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Open tickets Arti can reply to -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div style="font-size:14px;font-weight:600">Open Tickets</div>
+          <button class="apply-btn" onclick="loadArtiTickets()">↺ Refresh</button>
+        </div>
+        <div id="arti-tickets" style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
+          <div style="color:var(--muted);font-size:13px;padding:16px 0">Loading...</div>
+        </div>
+
+        <!-- Activity log -->
+        <div style="font-size:14px;font-weight:600;margin-bottom:10px">Arti Activity Log</div>
+        <div id="arti-log" style="display:flex;flex-direction:column;gap:6px">
+          <div style="color:var(--muted);font-size:13px;padding:8px 0">No activity yet.</div>
+        </div>
+
+      </div>
+
+      <!-- ── Server Log page ─────────────────────────────────────────────── -->
+      <div class="page" id="page-server-log">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
+          <select class="filter-select" id="slog-lines" onchange="loadServerLog()">
+            <option value="100">100 lines</option>
+            <option value="200" selected>200 lines</option>
+            <option value="500">500 lines</option>
+            <option value="1000">1000 lines</option>
+          </select>
+          <input class="filter-input" id="slog-filter" placeholder="Filter lines…" style="width:220px" oninput="renderServerLog()" />
+          <button class="apply-btn" onclick="loadServerLog()">↺ Refresh</button>
+          <label style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);cursor:pointer">
+            <input type="checkbox" id="slog-auto" onchange="toggleServerLogAuto()" style="cursor:pointer;accent-color:var(--accent)" />
+            Auto-refresh (5s)
+          </label>
+          <label style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);cursor:pointer">
+            <input type="checkbox" id="slog-errors-only" onchange="renderServerLog()" style="cursor:pointer;accent-color:var(--accent)" />
+            Errors &amp; warnings only
+          </label>
+          <button class="apply-btn" style="background:var(--surface2);border:1px solid var(--border-s);color:var(--muted)" onclick="navigator.clipboard.writeText(document.getElementById('slog-output').innerText).then(()=>toast('Copied','ok'))" title="Copy visible lines">Copy</button>
+          <span id="slog-count" style="margin-left:auto;font-size:12px;color:var(--muted)"></span>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden">
+          <pre id="slog-output" style="padding:16px;font-family:var(--mono);font-size:12px;line-height:1.7;overflow:auto;max-height:calc(100vh - 230px);margin:0;white-space:pre-wrap;word-break:break-all;color:#c9d1d9"><span style="color:var(--muted)">Loading server log…</span></pre>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+
+</div><!-- /app-screen -->
+
+<!-- ── Ticket Chat Modal ─────────────────────────────────────────────────── -->
+<div class="modal-overlay hidden" id="ticket-modal">
+  <div class="modal" style="max-width:580px;display:flex;flex-direction:column;max-height:90vh">
+    <div class="modal-header" style="flex-shrink:0">
+      <div style="flex:1;min-width:0">
+        <h3 id="ticket-modal-title" style="margin:0 0 2px">Ticket</h3>
+        <div id="ticket-modal-meta" style="font-size:12px;color:var(--muted)"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+        <select id="ticket-modal-status" class="filter-select" style="padding:5px 10px;font-size:12px" onchange="ticketUpdateStatus()">
+          <option value="open">Open</option>
+          <option value="in_progress">In Progress</option>
+          <option value="closed">Closed</option>
+        </select>
+        <button class="modal-close" onclick="closeTicketModal()">✕</button>
+      </div>
+    </div>
+    <!-- Chat thread -->
+    <div id="ticket-chat" style="flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:10px;min-height:180px;max-height:380px;background:var(--bg)"></div>
+    <!-- Reply box -->
+    <div style="flex-shrink:0;padding:14px 20px;border-top:1px solid var(--border);background:var(--surface)">
+      <textarea id="ticket-reply-input" rows="3" placeholder="Type your reply…"
+        style="width:100%;padding:10px 12px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:13px;font-family:inherit;resize:vertical;outline:none;transition:border-color .15s;box-sizing:border-box"
+        onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"
+        onkeydown="if(event.ctrlKey&&event.key==='Enter'){sendTicketReply();event.preventDefault()}"></textarea>
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px">
+        <button class="modal-action" onclick="closeTicketModal()">Close</button>
+        <button class="modal-action primary" id="ticket-reply-btn" onclick="sendTicketReply()">Send Reply</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Detail modal ──────────────────────────────────────────────────────── -->
+<div class="modal-overlay hidden" id="detail-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-title">Request Detail</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body">
+      <div class="modal-spinner">Loading...</div>
+    </div>
+    <div class="modal-footer" id="modal-footer"></div>
+  </div>
+</div>
+
+<!-- ── Toast container ───────────────────────────────────────────────────── -->
+<div class="toast-container" id="toasts"></div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+let logsOffset = 0;
+const LOGS_PER_PAGE = 50;
+let currentStats = null;
+let currentPage = 'dashboard';
+
+// ── Auth ───────────────────────────────────────────────────────────────────
+async function doLogin() {
+  const btn  = document.getElementById('login-btn');
+  const err  = document.getElementById('login-err');
+  const pwd  = document.getElementById('pwd').value;
+  btn.disabled = true; btn.textContent = 'Signing in...';
+  err.classList.add('hidden');
+
+  try {
+    const resp = await fetch('/admin/login', {
+      method: 'POST', credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pwd }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) {
+      err.textContent = data.error || 'Login failed';
+      err.classList.remove('hidden');
+    } else {
+      showApp();
+    }
+  } catch (e) {
+    err.textContent = 'Network error';
+    err.classList.remove('hidden');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Sign in';
+  }
+}
+
+async function doLogout() {
+  await fetch('/admin/logout', { method: 'POST', credentials: 'include' });
+  location.reload();
+}
+
+function authHeaders() {
+  return {};
+}
+
+async function adminFetch(url, opts = {}) {
+  opts.credentials = 'include';
+  opts.headers = { ...authHeaders(), ...(opts.headers || {}) };
+  const resp = await fetch(url, opts);
+  if (resp.status === 401) { location.reload(); throw new Error('Unauthorized'); }
+  return resp;
+}
+
+// ── Show app after login ───────────────────────────────────────────────────
+
+// ── Bot hosting stats (dashboard card) ────────────────────────────────────
+async function loadBotStats() {
+  try {
+    const r = await adminFetch('/admin/api/bot-stats');
+    if (!r.ok) return;
+    const d = await r.json();
+    const el = document.getElementById('s-bots-total');
+    const sub = document.getElementById('s-bots-sub');
+    if (el)  el.textContent  = d.total ?? '—';
+    if (sub) sub.textContent = `${d.running ?? 0} running · ${d.stopped ?? 0} stopped`;
+    const card = document.getElementById('s-bots-card');
+    if (card && d.running > 0) card.classList.add('ok');
+  } catch {}
+}
+
+function showApp() {
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('app-screen').classList.remove('hidden');
+  loadDashboard();
+  renderCharts();
+  loadBotStats();
+}
+
+// ── Page switching ─────────────────────────────────────────────────────────
+const PAGE_TITLES = {
+  dashboard:    ['Dashboard',        'System overview'],
+  logs:         ['Request Logs',     'All API requests'],
+  users:        ['Users',            'Manage user accounts and plans'],
+  ips:          ['IP Management',    'Ban and bypass controls'],
+  heal:         ['Fix on the Fly',   'Heal or regenerate plugins'],
+  arti:         ['Arti',             'AI away-mode — handles support and maintenance while you\'re away'],
+  godview:      ['God View',         'Live system and user activity monitor'],
+  'bot-hosting':['Bot Hosting',      'Hosted bot health and user limits'],
+  tickets:      ['Support Tickets',  'User support requests'],
+  backups:      ['DB Backups',       'Backup, restore and protect the database'],
+  'server-log': ['Server Log',       'Live tail of the stacknest service log'],
+};
+
+function showPage(name) {
+  currentPage = name;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('nav-' + name).classList.add('active');
+  const [title, sub] = PAGE_TITLES[name] || [name, ''];
+  document.getElementById('topbar-title').textContent = title;
+  document.getElementById('topbar-sub').textContent   = sub;
+
+  if (name === 'dashboard') { loadDashboard(); renderCharts(); }
+  if (name === 'logs')      loadLogs(0);
+  if (name === 'users')     loadUsers(0);
+  if (name === 'ips')       loadIPs();
+  if (name === 'arti')      loadArti();
+  if (name === 'godview')   loadGodView();
+  if (name === 'bot-hosting') loadBotHostingAdmin(0);
+  if (name === 'tickets')   loadTickets(0);
+  if (name === 'backups')    { loadBackupHealth(); loadBackups(); }
+  if (name === 'server-log') loadServerLog();
+}
+
+function refreshCurrentPage() { showPage(currentPage); }
+
+// ── Users ──────────────────────────────────────────────────────────────────
+let usersOffset = 0;
+const USERS_PER_PAGE = 50;
+
+async function loadUsers(offset) {
+  if (offset !== undefined) usersOffset = Math.max(0, offset);
+  const search = document.getElementById('user-search').value.trim();
+  const plan   = document.getElementById('user-plan-filter').value;
+  const params = new URLSearchParams({ limit: USERS_PER_PAGE, offset: usersOffset });
+  if (plan)   params.set('plan',   plan);
+  if (search) params.set('search', search);
+
+  const body = document.getElementById('users-body');
+  body.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">Loading...</td></tr>';
+
+  try {
+    const resp = await adminFetch('/admin/api/users?' + params);
+    const data = await resp.json();
+    const rows = data.users || [];
+
+    document.getElementById('users-page-info').textContent =
+      `Page ${Math.floor(usersOffset / USERS_PER_PAGE) + 1}`;
+    document.getElementById('users-count').textContent =
+      `${data.total ?? '?'} users total  ·  showing ${usersOffset + 1}–${usersOffset + rows.length}`;
+    document.getElementById('users-prev').disabled = usersOffset === 0;
+    document.getElementById('users-next').disabled = rows.length < USERS_PER_PAGE;
+
+    if (!rows.length) {
+      body.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">No users found</td></tr>';
+      return;
+    }
+
+    body.innerHTML = rows.map(u => {
+      const PLAN_BADGES = {
+        studio:  '<span class="badge" style="background:#c9a22722;color:#c9a227;border:1px solid #c9a22755">Studio</span>',
+        pro:     '<span class="badge pro">Pro</span>',
+        starter: '<span class="badge" style="background:#22c9a222;color:#22c9a2;border:1px solid #22c9a255">Starter</span>',
+        free:    '<span class="badge free">Free</span>',
+      };
+      const planBadge = PLAN_BADGES[u.plan] || `<span class="badge">${escHtml(u.plan || '?')}</span>`;
+      const hostBadge = u.bot_hosting_allowed
+        ? `<div style="margin-top:5px"><span class="badge" style="background:#22c9a222;color:#22c9a2;border:1px solid #22c9a255">Bot Hosting: ${u.bot_hosting_limit}${u.bot_hosting_source === 'override' ? ' (admin test)' : ''}</span></div>`
+        : '<div style="margin-top:5px"><span class="badge free">Bot Hosting: off</span></div>';
+      const joined = u.created_at ? new Date(u.created_at * 1000).toLocaleDateString() : '—';
+      const stripeCust = u.stripe_customer_id
+        ? `<span class="mono" style="font-size:11px">${escHtml(u.stripe_customer_id)}</span>`
+        : '<span style="color:var(--muted);font-size:12px">—</span>';
+      const ipHtml = u.last_ip
+        ? `<div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:3px">${escHtml(u.last_ip)}</div>`
+        : '';
+      const upgradeBtns = u.plan === 'studio'
+        ? `<button class="action-btn danger" onclick="setUserPlan(${u.id}, 'free')">↓ Reset to Free</button>`
+        : u.plan === 'pro'
+          ? `<button class="action-btn" onclick="setUserPlan(${u.id}, 'studio')">↑ Studio</button> <button class="action-btn danger" onclick="setUserPlan(${u.id}, 'free')">↓ Free</button>`
+          : u.plan === 'starter'
+            ? `<button class="action-btn" onclick="setUserPlan(${u.id}, 'pro')">↑ Pro</button> <button class="action-btn danger" onclick="setUserPlan(${u.id}, 'free')">↓ Free</button>`
+            : `<button class="action-btn" onclick="setUserPlan(${u.id}, 'pro')">↑ Pro</button>`;
+      const hostBtn = u.bot_hosting_source === 'override'
+        ? `<button class="action-btn danger" onclick="setUserBotHosting(${u.id}, false)">Disable Bot Test</button>`
+        : `<button class="action-btn" onclick="setUserBotHosting(${u.id}, true)">Enable Bot Test</button>`;
+      return `<tr>
+        <td style="font-size:13px">${escHtml(u.email || '')}${ipHtml}</td>
+        <td>${planBadge}${hostBadge}</td>
+        <td style="font-size:12px;color:var(--muted)">${joined}</td>
+        <td style="text-align:center">${u.project_count ?? 0}</td>
+        <td>${stripeCust}</td>
+        <td>${upgradeBtns} ${hostBtn}</td>
+      </tr>`;
+    }).join('');
+  } catch (e) {
+    toast('Failed to load users: ' + e.message, 'err');
+    body.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--red);padding:24px">Error loading users</td></tr>';
+  }
+}
+
+function usersPage(dir) {
+  loadUsers(usersOffset + dir * USERS_PER_PAGE);
+}
+
+let bhOffset = 0;
+const BH_PER_PAGE = 50;
+
+async function loadBotHostingAdmin(offset) {
+  if (offset !== undefined) bhOffset = Math.max(0, offset);
+
+  try {
+    const healthResp = await adminFetch('/admin/api/bot-hosting/health');
+    const health = await healthResp.json();
+    if (healthResp.ok) {
+      document.getElementById('bh-total').textContent = health.total ?? 0;
+      document.getElementById('bh-running').textContent = health.running ?? 0;
+      document.getElementById('bh-stopped').textContent = health.stopped ?? 0;
+      document.getElementById('bh-zombie').textContent = health.zombie ?? 0;
+      document.getElementById('bh-missing').textContent = health.missing_files ?? 0;
+    }
+  } catch (e) {
+    toast('Failed to load bot hosting health: ' + e.message, 'err');
+  }
+
+  const search = document.getElementById('bh-search').value.trim();
+  const body = document.getElementById('bh-users-body');
+  body.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Loading...</td></tr>';
+
+  try {
+    const params = new URLSearchParams({ limit: BH_PER_PAGE, offset: bhOffset });
+    if (search) params.set('search', search);
+    const resp = await adminFetch('/admin/api/bot-hosting/users?' + params);
+    const data = await resp.json();
+    if (!resp.ok) {
+      throw new Error(data.error || 'Failed to load bot hosting users');
+    }
+
+    const rows = data.users || [];
+    document.getElementById('bh-page-info').textContent = `Page ${Math.floor(bhOffset / BH_PER_PAGE) + 1}`;
+    document.getElementById('bh-prev').disabled = bhOffset === 0;
+    document.getElementById('bh-next').disabled = rows.length < BH_PER_PAGE;
+    document.getElementById('bh-meta').textContent = `${data.total ?? '?'} users total · showing ${bhOffset + 1}–${bhOffset + rows.length}`;
+
+    if (!rows.length) {
+      body.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">No users found</td></tr>';
+      return;
+    }
+
+    body.innerHTML = rows.map((u) => {
+      const email = escHtml(u.email || '');
+      const plan = escHtml(u.plan || 'free');
+      const planBadge = `<span class="badge ${plan === 'pro' ? 'pro' : plan === 'free' ? 'free' : ''}">${plan}</span>`;
+
+      const allowBadge = u.hosting_allowed
+        ? `<span class="badge ok">Allowed (${u.hosting_limit})${u.hosting_source === 'override' ? ' admin test' : ''}</span>`
+        : '<span class="badge free">Disabled</span>';
+
+      const overLimit = Number(u.hosted_count || 0) > Number(u.hosting_limit || 0);
+      const countHtml = overLimit
+        ? `<span class="badge warn">${u.hosted_count} / ${u.hosting_limit}</span>`
+        : `${u.hosted_count} / ${u.hosting_limit}`;
+
+      const grantBtn = u.hosting_source === 'override'
+        ? `<button class="action-btn danger" onclick="setUserBotHosting(${u.id}, false)">Disable Test Access</button>`
+        : `<button class="action-btn" onclick="setUserBotHosting(${u.id}, true)">Enable Test Access</button>`;
+
+      return `<tr>
+        <td style="font-size:13px">${email}</td>
+        <td>${planBadge}</td>
+        <td>${allowBadge}</td>
+        <td>${countHtml}</td>
+        <td>${grantBtn}</td>
+      </tr>`;
+    }).join('');
+  } catch (e) {
+    body.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--red);padding:24px">${escHtml(e.message)}</td></tr>`;
+  }
+}
+
+function bhPage(dir) {
+  loadBotHostingAdmin(bhOffset + dir * BH_PER_PAGE);
+}
+
+async function setUserPlan(uid, plan) {
+  if (!confirm(`Set user #${uid} plan to "${plan}"?`)) return;
+  try {
+    const resp = await adminFetch(`/admin/api/users/${uid}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) { toast(data.error || 'Failed', 'err'); return; }
+    toast(`User #${uid} set to ${plan}`, 'ok');
+    loadUsers(usersOffset);
+  } catch (e) {
+    toast('Error: ' + e.message, 'err');
+  }
+}
+
+async function setUserBotHosting(uid, enabled) {
+  const msg = enabled
+    ? `Enable bot hosting test access for user #${uid}?`
+    : `Disable bot hosting test access for user #${uid}?`;
+  if (!confirm(msg)) return;
+  try {
+    const resp = await adminFetch(`/admin/api/users/${uid}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bot_hosting_test_access: !!enabled, bot_hosting_limit: 1 }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) { toast(data.error || 'Failed', 'err'); return; }
+    toast(enabled ? `Bot hosting enabled for #${uid}` : `Bot hosting disabled for #${uid}`, 'ok');
+    loadUsers(usersOffset);
+  } catch (e) {
+    toast('Error: ' + e.message, 'err');
+  }
+}
+
+// ── Dashboard ──────────────────────────────────────────────────────────────
+async function loadDashboard() {
+  try {
+    const resp = await adminFetch('/admin/api/stats');
+    const data = await resp.json();
+    const db = data.db; const sys = data.system;
+    currentStats = data;
+
+    // Stats cards
+    document.getElementById('s-total').textContent   = db.total.toLocaleString();
+    document.getElementById('s-rate').textContent    = db.success_rate + '%';
+    document.getElementById('s-rate-sub').textContent = `${db.success} success / ${db.failures} fail`;
+    document.getElementById('s-today').textContent   = db.today_total;
+    document.getElementById('s-today-sub').textContent = `${db.today_ok} succeeded`;
+    document.getElementById('s-elapsed').textContent = db.avg_elapsed_s + 's';
+
+    // Discord + compile stats
+    if (data.discord) {
+      const dc = data.discord;
+      document.getElementById('s-discord').textContent     = dc.linked_count.toLocaleString();
+      document.getElementById('s-discord-sub').textContent = `${dc.link_pct}% of ${dc.total_users} users`;
+      if (dc.compile_rate !== null && dc.compile_rate !== undefined) {
+        const cr = document.getElementById('s-compile-rate');
+        cr.textContent = dc.compile_rate + '%';
+        cr.parentElement.className = 'stat-card ' + (dc.compile_rate >= 90 ? 'ok' : dc.compile_rate >= 70 ? 'warn' : 'err');
+        document.getElementById('s-compile-sub').textContent = `${(dc.compile_total || 0).toLocaleString()} compiled`;
+      }
+      if (dc.open_tickets !== undefined) {
+        document.getElementById('s-open-tickets').textContent = dc.open_tickets;
+      }
+    }
+
+    // Mod generations card
+    if (db.mod_total !== undefined) {
+      document.getElementById('s-mods-total').textContent = db.mod_total.toLocaleString();
+      document.getElementById('s-mods-sub').textContent   = `${db.mod_today || 0} today`;
+    }
+
+    // System dots
+    setDot('sys-api',  sys.api === 'ok' ? 'green' : 'red', sys.api);
+    setDot('sys-inf',  sys.inference_server === 'ok' ? 'green' : 'red',
+           sys.inference_server === 'ok' ? 'Connected on localhost:8080' : 'Unreachable');
+    setDot('sys-freeai',    sys.free_ai    !== 'no_key' ? 'green' : 'gray',
+           sys.free_ai    !== 'no_key' ? 'Gemini: ' + sys.free_ai : 'GEMINI_API_KEY not set');
+    setDot('sys-premiumai', sys.premium_ai !== 'no_key' ? 'green' : 'gray',
+           sys.premium_ai !== 'no_key' ? 'Claude: ' + sys.premium_ai : 'CLAUDE_API_KEY not set (premium only)');
+
+    // Security card
+    const sec = data.security || {};
+    const slogin  = sec.last_login  || {};
+    const saccess = sec.last_access || {};
+    if (slogin.ts) {
+      setDot('sys-sec', 'green', `Last login: ${slogin.ip}  ·  ${timeAgo(slogin.ts)}`);
+      if (saccess.ts) {
+        document.getElementById('sys-sec-access').textContent =
+          `Last API access: ${saccess.ip}  ·  ${timeAgo(saccess.ts)}  (${saccess.path || ''})`.trim();
+      }
+    } else {
+      setDot('sys-sec', 'gray', 'No login recorded yet');
+    }
+
+    // Top IPs
+    const tb = document.getElementById('top-ips-body');
+    if (!db.top_ips.length) {
+      tb.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px">No data yet</td></tr>';
+    } else {
+      tb.innerHTML = db.top_ips.map(r => `
+        <tr>
+          <td class="mono">${escHtml(r.ip)}</td>
+          <td>${r.count}</td>
+          <td></td>
+          <td>
+            <button class="action-btn" onclick="quickBan('${escHtml(r.ip)}')">Ban</button>
+            <button class="action-btn" onclick="quickBypass('${escHtml(r.ip)}')">Bypass limits</button>
+            <button class="action-btn" onclick="filterLogsBy('${escHtml(r.ip)}')">View logs</button>
+          </td>
+        </tr>`).join('');
+    }
+
+    // Recent errors
+    const eb = document.getElementById('recent-errors-body');
+    if (!db.recent_errors.length) {
+      eb.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">No recent failures</td></tr>';
+    } else {
+      eb.innerHTML = db.recent_errors.map(r => {
+        const errs = safeParseJSON(r.errors_json, []);
+        return `<tr>
+          <td class="mono">#${r.id}</td>
+          <td>${timeAgo(r.ts)}</td>
+          <td class="mono">${escHtml(r.ip || '')}</td>
+          <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(r.instruction || '')}</td>
+          <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--red);font-size:12px">${escHtml(errs[0] || '')}</td>
+          <td><button class="action-btn heal" onclick="openDetail(${r.id})">View</button></td>
+        </tr>`;
+      }).join('');
+    }
+  } catch (e) {
+    toast('Failed to load stats: ' + e.message, 'err');
+  }
+}
+
+function setDot(id, color, text = '') {
+  const dot  = document.getElementById(id + '-dot');
+  const txt  = document.getElementById(id + '-text');
+  dot.className = 'status-dot-lg dot-' + color;
+  if (txt) txt.textContent = text;
+}
+
+// ── Request Logs ───────────────────────────────────────────────────────────
+let logsTotalGuess = 0;
+
+async function loadLogs(offset) {
+  if (offset !== undefined) logsOffset = Math.max(0, offset);
+  const ip   = document.getElementById('log-ip-filter').value.trim() || '';
+  const ep   = document.getElementById('log-ep-filter').value || '';
+  const ok   = document.getElementById('log-ok-filter').value || '';
+  const from = document.getElementById('log-from')?.value || '';
+  const to   = document.getElementById('log-to')?.value || '';
+  const params = new URLSearchParams({ limit: LOGS_PER_PAGE, offset: logsOffset });
+  if (ip)   params.set('ip', ip);
+  if (ep)   params.set('endpoint', ep);
+  if (ok)   params.set('success', ok);
+  if (from) params.set('from', Math.floor(new Date(from + 'T00:00:00').getTime() / 1000));
+  if (to)   params.set('to',   Math.floor(new Date(to   + 'T23:59:59').getTime() / 1000));
+
+  const body = document.getElementById('logs-body');
+  body.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--muted);padding:24px">Loading...</td></tr>';
+
+  try {
+    const resp = await adminFetch('/admin/api/logs?' + params);
+    const data = await resp.json();
+    const rows = data.logs;
+
+    document.getElementById('logs-page-info').textContent =
+      `Page ${Math.floor(logsOffset / LOGS_PER_PAGE) + 1}`;
+    document.getElementById('logs-count').textContent =
+      `Showing ${logsOffset + 1}–${logsOffset + rows.length}`;
+    document.getElementById('logs-prev').disabled = logsOffset === 0;
+    document.getElementById('logs-next').disabled = rows.length < LOGS_PER_PAGE;
+
+    if (!rows.length) {
+      body.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--muted);padding:24px">No results</td></tr>';
+      return;
+    }
+
+    body.innerHTML = rows.map(r => {
+      const result = r.success === 1 ? '<span class="badge ok">OK</span>'
+                   : r.success === 0 ? '<span class="badge fail">FAIL</span>'
+                   : '<span class="badge warn">—</span>';
+      const tier = r.tier === 'pro' ? '<span class="badge pro">Pro</span>'
+                                    : '<span class="badge free">Free</span>';
+      const elapsed = r.elapsed ? r.elapsed.toFixed(1) + 's' : '—';
+      const instr = escHtml((r.instruction || '').slice(0, 60) + (r.instruction?.length > 60 ? '…' : ''));
+      return `<tr>
+        <td class="mono">#${r.id}</td>
+        <td style="white-space:nowrap;font-size:12px">${timeAgo(r.ts)}</td>
+        <td class="mono">${escHtml(r.ip || '')}</td>
+        <td style="font-size:12px;color:var(--muted)">${escHtml(r.endpoint)}</td>
+        <td>${tier}</td>
+        <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${escHtml(r.instruction || '')}">${instr}</td>
+        <td>${result}</td>
+        <td>${r.attempts ?? '—'}</td>
+        <td>${elapsed}</td>
+        <td>
+          <button class="action-btn" onclick="openDetail(${r.id})">View</button>
+          ${r.success === 0 ? `<button class="action-btn heal" onclick="openDetail(${r.id})" title="Open detail to regenerate">↺</button>` : ''}
+          <button class="action-btn danger" onclick="quickBan('${escHtml(r.ip)}')">Ban IP</button>
+        </td>
+      </tr>`;
+    }).join('');
+  } catch (e) {
+    toast('Failed to load logs: ' + e.message, 'err');
+  }
+}
+
+function logsPage(dir) {
+  loadLogs(logsOffset + dir * LOGS_PER_PAGE);
+}
+
+function filterLogsBy(ip) {
+  document.getElementById('log-ip-filter').value = ip;
+  showPage('logs');
+}
+
+// ── IP Management ──────────────────────────────────────────────────────────
+async function loadIPs() {
+  // Load active rules
+  try {
+    const resp = await adminFetch('/admin/api/ips');
+    const data = await resp.json();
+    const tb = document.getElementById('ips-body');
+    if (!data.ips.length) {
+      tb.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px">No rules set</td></tr>';
+    } else {
+      tb.innerHTML = data.ips.map(r => {
+        const status = r.banned ? '<span class="badge banned">Banned</span>'
+                     : r.bypass_limits ? '<span class="badge bypass">Bypass</span>'
+                     : '<span class="badge free">Noted</span>';
+        return `<tr>
+          <td class="mono">${escHtml(r.ip)}</td>
+          <td>${escHtml(r.note || '')}</td>
+          <td>${status}</td>
+          <td style="font-size:12px;color:var(--muted)">${timeAgo(r.updated_at)}</td>
+          <td>
+            <button class="action-btn" onclick="editIp('${escHtml(r.ip)}','${escHtml(r.note||'')}',${r.banned},${r.bypass_limits})">Edit</button>
+            <button class="action-btn danger" onclick="deleteIp('${escHtml(r.ip)}')">Remove</button>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+  } catch (e) { toast('Failed to load IP rules', 'err'); }
+
+  // Load top IPs from stats
+  if (currentStats?.db?.top_ips) renderTopRequesters(currentStats.db.top_ips);
+  else {
+    try {
+      const r = await adminFetch('/admin/api/stats');
+      const d = await r.json();
+      currentStats = d;
+      renderTopRequesters(d.db.top_ips);
+    } catch {}
+  }
+}
+
+function renderTopRequesters(ips) {
+  const el = document.getElementById('top-requesters');
+  if (!ips.length) { el.innerHTML = '<div style="color:var(--muted);font-size:13px">No data yet</div>'; return; }
+  el.innerHTML = ips.map(r => `
+    <div class="top-ip-row">
+      <div class="top-ip-addr">${escHtml(r.ip)}</div>
+      <div class="top-ip-count">${r.count} requests</div>
+      <div class="top-ip-actions">
+        <button class="action-btn" onclick="filterLogsBy('${escHtml(r.ip)}')">Logs</button>
+        <button class="action-btn danger" onclick="quickBan('${escHtml(r.ip)}')">Ban</button>
+        <button class="action-btn" onclick="quickBypass('${escHtml(r.ip)}')">Bypass</button>
+      </div>
+    </div>`).join('');
+}
+
+async function setIp() {
+  const ip     = document.getElementById('ip-addr').value.trim();
+  const note   = document.getElementById('ip-note').value.trim();
+  const banned = document.getElementById('ip-banned').checked;
+  const bypass = document.getElementById('ip-bypass').checked;
+  if (!ip) { toast('IP address is required', 'err'); return; }
+  try {
+    await adminFetch('/admin/api/ips', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ip, note, banned, bypass_limits: bypass }),
+    });
+    toast('IP rule saved', 'ok');
+    loadIPs();
+    document.getElementById('ip-addr').value = '';
+    document.getElementById('ip-note').value = '';
+    document.getElementById('ip-banned').checked = false;
+    document.getElementById('ip-bypass').checked = false;
+  } catch (e) { toast('Failed: ' + e.message, 'err'); }
+}
+
+async function deleteIp(ip) {
+  if (!confirm(`Remove rule for ${ip}?`)) return;
+  await adminFetch(`/admin/api/ips/${encodeURIComponent(ip)}`, { method: 'DELETE' });
+  toast('Removed', 'ok');
+  loadIPs();
+}
+
+function editIp(ip, note, banned, bypass) {
+  document.getElementById('ip-addr').value   = ip;
+  document.getElementById('ip-note').value   = note;
+  document.getElementById('ip-banned').checked = !!banned;
+  document.getElementById('ip-bypass').checked = !!bypass;
+}
+
+async function quickBan(ip) {
+  if (!confirm(`Ban IP ${ip}? They will be blocked from all API requests.`)) return;
+  await adminFetch('/admin/api/ips', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ip, note: 'Banned via dashboard', banned: true, bypass_limits: false }),
+  });
+  toast(`${ip} banned`, 'ok');
+  if (currentPage === 'ips') loadIPs();
+}
+
+async function quickBypass(ip) {
+  await adminFetch('/admin/api/ips', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ip, note: 'Bypass set via dashboard', banned: false, bypass_limits: true }),
+  });
+  toast(`${ip} rate limits bypassed`, 'ok');
+}
+
+// ── Detail modal ───────────────────────────────────────────────────────────
+async function openDetail(id) {
+  document.getElementById('detail-modal').classList.remove('hidden');
+  document.getElementById('modal-title').textContent = `Request #${id}`;
+  document.getElementById('modal-body').innerHTML = '<div class="modal-spinner">Loading...</div>';
+  document.getElementById('modal-footer').innerHTML = '';
+
+  try {
+    const resp = await adminFetch(`/admin/api/logs/${id}`);
+    const r    = await resp.json();
+
+    // Cache detail so footer buttons can reference code/instruction safely
+    // (avoids JSON.stringify inside onclick attributes which breaks on quotes)
+    window._adminDetail = r;
+
+    const errs = safeParseJSON(r.errors_json, []);
+    // Extract individual blocks from the raw LLM response for clean display
+    const extractBlocks = (raw) => {
+      if (!raw) return { java: null, yaml: null, testJava: null, skript: null };
+      // Normalise literal \n sequences that may appear in stored responses
+      const text = raw.replace(/\\n/g, '\n');
+      const javaBlocks = [...text.matchAll(/```java\s*\n([\s\S]*?)```/g)].map(m => m[1].trim());
+      const yamlBlock   = (text.match(/```ya?ml\s*\n([\s\S]*?)```/) || [])[1];
+      const skriptBlock = (text.match(/```skript\s*\n([\s\S]*?)```/i) || [])[1];
+      return {
+        java:     javaBlocks[0] || null,
+        yaml:     yamlBlock   ? yamlBlock.trim()   : null,
+        testJava: javaBlocks[1] || null,
+        skript:   skriptBlock ? skriptBlock.trim() : null,
+      };
+    };
+    const blocks    = extractBlocks(r.raw_code);
+    const mainCode  = blocks.java || blocks.skript;
+    const codeLabel = blocks.java ? 'Generated Code' : 'Generated Script';
+    const snippetHtml = mainCode
+      ? `<h4 style="font-size:13px;font-weight:600;margin:18px 0 8px">${codeLabel}</h4>` +
+        `<div class="code-block" style="max-height:400px;overflow-y:auto">${escHtml(mainCode)}</div>` +
+        (blocks.yaml     ? `<h4 style="font-size:13px;font-weight:600;margin:12px 0 6px">plugin.yml</h4><div class="code-block" style="max-height:160px">${escHtml(blocks.yaml)}</div>` : '') +
+        (blocks.testJava ? `<h4 style="font-size:13px;font-weight:600;margin:12px 0 6px;color:var(--muted)">Test Class</h4><div class="code-block" style="max-height:140px;opacity:.7">${escHtml(blocks.testJava)}</div>` : '')
+      : '';
+
+    document.getElementById('modal-body').innerHTML = `
+      <div class="meta-grid">
+        <div class="meta-item"><div class="key">Timestamp</div><div class="val">${new Date(r.ts * 1000).toLocaleString()}</div></div>
+        <div class="meta-item"><div class="key">IP Address</div><div class="val mono">${escHtml(r.ip || '')}</div></div>
+        <div class="meta-item"><div class="key">Endpoint</div><div class="val mono">${escHtml(r.endpoint)}</div></div>
+        <div class="meta-item"><div class="key">Tier</div><div class="val">${r.tier}</div></div>
+        <div class="meta-item"><div class="key">Success</div><div class="val">${r.success === 1 ? '✅ Yes' : r.success === 0 ? '❌ No' : '—'}</div></div>
+        <div class="meta-item"><div class="key">Attempts</div><div class="val">${r.attempts ?? '—'}</div></div>
+        <div class="meta-item"><div class="key">Elapsed</div><div class="val">${r.elapsed ? r.elapsed.toFixed(1) + 's' : '—'}</div></div>
+        <div class="meta-item"><div class="key">Compile OK</div><div class="val">${r.compile_ok === 1 ? '✅' : r.compile_ok === 0 ? '❌' : '—'}</div></div>
+      </div>
+      ${r.instruction ? `<h4 style="font-size:13px;font-weight:600;margin-bottom:8px">Instruction</h4><div style="padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:13px;margin-bottom:12px">${escHtml(r.instruction)}</div>` : ''}
+      ${errs.length ? `<h4 style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--red)">Errors (${errs.length})</h4><div style="padding:12px;background:rgba(255,92,106,.05);border:1px solid rgba(255,92,106,.2);border-radius:8px;font-family:var(--mono);font-size:12px;line-height:1.8;margin-bottom:12px;color:var(--red)">${errs.map(e => escHtml(e)).join('<br>')}</div>` : ''}
+      ${snippetHtml}`;
+
+    const hasCode = !!r.raw_code;
+    document.getElementById('modal-footer').innerHTML = `
+      <button class="modal-action warn" onclick="healFromModal(${id})">Auto-Heal</button>
+      <button class="modal-action primary" id="modal-regen-btn" onclick="regenInModal(${id})">↺ Regenerate</button>
+      ${hasCode ? `<button class="modal-action" onclick="copyCode(window._adminDetail.raw_code)">Copy Code</button>` : ''}
+      <button class="modal-action" onclick="copyInstruction(window._adminDetail.instruction||'')">Copy Instruction</button>
+      <button class="modal-action danger" onclick="quickBan('${escHtml(r.ip)}');closeModal()">Ban IP</button>
+      <button class="modal-action" onclick="closeModal()">Close</button>`;
+  } catch (e) {
+    document.getElementById('modal-body').innerHTML = `<p style="color:var(--red)">Error: ${e.message}</p>`;
+  }
+}
+
+function closeModal() {
+  document.getElementById('detail-modal').classList.add('hidden');
+}
+
+function healFromModal(id) {
+  document.getElementById('heal-log-id').value = id;
+  closeModal();
+  showPage('heal');
+}
+
+function regenFromModal(id) {
+  document.getElementById('regen-log-id').value = id;
+  closeModal();
+  showPage('heal');
+}
+
+async function regenInModal(id) {
+  const btn = document.getElementById('modal-regen-btn');
+  if (!btn) return;
+  btn.disabled = true; btn.textContent = 'Regenerating…';
+  try {
+    const resp = await adminFetch('/admin/api/regenerate', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ log_id: id }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) { toast(data.error || 'Regen failed', 'err'); return; }
+    const errHtml = data.errors?.length
+      ? `<div style="margin-top:12px;padding:12px;background:rgba(255,92,106,.05);border:1px solid rgba(255,92,106,.2);border-radius:8px;font-family:var(--mono);font-size:12px;line-height:1.8;color:var(--red)">${data.errors.map(e => escHtml(e)).join('<br>')}</div>`
+      : '';
+    const resultDiv = document.createElement('div');
+    resultDiv.style.cssText = 'margin-top:16px;padding-top:16px;border-top:1px solid var(--border)';
+    resultDiv.innerHTML = `
+      <div style="margin-bottom:10px;display:flex;align-items:center;gap:10px">
+        ${data.success
+          ? '<span class="badge ok" style="font-size:13px;padding:4px 12px">✅ Regenerated OK</span>'
+          : '<span class="badge fail" style="font-size:13px;padding:4px 12px">❌ Still failing</span>'}
+        <span style="font-size:12px;color:var(--muted)">${data.elapsed ? data.elapsed + 's' : ''} · ${data.attempts ?? ''} attempt(s)</span>
+      </div>
+      ${errHtml}
+      ${data.code ? `<div class="code-block" style="max-height:180px">${escHtml(data.code)}</div>` : ''}`;
+    document.getElementById('modal-body').appendChild(resultDiv);
+    resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    toast(data.success ? 'Regenerated successfully' : 'Regen done — issues remain', data.success ? 'ok' : 'err');
+  } catch (e) { toast('Regen failed: ' + e.message, 'err'); }
+  finally { btn.disabled = false; btn.textContent = '↺ Regenerate'; }
+}
+
+function copyInstruction(text) {
+  if (!text) { toast('No instruction to copy', 'err'); return; }
+  navigator.clipboard.writeText(text).then(
+    () => toast('Instruction copied', 'ok'),
+    () => toast('Copy failed', 'err'),
+  );
+}
+
+function copyCode(text) {
+  if (!text) { toast('No code to copy', 'err'); return; }
+  navigator.clipboard.writeText(text).then(
+    () => toast('Code copied', 'ok'),
+    () => toast('Copy failed', 'err'),
+  );
+}
+
+function clearLogFilters() {
+  ['log-ip-filter','log-id-jump','log-ep-filter','log-ok-filter','log-from','log-to'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  loadLogs(0);
+}
+
+function jumpToLogId() {
+  const id = parseInt(document.getElementById('log-id-jump')?.value);
+  if (!isNaN(id) && id > 0) openDetail(id);
+}
+
+// ── Server Log page ────────────────────────────────────────────────────────
+let _slogRaw = [];
+let _slogAutoTimer = null;
+
+async function loadServerLog() {
+  const lines = document.getElementById('slog-lines')?.value || 200;
+  const pre   = document.getElementById('slog-output');
+  if (pre) pre.innerHTML = '<span style="color:var(--muted)">Loading\u2026</span>';
+  try {
+    const resp = await adminFetch(`/admin/api/server-log?lines=${lines}`);
+    const d    = await resp.json();
+    _slogRaw   = d.lines || [];
+    renderServerLog();
+    const cnt = document.getElementById('slog-count');
+    if (cnt) cnt.textContent = `${_slogRaw.length} lines`;
+  } catch (e) {
+    if (pre) pre.innerHTML = `<span style="color:var(--red)">Error: ${escHtml(e.message)}</span>`;
+  }
+}
+
+function renderServerLog() {
+  const filter  = (document.getElementById('slog-filter')?.value || '').toLowerCase();
+  const errOnly = document.getElementById('slog-errors-only')?.checked;
+  const pre     = document.getElementById('slog-output');
+  if (!pre) return;
+  const ERR_RE  = /error|traceback|exception|critical|failed|fatal/i;
+  const WARN_RE = /warning|warn/i;
+  let visible   = _slogRaw;
+  if (filter)  visible = visible.filter(l => l.toLowerCase().includes(filter));
+  if (errOnly) visible = visible.filter(l => ERR_RE.test(l) || WARN_RE.test(l));
+  const cnt = document.getElementById('slog-count');
+  if (cnt) cnt.textContent = `${visible.length} / ${_slogRaw.length} lines`;
+  pre.innerHTML = visible.map(line => {
+    const esc = escHtml(line);
+    if (ERR_RE.test(line))  return `<span style="color:var(--red)">${esc}</span>`;
+    if (WARN_RE.test(line)) return `<span style="color:var(--yellow)">${esc}</span>`;
+    if (/\[Healer\]|\[compile\]|\[gen\]/.test(line)) return `<span style="color:var(--accent)">${esc}</span>`;
+    return esc;
+  }).join('\n') || '<span style="color:var(--muted)">No lines match filter</span>';
+  pre.scrollTop = pre.scrollHeight;
+}
+
+function toggleServerLogAuto() {
+  const checked = document.getElementById('slog-auto')?.checked;
+  if (_slogAutoTimer) { clearInterval(_slogAutoTimer); _slogAutoTimer = null; }
+  if (checked) _slogAutoTimer = setInterval(loadServerLog, 5000);
+}
+
+// ── Fix on the fly ─────────────────────────────────────────────────────────
+async function runAdminHeal() {
+  const id  = document.getElementById('heal-log-id').value;
+  const btn = document.getElementById('heal-run-btn');
+  if (!id) { toast('Enter a log ID', 'err'); return; }
+  btn.disabled = true; btn.textContent = 'Healing...';
+  try {
+    const resp = await adminFetch('/admin/api/heal', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ log_id: parseInt(id) }),
+    });
+    const data = await resp.json();
+    showHealResult('Healing Result', data.healed, data.code, data.errors);
+  } catch (e) { toast('Heal failed: ' + e.message, 'err'); }
+  finally { btn.disabled = false; btn.textContent = 'Run Healing'; }
+}
+
+async function runAdminRegen() {
+  const id  = document.getElementById('regen-log-id').value;
+  const btn = document.getElementById('regen-run-btn');
+  if (!id) { toast('Enter a log ID', 'err'); return; }
+  btn.disabled = true; btn.textContent = 'Regenerating...';
+  try {
+    const resp = await adminFetch('/admin/api/regenerate', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ log_id: parseInt(id) }),
+    });
+    const data = await resp.json();
+    showHealResult('Regeneration Result', data.success, data.code, data.errors);
+  } catch (e) { toast('Regen failed: ' + e.message, 'err'); }
+  finally { btn.disabled = false; btn.textContent = 'Regenerate'; }
+}
+
+function showHealResult(title, success, code, errors) {
+  const el = document.getElementById('heal-result');
+  el.classList.remove('hidden');
+  document.getElementById('heal-result-title').textContent = title;
+  const errHtml = errors?.length
+    ? `<div style="padding:12px;background:rgba(255,92,106,.05);border:1px solid rgba(255,92,106,.2);border-radius:8px;font-family:var(--mono);font-size:12px;line-height:1.8;color:var(--red);margin-bottom:12px">${errors.map(e => escHtml(e)).join('<br>')}</div>`
+    : '';
+  document.getElementById('heal-result-body').innerHTML = `
+    <div style="margin-bottom:12px">
+      ${success
+        ? '<span class="badge ok" style="font-size:13px;padding:5px 12px">✅ Success</span>'
+        : '<span class="badge fail" style="font-size:13px;padding:5px 12px">❌ Issues remain</span>'}
+    </div>
+    ${errHtml}
+    ${code ? `<div class="code-block" style="max-height:340px;overflow-y:auto">${escHtml(code)}</div>` : ''}`;
+}
+
+// ── Arti ──────────────────────────────────────────────────────────────────
+async function loadArti() {
+  try {
+    const r = await adminFetch('/admin/api/arti');
+    if (!r.ok) return;
+    const state = await r.json();
+    _applyArtiState(state);
+    loadArtiTickets();
+  } catch (e) { console.error('[Arti]', e); }
+}
+
+function _applyArtiState(state) {
+  const enabled  = !!state.enabled;
+  const badge    = document.getElementById('arti-status-badge');
+  const banner   = document.getElementById('arti-banner');
+  const avatar   = document.getElementById('arti-avatar');
+  const since    = document.getElementById('arti-since-label');
+  const enableBt = document.getElementById('arti-enable-btn');
+  const disableBt= document.getElementById('arti-disable-btn');
+  const msgBox   = document.getElementById('arti-message');
+
+  if (enabled) {
+    badge.textContent   = 'Active';
+    badge.style.background = 'rgba(61,220,132,.12)';
+    badge.style.color      = 'var(--green)';
+    badge.style.border     = '1px solid rgba(61,220,132,.3)';
+    banner.style.background = 'rgba(61,220,132,.04)';
+    banner.style.borderColor = 'rgba(61,220,132,.25)';
+    avatar.style.background  = 'var(--green)';
+    enableBt.style.display  = 'none';
+    disableBt.style.display = '';
+    if (state.since) {
+      since.style.display = '';
+      since.textContent   = 'Active since ' + new Date(state.since * 1000).toLocaleString();
+    }
+    if (state.message && msgBox) msgBox.value = state.message;
+  } else {
+    badge.textContent   = 'Inactive';
+    badge.style.background = 'rgba(255,92,106,.12)';
+    badge.style.color      = 'var(--red)';
+    badge.style.border     = '1px solid rgba(255,92,106,.3)';
+    banner.style.background = 'var(--surface)';
+    banner.style.borderColor = 'var(--border)';
+    avatar.style.background  = 'var(--accent)';
+    since.style.display = 'none';
+    enableBt.style.display  = '';
+    disableBt.style.display = 'none';
+  }
+
+  // Render activity log
+  const logEl = document.getElementById('arti-log');
+  const entries = state.log || [];
+  if (!entries.length) {
+    logEl.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:8px 0">No activity yet.</div>';
+  } else {
+    logEl.innerHTML = entries.map(e => {
+      const dt = new Date(e.ts * 1000).toLocaleString();
+      return `<div style="padding:7px 12px;border-radius:7px;background:var(--surface);border:1px solid var(--border);font-size:13px;display:flex;gap:10px;align-items:flex-start">
+        <span style="color:var(--muted);white-space:nowrap;font-size:12px;padding-top:1px">${dt}</span>
+        <span>${escHtml(e.msg)}</span>
+      </div>`;
+    }).join('');
+  }
+}
+
+async function artiEnable() {
+  const msg = (document.getElementById('arti-message')?.value || '').trim();
+  const r = await adminFetch('/admin/api/arti', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ enabled: true, message: msg }),
+  });
+  if (r.ok) { toast('Arti is now active 🤖', 'ok'); loadArti(); }
+  else toast('Failed to enable Arti', 'err');
+}
+
+async function artiDisable() {
+  const r = await adminFetch('/admin/api/arti', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ enabled: false }),
+  });
+  if (r.ok) { toast('Arti deactivated', ''); loadArti(); }
+  else toast('Failed to disable Arti', 'err');
+}
+
+async function loadArtiTickets() {
+  const el = document.getElementById('arti-tickets');
+  if (!el) return;
+  el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:8px 0">Loading...</div>';
+  try {
+    const r = await adminFetch('/admin/api/tickets?status=open&limit=20');
+    if (!r.ok) { el.innerHTML = '<div style="color:var(--red);font-size:13px">Failed to load tickets.</div>'; return; }
+    const data = await r.json();
+    const tickets = data.tickets || [];
+    if (!tickets.length) {
+      el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:8px 0">No open tickets — all clear ✓</div>';
+      return;
+    }
+    el.innerHTML = tickets.map(t => {
+      const dt  = new Date(t.created_at * 1000).toLocaleString();
+      const note = t.admin_note ? `<div style="margin-top:6px;padding:8px 10px;border-radius:6px;background:var(--surface2);font-size:12px;color:var(--muted);white-space:pre-wrap">${escHtml(t.admin_note.slice(0, 300))}</div>` : '';
+      return `<div style="border-radius:10px;padding:14px 16px;background:var(--surface);border:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+          <span style="font-weight:600;font-size:13px">#${t.id} — ${escHtml(t.subject)}</span>
+          <span style="font-size:11px;color:var(--muted)">${escHtml(t.email)}</span>
+          <span style="font-size:11px;color:var(--muted);margin-left:auto">${dt}</span>
+        </div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:8px">${escHtml((t.message || '').slice(0, 200))}</div>
+        ${note}
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <button onclick="artiReply(${t.id}, this)" style="padding:6px 14px;border-radius:6px;background:var(--accent);border:none;color:#fff;font-size:12px;font-weight:600;cursor:pointer">Ask Arti to Reply</button>
+          <span id="arti-reply-status-${t.id}" style="font-size:12px;color:var(--muted);align-self:center"></span>
+        </div>
+      </div>`;
+    }).join('');
+  } catch (e) {
+    el.innerHTML = `<div style="color:var(--red);font-size:13px">${escHtml(e.message)}</div>`;
+  }
+}
+
+async function artiReply(ticketId, btn) {
+  btn.disabled = true;
+  btn.textContent = 'Asking Arti…';
+  const statusEl = document.getElementById(`arti-reply-status-${ticketId}`);
+  if (statusEl) statusEl.textContent = '';
+  try {
+    const r = await adminFetch(`/admin/api/arti/reply/${ticketId}`, { method: 'POST' });
+    const data = await r.json();
+    if (!r.ok) {
+      if (statusEl) statusEl.textContent = '✗ ' + (data.error || 'Failed');
+      btn.disabled = false; btn.textContent = 'Ask Arti to Reply';
+      return;
+    }
+    toast(`Arti replied to ticket #${ticketId}`, 'ok');
+    btn.textContent = '✓ Replied';
+    if (statusEl) statusEl.textContent = '';
+    // Reload the page data to show new note
+    setTimeout(() => loadArti(), 800);
+  } catch (e) {
+    btn.disabled = false; btn.textContent = 'Ask Arti to Reply';
+    if (statusEl) statusEl.textContent = '✗ ' + e.message;
+  }
+}
+
+// ── Support Tickets ───────────────────────────────────────────────────────
+let ticketsOffset = 0;
+const TICKETS_PER_PAGE = 50;
+
+async function loadTickets(offset) {
+  if (offset !== undefined) ticketsOffset = Math.max(0, offset);
+  const status = document.getElementById('ticket-status-filter')?.value || '';
+  const params = new URLSearchParams({ limit: TICKETS_PER_PAGE, offset: ticketsOffset });
+  if (status) params.set('status', status);
+  const body = document.getElementById('tickets-body');
+  if (body) body.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px">Loading...</td></tr>';
+  try {
+    const resp = await adminFetch('/admin/api/tickets?' + params);
+    const data = await resp.json();
+    const rows = data.tickets || [];
+    document.getElementById('tickets-page-info').textContent = `Page ${Math.floor(ticketsOffset / TICKETS_PER_PAGE) + 1}`;
+    document.getElementById('tickets-count').textContent = `${rows.length} ticket(s)`;
+    document.getElementById('tickets-prev').disabled = ticketsOffset === 0;
+    document.getElementById('tickets-next').disabled = rows.length < TICKETS_PER_PAGE;
+    if (!rows.length) {
+      body.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px">No tickets found</td></tr>';
+      return;
+    }
+    const sBadge = s => s === 'open'
+      ? '<span class="badge fail">Open</span>'
+      : s === 'in_progress' ? '<span class="badge warn">In Progress</span>'
+      : '<span class="badge ok">Closed</span>';
+    body.innerHTML = rows.map(t => `<tr>
+      <td class="mono">#${t.id}</td>
+      <td style="white-space:nowrap;font-size:12px">${timeAgo(t.created_at)}</td>
+      <td style="font-size:13px">${escHtml(t.email || '')}</td>
+      <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${escHtml(t.subject||'')}">${escHtml((t.subject||'').slice(0,60))}</td>
+      <td>${sBadge(t.status)}</td>
+      <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--muted)">${escHtml(t.admin_note||'')}</td>
+      <td style="white-space:nowrap">
+        <button class="action-btn" onclick="openTicket(${t.id})">View</button>
+        <button class="action-btn danger" onclick="setTicketStatus(${t.id},'closed','')">Close</button>
+      </td>
+    </tr>`).join('');
+  } catch (e) { toast('Failed to load tickets: ' + e.message, 'err'); }
+}
+
+function ticketsPage(dir) { loadTickets(ticketsOffset + dir * TICKETS_PER_PAGE); }
+
+let _currentTicketId = null;
+let _currentTicketData = null;
+
+async function openTicket(id) {
+  _currentTicketId = id;
+  document.getElementById('ticket-modal-title').textContent = `Ticket #${id}`;
+  document.getElementById('ticket-modal-meta').textContent = 'Loading…';
+  document.getElementById('ticket-chat').innerHTML = '<div style="color:var(--muted);font-size:13px;padding:8px 0">Loading…</div>';
+  document.getElementById('ticket-reply-input').value = '';
+  document.getElementById('ticket-modal').classList.remove('hidden');
+  try {
+    const r = await adminFetch(`/admin/api/tickets/${id}`);
+    if (!r.ok) { toast('Failed to load ticket', 'err'); return; }
+    _currentTicketData = await r.json();
+    _renderTicketChat(_currentTicketData);
+  } catch (e) { toast('Error: ' + e.message, 'err'); }
+}
+
+function _renderTicketChat(t) {
+  document.getElementById('ticket-modal-title').textContent = `#${t.id} — ${t.subject || ''}`;
+  document.getElementById('ticket-modal-meta').textContent = `${t.email}  ·  ${new Date(t.created_at * 1000).toLocaleString()}`;
+  document.getElementById('ticket-modal-status').value = t.status || 'open';
+  const chat = document.getElementById('ticket-chat');
+  const msgs = [];
+  // Original user message
+  msgs.push({ sender: 'user', body: t.message, created_at: t.created_at });
+  // Thread messages
+  for (const m of (t.messages || [])) msgs.push(m);
+  chat.innerHTML = msgs.map(m => {
+    const isAdmin = m.sender === 'admin';
+    const dt = new Date(m.created_at * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const label = isAdmin ? 'You' : t.email.split('@')[0];
+    const bg    = isAdmin ? 'var(--accent)' : 'var(--surface2)';
+    const color = isAdmin ? '#fff' : 'var(--text)';
+    const align = isAdmin ? 'flex-end' : 'flex-start';
+    return `<div style="display:flex;flex-direction:column;align-items:${align};gap:3px">
+      <span style="font-size:11px;color:var(--muted);padding:0 4px">${escHtml(label)} · ${dt}</span>
+      <div style="max-width:86%;padding:10px 14px;border-radius:12px;background:${bg};color:${color};font-size:13px;line-height:1.55;white-space:pre-wrap;word-break:break-word">${escHtml(m.body)}</div>
+    </div>`;
+  }).join('');
+  // Scroll to bottom
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function closeTicketModal() {
+  document.getElementById('ticket-modal').classList.add('hidden');
+  _currentTicketId = null;
+  _currentTicketData = null;
+}
+
+async function ticketUpdateStatus() {
+  if (!_currentTicketId) return;
+  const status = document.getElementById('ticket-modal-status').value;
+  await setTicketStatus(_currentTicketId, status, _currentTicketData?.admin_note || '');
+}
+
+async function sendTicketReply() {
+  if (!_currentTicketId) return;
+  const body = document.getElementById('ticket-reply-input').value.trim();
+  if (!body) { document.getElementById('ticket-reply-input').focus(); return; }
+  const btn = document.getElementById('ticket-reply-btn');
+  btn.disabled = true; btn.textContent = 'Sending…';
+  try {
+    const r = await adminFetch(`/admin/api/tickets/${_currentTicketId}/reply`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ body }),
+    });
+    const data = await r.json();
+    if (!r.ok) { toast(data.error || 'Failed to send', 'err'); return; }
+    toast('Reply sent ✓', 'ok');
+    document.getElementById('ticket-reply-input').value = '';
+    // Reload thread
+    const r2 = await adminFetch(`/admin/api/tickets/${_currentTicketId}`);
+    if (r2.ok) { _currentTicketData = await r2.json(); _renderTicketChat(_currentTicketData); }
+    loadTickets(ticketsOffset);
+  } catch (e) { toast('Error: ' + e.message, 'err'); }
+  finally { btn.disabled = false; btn.textContent = 'Send Reply'; }
+}
+
+async function setTicketStatus(id, status, note) {
+  try {
+    const resp = await adminFetch(`/admin/api/tickets/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status, admin_note: note || '' }),
+    });
+    if (!resp.ok) { const d = await resp.json(); toast(d.error || 'Failed', 'err'); return; }
+    toast(`Ticket #${id} → ${status}`, 'ok');
+    loadTickets(ticketsOffset);
+  } catch (e) { toast('Error: ' + e.message, 'err'); }
+}
+
+// ── Shared badge helpers ───────────────────────────────────────────────────
+function _planBadge(plan) {
+  if (plan === 'studio')  return '<span class="badge" style="background:#c9a22722;color:#c9a227;border:1px solid #c9a22755">Studio</span>';
+  if (plan === 'pro')     return '<span class="badge pro">Pro</span>';
+  if (plan === 'starter') return '<span class="badge" style="background:#22c9a222;color:#22c9a2;border:1px solid #22c9a255">Starter</span>';
+  return '<span class="badge free">Free</span>';
+}
+
+function _platformBadge(endpoint) {
+  if (!endpoint) return '<span class="badge free">\u2014</span>';
+  if (endpoint.includes('mod'))      return '<span class="badge" style="background:#9c5cf522;color:#b580ff;border:1px solid #9c5cf533">Mod</span>';
+  if (endpoint.includes('skript'))   return '<span class="badge warn">Skript</span>';
+  if (endpoint.includes('datapack')) return '<span class="badge" style="background:#ff905022;color:#ff9050;border:1px solid #ff905033">DP</span>';
+  if (endpoint.includes('generate')) return '<span class="badge ok">Plugin</span>';
+  if (endpoint.includes('stream'))   return '<span class="badge" style="background:#6172ff22;color:var(--accent-h);border:1px solid #6172ff33">Stream</span>';
+  return `<span class="badge free">${escHtml(endpoint.split('/').pop().slice(0,8))}</span>`;
+}
+
+// ── God View ──────────────────────────────────────────────────────────────
+let _gvInterval = null;
+
+async function loadGodView() {
+  try {
+    const resp = await adminFetch('/admin/api/godview');
+    const d = await resp.json();
+
+    // Live counters
+    const live = d.live || {};
+    document.getElementById('gv-active-ips').textContent = live.active_ips_1h ?? '\u2014';
+    document.getElementById('gv-gen-hour').textContent   = live.gen_last_hour ?? '\u2014';
+
+    const okHr   = live.ok_last_hour   ?? '\u2014';
+    const failHr = live.fail_last_hour ?? '\u2014';
+    document.getElementById('gv-ok-hour').textContent  = okHr;
+    document.getElementById('gv-fail-hour').textContent = failHr;
+    if (live.gen_last_hour > 0) {
+      const rate = Math.round(live.ok_last_hour / live.gen_last_hour * 100);
+      document.getElementById('gv-ok-hour-sub').textContent   = rate + '% success rate';
+      document.getElementById('gv-fail-hour-sub').textContent = live.fail_last_hour > 0
+        ? Math.round(live.fail_last_hour / live.gen_last_hour * 100) + '% of gens'
+        : 'all good \u2713';
+    }
+    const failCard = document.getElementById('gv-fail-card');
+    if (failCard) {
+      failCard.className = 'stat-card ' + (
+        live.fail_last_hour === 0 ? 'ok' :
+        live.fail_last_hour < 5  ? 'warn' : 'err'
+      );
+    }
+
+    // System metrics + sparklines
+    const sys = d.system || {};
+    if (sys.cpu_pct !== undefined) {
+      // Update all metric cards first so they always render even if Chart.js fails
+      document.getElementById('gv-cpu').textContent      = sys.cpu_pct + '%';
+      document.getElementById('gv-ram').textContent      = sys.mem_pct + '%';
+      document.getElementById('gv-ram-sub').textContent  = `${sys.mem_used_mb} MB / ${sys.mem_total_mb} MB`;
+      document.getElementById('gv-disk').textContent     = sys.disk_pct + '%';
+      document.getElementById('gv-disk-sub').textContent = `${sys.disk_used_gb} GB / ${sys.disk_total_gb} GB`;
+      const up   = sys.uptime_s || 0;
+      const days = Math.floor(up / 86400);
+      const hrs  = Math.floor((up % 86400) / 3600);
+      document.getElementById('gv-uptime').textContent = days > 0
+        ? `${days}d ${hrs}h`
+        : `${hrs}h ${Math.floor((up % 3600) / 60)}m`;
+
+      // Sparklines (pure SVG)
+      if (!_sparkCpuChart)  _sparkCpuChart  = _mkSparkChart('spark-cpu');
+      if (!_sparkRamChart)  _sparkRamChart  = _mkSparkChart('spark-ram');
+      if (!_sparkDiskChart) _sparkDiskChart = _mkSparkChart('spark-disk');
+      _pushSpark(_sparkCpuChart,  _sparkCpuBuf,  sys.cpu_pct);
+      _pushSpark(_sparkRamChart,  _sparkRamBuf,  sys.mem_pct);
+      _pushSpark(_sparkDiskChart, _sparkDiskBuf, sys.disk_pct);
+    }
+
+    // Generation feed — filter out noise (health/version checks)
+    const fb = document.getElementById('gv-feed-body');
+    const allLogs = d.recent_logs || [];
+    const logs = allLogs.filter(r => r.endpoint && !r.endpoint.includes('/health') && !r.endpoint.includes('/version'));
+    if (!logs.length) {
+      fb.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:20px">No generation data yet</td></tr>';
+    } else {
+      fb.innerHTML = logs.map(r => {
+        const result   = r.success === 1 ? '<span class="badge ok">OK</span>'
+                       : r.success === 0 ? '<span class="badge fail">FAIL</span>'
+                       : '<span class="badge warn">\u2014</span>';
+        const tier     = r.tier === 'pro' ? '<span class="badge pro">Pro</span>' : '<span class="badge free">Free</span>';
+        const platform = _platformBadge(r.endpoint);
+        const elapsed  = r.elapsed ? r.elapsed.toFixed(1) + 's' : '\u2014';
+        const instr    = escHtml((r.instruction || '').slice(0, 48) + ((r.instruction || '').length > 48 ? '\u2026' : ''));
+        return `<tr style="cursor:pointer" onclick="openDetail(${r.id})">
+          <td class="mono" style="font-size:12px">#${r.id}</td>
+          <td style="font-size:12px;white-space:nowrap">${timeAgo(r.ts)}</td>
+          <td class="mono" style="font-size:11px">${escHtml(r.ip || '')}</td>
+          <td>${platform}</td>
+          <td>${tier}</td>
+          <td>${result}</td>
+          <td style="font-size:12px;color:var(--muted)">${elapsed}</td>
+          <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px" title="${escHtml(r.instruction||'')}">${instr}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    // Recent signups
+    const ub    = document.getElementById('gv-users-body');
+    const users = d.recent_users || [];
+    if (!users.length) {
+      ub.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px">No users yet</td></tr>';
+    } else {
+      ub.innerHTML = users.map(u => {
+        const planBadge = _planBadge(u.plan);
+        const joined    = u.created_at ? new Date(u.created_at * 1000).toLocaleDateString() : '\u2014';
+        return `<tr>
+          <td style="font-size:13px">${escHtml(u.email || '')}</td>
+          <td>${planBadge}</td>
+          <td style="font-size:12px;color:var(--muted)">${joined}</td>
+          <td style="text-align:center">${u.project_count ?? 0}</td>
+        </tr>`;
+      }).join('');
+    }
+  } catch (e) {
+    toast('God View error: ' + e.message, 'err');
+  }
+}
+
+// ── Toast ──────────────────────────────────────────────────────────────────
+function toast(msg, type = '') {
+  const tc = document.getElementById('toasts');
+  const el = document.createElement('div');
+  el.className = 'toast' + (type ? ' ' + type : '');
+  el.textContent = msg;
+  tc.appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+// ── Utils ──────────────────────────────────────────────────────────────────
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function safeParseJSON(s, fallback) {
+  try { return JSON.parse(s) ?? fallback; } catch { return fallback; }
+}
+
+function timeAgo(ts) {
+  const diff = Date.now() / 1000 - ts;
+  if (diff < 60)   return Math.round(diff) + 's ago';
+  if (diff < 3600) return Math.round(diff / 60) + 'm ago';
+  if (diff < 86400)return Math.round(diff / 3600) + 'h ago';
+  return new Date(ts * 1000).toLocaleDateString();
+}
+
+// ── Keyboard shortcuts ─────────────────────────────────────────────────────
+
+// ── Sidebar toggle ──────────────────────────────────────────────────────────
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const icon = document.getElementById('sidebar-toggle-icon');
+  const collapsed = sidebar.classList.toggle('collapsed');
+  // Swap icon: hamburger ↔ chevron-right
+  if (collapsed) {
+    icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>';
+  } else {
+    icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>';
+  }
+  try { localStorage.setItem('sn_sidebar_collapsed', collapsed ? '1' : '0'); } catch(e){}
+}
+
+// Restore sidebar state on load
+(function() {
+  try {
+    if (localStorage.getItem('sn_sidebar_collapsed') === '1') {
+      const sidebar = document.querySelector('.sidebar');
+      const icon = document.getElementById('sidebar-toggle-icon');
+      if (sidebar) {
+        sidebar.classList.add('collapsed');
+        if (icon) icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>';
+      }
+    }
+  } catch(e){}
+})();
+
+// ── Live topbar clock ─────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const clk = document.getElementById('admin-clock');
+  if (!clk) return;
+  const tick = () => { clk.textContent = new Date().toLocaleTimeString(); };
+  tick(); setInterval(tick, 1000);
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if (e.target.id === 'pwd' && e.key === 'Enter') doLogin();
+  // Alt+1–0: quick-navigate pages; / focuses log search
+  if (!['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) {
+    const PAGES = ['dashboard','logs','users','ips','heal','godview','bot-hosting','tickets','backups','server-log'];
+    if (e.altKey && e.key >= '1' && e.key <= '9') {
+      const pg = PAGES[parseInt(e.key) - 1];
+      if (pg) { showPage(pg); e.preventDefault(); }
+    }
+    if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      if (currentPage !== 'logs') showPage('logs');
+      const f = document.getElementById('log-ip-filter');
+      if (f) { setTimeout(() => f.focus(), 50); e.preventDefault(); }
+    }
+  }
+});
+
+// ── Auto-check existing session on load ───────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const resp = await fetch('/admin/api/session', { credentials: 'include' });
+    if (resp.ok) { showApp(); return; }
+  } catch {}
+  // If session check fails, leave login screen visible (default state)
+});
+
+
+// ── God View sparklines (pure SVG — no Chart.js dependency) ───────────────
+const _SPARK_MAX = 30;
+let _sparkCpuBuf  = [];
+let _sparkRamBuf  = [];
+let _sparkDiskBuf = [];
+let _sparkCpuChart = null, _sparkRamChart = null, _sparkDiskChart = null;
+
+function _mkSparkChart(svgId) {
+  const svg = document.getElementById(svgId);
+  return svg ? { svg } : null;
+}
+
+function _pushSpark(chart, buf, val) {
+  if (!chart || !chart.svg) return;
+  buf.push(val);
+  while (buf.length > _SPARK_MAX) buf.shift();
+  const N = _SPARK_MAX, W = 240, H = 44;
+  const pts = Array.from({ length: N }, (_, i) => {
+    const v = i < buf.length ? buf[i] : null;
+    return {
+      x: N > 1 ? (i / (N - 1)) * W : W / 2,
+      y: v !== null ? H - 2 - (Math.min(100, Math.max(0, v)) / 100) * (H - 4) : null,
+    };
+  });
+  const valid = pts.filter(p => p.y !== null);
+  if (!valid.length) return;
+  const lineStr = valid.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+  const fillStr = `${valid[0].x.toFixed(1)},${H} ${lineStr} ${valid[valid.length - 1].x.toFixed(1)},${H}`;
+  chart.svg.querySelector('.spark-line')?.setAttribute('points', lineStr);
+  chart.svg.querySelector('.spark-fill')?.setAttribute('points', fillStr);
+}
+
+// ── Auto-refresh ──────────────────────────────────────────────────────────
+setInterval(() => {
+  if (currentPage === 'dashboard') { loadDashboard(); loadBotStats(); }
+  if (currentPage === 'godview')   loadGodView();
+}, 10000);
+let _chartGens = null, _chartSignups = null, _chartErrors = null;
+
+async function renderCharts() {
+  try {
+    const resp = await adminFetch('/admin/api/chart-data');
+    const d    = await resp.json();
+    const labels = d.labels.map(l => l.slice(5)); // "MM-DD"
+    const mkCfg = (label, color, data) => ({
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label, data,
+          borderColor: color,
+          backgroundColor: color + '18',
+          borderWidth: 2, pointRadius: 2, pointHoverRadius: 4,
+          fill: true, tension: 0.35,
+        }],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: '#7a80a0', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,.05)' } },
+          y: { beginAtZero: true,
+               ticks: { color: '#7a80a0', font: { size: 10 }, precision: 0 },
+               grid: { color: 'rgba(255,255,255,.05)' } },
+        },
+      },
+    });
+    if (_chartGens)    { _chartGens.destroy();    _chartGens = null; }
+    if (_chartSignups) { _chartSignups.destroy(); _chartSignups = null; }
+    if (typeof Chart !== 'undefined') {
+      _chartGens    = new Chart(document.getElementById('chart-gens'),    mkCfg('Generations', '#5c6fff', d.generations));
+      _chartSignups = new Chart(document.getElementById('chart-signups'), mkCfg('Signups',     '#3ddc84', d.signups));
+      if (document.getElementById('chart-errors') && d.failures) {
+        if (_chartErrors) { _chartErrors.destroy(); _chartErrors = null; }
+        _chartErrors = new Chart(document.getElementById('chart-errors'), mkCfg('Failures', '#ff5c6a', d.failures));
+      }
+    }
+  } catch (e) {
+    console.warn('Charts failed to load:', e);
+  }
+}// ── DB Backups ──────────────────────────────────────────────────────────────
+async function loadBackupHealth() {
+  try {
+    const resp = await adminFetch('/admin/api/backup/health');
+    const d = await resp.json();
+    const intEl   = document.getElementById('bh-integrity');
+    const intCard = document.getElementById('bh-integrity-card');
+    intEl.textContent = d.integrity || '—';
+    intCard.className = 'stat-card ' + (d.integrity === 'ok' ? 'ok' : 'err');
+    document.getElementById('bh-size').textContent    = d.size_mb !== undefined ? d.size_mb + ' MB' : '—';
+    document.getElementById('bh-users').textContent   = d.users !== undefined ? d.users.toLocaleString() : '—';
+    document.getElementById('bh-users-sub').textContent = d.paid_users !== undefined ? `${d.paid_users} paid` : '';
+    document.getElementById('bh-projects').textContent = d.projects !== undefined ? d.projects.toLocaleString() : '—';
+  } catch (e) {
+    toast('Health check failed: ' + e.message, 'err');
+  }
+}
+
+async function loadBackups() {
+  const body = document.getElementById('backups-body');
+  body.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">Loading...</td></tr>';
+  try {
+    const resp = await adminFetch('/admin/api/backup/list');
+    const data = await resp.json();
+    const rows = data.backups || [];
+    document.getElementById('bh-count').textContent = rows.length;
+    if (!rows.length) {
+      body.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">No backups yet — click "Create Backup Now"</td></tr>';
+      return;
+    }
+    body.innerHTML = rows.map((b, i) => {
+      const shaCell = b.sha256_ok
+        ? '<span class="badge ok">✓ Sidecar</span>'
+        : '<span class="badge warn">No sidecar</span>';
+      const isOldest = i >= rows.length - 1 && rows.length > 3;
+      return `<tr>
+        <td class="mono" style="font-size:12px">${escHtml(b.filename)}</td>
+        <td style="font-size:12px">${formatBytes(b.size)}</td>
+        <td style="font-size:12px;color:var(--muted)">${b.age_days}d ago</td>
+        <td>${shaCell}</td>
+        <td style="white-space:nowrap">
+          <button class="action-btn" onclick="verifyBackup('${escHtml(b.filename)}')">Verify</button>
+          <button class="action-btn warn" onclick="restoreBackup('${escHtml(b.filename)}')">Restore</button>
+          <button class="action-btn danger" onclick="deleteBackup('${escHtml(b.filename)}')">Delete</button>
+        </td>
+      </tr>`;
+    }).join('');
+  } catch (e) {
+    toast('Failed to load backups: ' + e.message, 'err');
+    body.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--red);padding:24px">Error loading backups</td></tr>';
+  }
+}
+
+async function createBackup() {
+  const label = prompt('Optional label for this backup (leave blank for none):', '');
+  if (label === null) return;  // cancelled
+  const btn = document.querySelector('#page-backups .apply-btn');
+  const origText = btn ? btn.textContent : '';
+  if (btn) { btn.disabled = true; btn.textContent = 'Creating...'; }
+  try {
+    const resp = await adminFetch('/admin/api/backup/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ label: label.trim() }),
+    });
+    const d = await resp.json();
+    if (!resp.ok || !d.ok) { toast(d.error || 'Backup failed', 'err'); return; }
+    toast(`Backup created: ${d.filename}  (integrity: ${d.integrity})`, 'ok');
+    loadBackups();
+    loadBackupHealth();
+  } catch (e) {
+    toast('Create backup failed: ' + e.message, 'err');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = origText; }
+  }
+}
+
+async function verifyBackup(filename) {
+  toast('Verifying ' + filename + '…', '');
+  try {
+    const resp = await adminFetch(`/admin/api/backup/verify/${encodeURIComponent(filename)}`, { method: 'POST' });
+    const d = await resp.json();
+    if (d.ok) {
+      toast(`✓ ${filename} — integrity: ${d.integrity}, SHA-256: ${d.sha256_match ? 'match' : 'N/A'}`, 'ok');
+    } else {
+      toast(`✗ ${filename} — ${d.error || ('integrity: ' + d.integrity)}`, 'err');
+    }
+  } catch (e) {
+    toast('Verify failed: ' + e.message, 'err');
+  }
+}
+
+async function restoreBackup(filename) {
+  if (!confirm(`RESTORE DATABASE from:\n\n${filename}\n\nThis will overwrite the live database. A pre-restore snapshot will be created automatically.\n\nAre you absolutely sure?`)) return;
+  if (!confirm(`Second confirmation: restore from ${filename}?`)) return;
+  try {
+    const resp = await adminFetch(`/admin/api/backup/restore/${encodeURIComponent(filename)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirm: true }),
+    });
+    const d = await resp.json();
+    if (d.ok) {
+      toast(`✓ Restore complete. Pre-restore snapshot: ${d.pre_restore_backup}`, 'ok');
+      loadBackups();
+      loadBackupHealth();
+    } else {
+      toast('Restore failed: ' + (d.error || 'unknown error'), 'err');
+    }
+  } catch (e) {
+    toast('Restore failed: ' + e.message, 'err');
+  }
+}
+
+async function deleteBackup(filename) {
+  if (!confirm(`Delete backup:\n${filename}\n\nThis cannot be undone.`)) return;
+  try {
+    const resp = await adminFetch(`/admin/api/backup/${encodeURIComponent(filename)}`, { method: 'DELETE' });
+    const d = await resp.json();
+    if (d.ok) {
+      toast('Deleted ' + filename, 'ok');
+      loadBackups();
+      loadBackupHealth();
+    } else {
+      toast('Delete failed: ' + (d.error || 'unknown'), 'err');
+    }
+  } catch (e) {
+    toast('Delete failed: ' + e.message, 'err');
+  }
+}
+
+async function runCleanup() {
+  const keep   = parseInt(document.getElementById('bk-keep').value) || 10;
+  const maxAge = parseFloat(document.getElementById('bk-age').value) || 30;
+  if (!confirm(`Run cleanup:\n• Keep ${keep} most recent backups\n• Delete any older than ${maxAge} days\n\nProceed?`)) return;
+  try {
+    const resp = await adminFetch('/admin/api/backup/cleanup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ keep, max_age_days: maxAge }),
+    });
+    const d = await resp.json();
+    if (d.deleted?.length) {
+      toast(`Cleanup done: deleted ${d.deleted.length} backup(s), ${d.kept} kept`, 'ok');
+    } else {
+      toast(`Cleanup: nothing to delete (${d.kept} backup(s) kept)`, 'ok');
+    }
+    loadBackups();
+    loadBackupHealth();
+  } catch (e) {
+    toast('Cleanup failed: ' + e.message, 'err');
+  }
+}
+
+function formatBytes(n) {
+  if (!n) return '0 B';
+  if (n < 1024) return n + ' B';
+  if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
+  return (n / 1048576).toFixed(2) + ' MB';
+}
+
+</script>
+
+</body>
+</html>

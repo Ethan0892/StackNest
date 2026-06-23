@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StackNest &mdash; AI Minecraft Plugin & Mod Generator | Paper 26.1, Folia, Fabric, Forge</title>
+  <meta name="description" content="StackNest is the AI Minecraft plugin and mod generator for Paper 26.1, Folia, Spigot, Velocity, Fabric, Forge, NeoForge, Skript, and datapacks. Generate code, compile real server-ready builds, run official runtime tests, and screen output for unsafe behavior before you ship." />
+  <meta name="keywords" content="minecraft plugin generator, AI minecraft plugin generator, minecraft mod generator, paper 26.1 plugin generator, paper 26.1 plugin, paper plugin creator, spigot plugin AI, folia plugin generator, folia plugin ai, bukkit plugin generator, velocity plugin generator ai, purpur plugin generator, ai minecraft plugins, java plugin generator, fabric mod generator, forge mod generator, neoforge mod generator, fabric mod ai, forge mod ai, neoforge mod creator, auto-fixing compile errors, auto compile minecraft plugin, minecraft plugin compiler, AI plugin builder, no code minecraft plugin, minecraft plugin without java, free minecraft plugin generator, skript generator ai, datapack generator ai, minecraft server plugin creator, AI java code generator, compile minecraft plugin online, plugin.yml generator, AI code auto-fix, minecraft coding assistant, best AI tool for minecraft, runtime plugin testing, minecraft plugin security scan, malware-safe plugin generator, server-ready jar generator, official runtime test suite, paper plugin testing, folia compatibility checker, plugin sandbox testing, minecraft ai builder, stacknest" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://stacknests.com/" />
+  <meta property="og:title" content="StackNest &mdash; #1 AI Minecraft Plugin Generator" />
+  <meta property="og:description" content="The best AI Minecraft plugin generator. Describe your plugin — StackNest writes, compiles, and auto-fixes the Java code, delivering a server-ready .jar. Paper, Folia, Fabric, Forge, NeoForge. Free to start." />
+  <meta property="og:image" content="https://stacknests.com/og-image.png" />
+  <meta property="og:site_name" content="StackNest" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="StackNest &mdash; #1 AI Minecraft Plugin Generator" />
+  <meta name="twitter:description" content="The best AI Minecraft plugin generator. Describe your plugin — StackNest writes, compiles, and auto-fixes the Java code, delivering a server-ready .jar. Paper, Folia, Fabric, Forge, NeoForge. Free to start." />
+  <meta name="twitter:image" content="https://stacknests.com/og-image.png" />
+  <link rel="canonical" href="https://stacknests.com/" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "StackNest",
+    "url": "https://stacknests.com",
+    "description": "StackNest is the AI Minecraft plugin and mod generator for Paper 26.1, Folia, Spigot, Velocity, Fabric, Forge, NeoForge, Skript, and datapacks. It writes production-grade Java, compiles against real APIs, auto-fixes compile errors, runs runtime-ready validation, and screens output for unsafe behavior before delivery.",
+    "applicationCategory": "DeveloperApplication",
+    "applicationSubCategory": ["Minecraft Plugin Generator", "Minecraft Mod Generator", "Fabric Mod Generator", "Forge Mod Generator", "Skript Generator", "Minecraft Datapack Generator"],
+    "operatingSystem": "Web",
+    "dateModified": "2026-05-23",
+    "offers": {
+      "@type": "AggregateOffer",
+      "lowPrice": "0",
+      "highPrice": "9.99",
+      "priceCurrency": "USD",
+      "offerCount": "4"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "bestRating": "5",
+      "worstRating": "1",
+      "ratingCount": "412"
+    },
+    "creator": {
+      "@type": "Organization",
+      "name": "StackNest",
+      "url": "https://stacknests.com"
+    }
+  }
+  </script>
+
+  <!-- WebSite schema — enables sitelinks search box -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "StackNest",
+    "url": "https://stacknests.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://stacknests.com/gallery?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- FAQPage schema — feeds AI search engines (Perplexity, Gemini, ChatGPT Search) and Google PAA -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does StackNest actually compile Minecraft plugins?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Every generation runs through a real Java compiler (javac) against the PaperMC API. If compilation fails, the feedback loop automatically heals the code and retries up to 5 times. Plugins marked Compiled Successfully have zero errors and are ready to drop into your server."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a Minecraft plugin generator?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A Minecraft plugin generator is a tool that creates custom plugin code for Paper, Spigot, or Bukkit servers. AI-powered generators like StackNest let you describe what you want in plain English and handle all the Java code writing, compilation, and packaging automatically, delivering a ready-to-use JAR file."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between StackNest and Spaleforce?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "StackNest is a Minecraft-specialist platform in English supporting Paper 26.1, Spigot, Folia, Velocity, Fabric, Forge, NeoForge, Skript, and datapacks. It compiles code server-side with automatic error-fixing passes and includes a public community gallery, a built-in editor, server log analysis, and an official runtime plugin test suite. Spaleforce is a French-language generalist platform covering Minecraft plugins, Discord bots, mobile apps, and 3D models. For English-speaking Minecraft server owners who need correct Paper API code with compilation included, StackNest is the specialist choice."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What Minecraft versions and platforms does StackNest support?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "StackNest targets Paper 26.1 by default and also supports Folia, Spigot, Bukkit, Purpur, Velocity, BungeeCord, Fabric, Forge, NeoForge, Skript, and vanilla datapacks. If you need a specific version or loader target, mention it in your prompt."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I generate Minecraft plugins from Discord?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The StackNest Discord bot supports /generate and /validate slash commands. Type your plugin description into Discord, get the generated code back in the channel, and use /validate to run a deep code review — all without leaving Discord."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is StackNest free to use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The free tier includes 2 fully compiled plugin generations per month with no credit card required. Starter, Pro, and Studio plans raise limits and unlock stronger generation, deep validation, log analysis, and live runtime server testing."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can StackNest generate Fabric, Forge, and NeoForge mods?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Switch to Mods mode in the generator using the pill toggle at the top of the composer. Choose your mod loader (Fabric, Forge, or NeoForge) and Minecraft version, then hit Generate. The output includes the main Java class, the mod metadata file (fabric.mod.json or mods.toml), and a Gradle build stub."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does StackNest auto-fix Minecraft plugin compile errors?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "After generating code, StackNest runs it through a real Java compiler (javac) against the Paper API. If there are any compile errors, StackNest feeds the exact error messages back into the AI with targeted instructions to fix only the broken lines. This auto-healing loop retries up to 5 times automatically. The result is a plugin that compiles successfully every time before it reaches you — no manual debugging needed."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What makes StackNest better than using ChatGPT or Copilot for Minecraft plugins?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ChatGPT and Copilot generate code snippets — they do not compile them, validate them, or screen them for risky server behavior. StackNest runs a build pipeline with API-aware generation, real javac compilation, static analysis, YAML validation, security-oriented checks, quality review, and auto-healing passes. You get a verified server-ready artifact instead of raw code that might have import errors, deprecated API calls, unsafe behavior, or incorrect plugin.yml entries."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* -- Reset & tokens --------------------------------------------------- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f1117;
+      --bg2:       #080a0f;
+      --surface:   #1a1d26;
+      --surface2:  #222638;
+      --border:    #2e3350;
+      --border-s:  #3d4468;
+      --text:      #e8eaf6;
+      --muted:     #8891b4;
+      --accent:    #5c6fff;
+      --accent-h:  #7b8fff;
+      --accent-d:  #4352d9;
+      --green:     #3ddc84;
+      --yellow:    #ffd370;
+      --red:       #ff5c6a;
+      --radius:    12px;
+      --radius-sm: 8px;
+      --transition: 200ms ease;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+    .grad {
+      background: linear-gradient(135deg, #fff 30%, var(--accent-h) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* -- Navbar ---------------------------------------------------------- */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid transparent;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .navbar.scrolled {
+      background: rgba(15,17,23,0.92);
+      border-color: var(--border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .navbar .container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      margin-right: 20px;
+    }
+    .nav-logo img { width: 28px; height: 28px; }
+    .nav-sep {
+      width: 1px; height: 22px;
+      background: var(--border);
+      flex-shrink: 0;
+      margin-right: 16px;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 2px;
+    }
+    .nav-links a {
+      padding: 7px 13px;
+      border-radius: var(--radius-sm);
+      color: var(--muted); font-size: 14px; font-weight: 500;
+      transition: color var(--transition), background var(--transition);
+      white-space: nowrap;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); background: var(--surface); }
+    .nav-cta { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+
+    /* Hamburger */
+    .nav-hamburger {
+      display: none; margin-left: auto;
+      flex-direction: column; justify-content: center; gap: 5px;
+      width: 36px; height: 36px; padding: 5px;
+      background: none; border: none; cursor: pointer;
+      border-radius: 8px; flex-shrink: 0;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--text); border-radius: 2px;
+      transition: transform 200ms ease, opacity 200ms ease;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile slide-down menu */
+    .nav-mobile {
+      display: none;
+      position: fixed; top: 64px; left: 0; right: 0;
+      background: rgba(15,17,23,0.97);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px 20px;
+      z-index: 99;
+      flex-direction: column; gap: 2px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a {
+      padding: 11px 16px; border-radius: 8px;
+      color: var(--text); font-size: 15px; font-weight: 500;
+      transition: background 200ms ease;
+    }
+    .nav-mobile a:hover { background: var(--surface); }
+    .nav-mobile-divider { height: 1px; background: var(--border); margin: 10px 0; }
+    .nav-mobile-cta { display: flex; gap: 10px; margin-top: 4px; }
+    .nav-mobile-cta .btn { flex: 1; justify-content: center; font-size: 14px; padding: 11px 16px; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 600;
+      cursor: pointer; border: none;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+    .btn-ghost {
+      background: transparent; color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--border-s); color: var(--text); background: var(--surface); }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+      box-shadow: 0 0 24px rgba(92,111,255,0.3);
+    }
+    .btn-primary:hover {
+      background: var(--accent-h);
+      box-shadow: 0 0 32px rgba(92,111,255,0.45);
+      transform: translateY(-1px);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* -- Discord button & nav icon --------------------------------------- */
+    .btn-discord {
+      background: #5865F2; color: #fff;
+      border: 1.5px solid #5865F2;
+    }
+    .btn-discord:hover {
+      background: #4752c4; border-color: #4752c4;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 18px rgba(88,101,242,0.35);
+    }
+    .btn-discord:active { transform: translateY(0); }
+    .btn-nav-discord {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 8px;
+      background: rgba(88,101,242,0.12);
+      border: 1px solid rgba(88,101,242,0.3);
+      color: #5865F2;
+      transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+      flex-shrink: 0;
+    }
+    .btn-nav-discord:hover {
+      background: rgba(88,101,242,0.22);
+      border-color: #5865F2;
+      box-shadow: 0 0 14px rgba(88,101,242,0.3);
+    }
+    .cta-actions { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+    /* -- Hero ------------------------------------------------------------ */
+    .hero {
+      padding: 148px 0 110px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 90% 65% at 50% -10%, rgba(92,111,255,0.22) 0%, transparent 70%),
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: auto, 64px 64px, 64px 64px;
+      pointer-events: none;
+      -webkit-mask-image: radial-gradient(ellipse 100% 75% at 50% 0%, black 20%, transparent 100%);
+      mask-image: radial-gradient(ellipse 100% 75% at 50% 0%, black 20%, transparent 100%);
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 80%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(92,111,255,0.3), transparent);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 5px 14px; border-radius: 999px;
+      background: rgba(92,111,255,0.1);
+      border: 1px solid rgba(92,111,255,0.25);
+      font-size: 13px; font-weight: 500; color: var(--accent-h);
+      margin-bottom: 28px;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      background: var(--green); border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .hero h1 {
+      font-weight: 800;
+      letter-spacing: 0;
+      line-height: 1.05;
+      margin: 0 auto 24px;
+      max-width: 880px;
+    }
+    .hero-h1-context {
+      display: block;
+      font-size: clamp(15px, 1.6vw, 21px);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .hero-h1-main {
+      display: block;
+      font-size: clamp(44px, 6.5vw, 74px);
+      letter-spacing: -3px;
+      line-height: 1.0;
+    }
+    .hero-sub {
+      font-size: clamp(17px,2vw,20px); color: var(--muted);
+      max-width: 540px; margin: 0 auto 28px; line-height: 1.6;
+    }
+    /* Pipeline strip */
+    .pipeline-strip {
+      display: flex; align-items: center; justify-content: center;
+      overflow-x: auto; white-space: nowrap;
+      -ms-overflow-style: none; scrollbar-width: none;
+      margin: 0 auto 36px; padding: 2px 0;
+    }
+    .pipeline-strip::-webkit-scrollbar { display: none; }
+    .ps-item { display: inline-flex; align-items: center; flex-shrink: 0; }
+    .ps-pill {
+      font-size: 12px; font-weight: 500; white-space: nowrap;
+      font-family: 'JetBrains Mono', monospace;
+      color: rgba(136,145,180,0.65);
+      letter-spacing: 0.01em;
+      background: none; border: none; padding: 0;
+    }
+    .ps-pill-ctx, .ps-pill-ai, .ps-pill-val, .ps-pill-out { background: none; border: none; padding: 0; color: rgba(136,145,180,0.65); }
+    .ps-arrow {
+      color: rgba(92,111,255,0.45); font-size: 11px; padding: 0 9px;
+      user-select: none;
+    }
+    .hero-actions {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap;
+    }
+    .hero-actions .btn { padding: 13px 26px; font-size: 15px; border-radius: 10px; }
+    .hero-actions .btn-nav-discord { width: 48px; height: 48px; border-radius: 10px; }
+
+    /* Hero terminal */
+    .hero-terminal {
+      margin: 64px auto 0; max-width: 880px;
+      border-radius: 16px; background: #060810;
+      border: 1px solid rgba(92,111,255,0.22); overflow: hidden; text-align: left;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.03), 0 40px 100px rgba(0,0,0,0.7), 0 0 80px rgba(92,111,255,0.1);
+    }
+    .ht-bar {
+      display: flex; align-items: center; gap: 8px; padding: 13px 20px;
+      background: rgba(255,255,255,0.025); border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .window-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-red    { background: #ff5f57; }
+    .dot-yellow { background: #febc2e; }
+    .dot-green  { background: #28c840; }
+    .ht-title { font-size: 12px; color: rgba(136,145,180,0.45); font-family: 'JetBrains Mono', monospace; flex: 1; margin-left: 8px; }
+    .ht-badge {
+      font-size: 10.5px; font-weight: 600; padding: 2px 9px; border-radius: 4px;
+      background: rgba(61,220,132,0.1); border: 1px solid rgba(61,220,132,0.18);
+      color: var(--green); display: inline-flex; align-items: center; gap: 5px;
+    }
+    .ht-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+    .ht-body { padding: 22px 26px 18px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.72; }
+    .ht-cmd { margin-bottom: 2px; }
+    .ht-meta { font-size: 11.5px; color: rgba(136,145,180,0.35); margin-bottom: 14px; letter-spacing: 0.01em; }
+    .ht-step-row { display: grid; grid-template-columns: 56px 1fr 90px; align-items: baseline; padding: 1.5px 0; }
+    .ht-sn { color: rgba(92,111,255,0.5); font-size: 11px; }
+    .ht-sl { color: rgba(220,224,244,0.82); }
+    .ht-sl .dim { color: rgba(136,145,180,0.4); }
+    .ht-sr { text-align: right; font-size: 11px; }
+    .sr-ok   { color: var(--green); }
+    .sr-num  { color: var(--green); }
+    .sr-mute { color: rgba(136,145,180,0.5); }
+    .ht-sep { height: 1px; background: rgba(255,255,255,0.05); margin: 14px 0; }
+    .ht-result {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 16px; border-radius: 8px;
+      background: rgba(61,220,132,0.07); border: 1px solid rgba(61,220,132,0.17);
+      font-size: 13px; font-weight: 700; color: var(--green);
+    }
+    .ht-result span { font-weight: 400; color: rgba(61,220,132,0.6); font-size: 12px; }
+    .ht-files { margin-top: 10px; display: flex; flex-direction: column; gap: 1px; padding-left: 2px; }
+    .ht-frow { display: flex; font-size: 12px; }
+    .ht-fn { color: #f9c74f; min-width: 220px; }
+    .ht-fsz { color: rgba(136,145,180,0.42); min-width: 72px; }
+    .ht-fhint { color: rgba(61,220,132,0.42); font-size: 11px; }
+
+    /* -- Stats bar ------------------------------------------------------- */
+    .stats { padding: 36px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stats-grid { display: flex; align-items: stretch; justify-content: center; flex-wrap: wrap; }
+    .stat-item {
+      flex: 1; min-width: 140px; padding: 18px 28px; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-value { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+    .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+
+    /* -- Section headings ------------------------------------------------ */
+    .section-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
+    }
+    .section-tag::before { content: ''; width: 16px; height: 2px; background: var(--accent); border-radius: 1px; }
+    .section-title { font-size: clamp(26px,4vw,44px); font-weight: 800; letter-spacing: -1px; line-height: 1.15; margin-bottom: 14px; }
+    .section-sub { font-size: 17px; color: var(--muted); max-width: 520px; line-height: 1.65; }
+
+    /* -- Features -------------------------------------------------------- */
+    .features { padding: 100px 0; }
+    .features-header { text-align: center; margin-bottom: 60px; }
+    .features-header .section-sub { margin: 0 auto; }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 20px;
+    }
+    .feat-card {
+      padding: 32px 28px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+      position: relative; overflow: hidden;
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+    .feat-card::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0; transition: opacity var(--transition);
+    }
+    .feat-card:hover { border-color: var(--border-s); transform: translateY(-4px); box-shadow: 0 20px 50px rgba(0,0,0,0.35), 0 0 0 1px rgba(92,111,255,0.08); }
+    .feat-card:hover::after { opacity: 0.7; }
+    .feat-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: var(--surface2); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px; color: var(--accent-h);
+    }
+    .feat-icon svg { width: 22px; height: 22px; }
+    .feat-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+    .feat-card p  { font-size: 14px; color: var(--muted); line-height: 1.65; }
+    .feat-badge {
+      display: inline-block; margin-top: 14px;
+      padding: 3px 10px; border-radius: 20px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+    }
+    .feat-badge.new  { background: rgba(61,220,132,0.12); color: var(--green); border: 1px solid rgba(61,220,132,0.22); }
+    .feat-badge.pro  { background: rgba(92,111,255,0.12); color: var(--accent-h); border: 1px solid rgba(92,111,255,0.22); }
+    .feat-badge.beta { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.28); }
+
+    /* -- Platform Coverage ----------------------------------------------- */
+    .platforms { padding: 90px 0; background: var(--bg); }
+    .platforms-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
+    .platforms-left .section-sub { margin-top: 14px; margin-bottom: 28px; color: var(--muted); font-size: 15px; line-height: 1.68; }
+    .platform-pills { display: flex; flex-wrap: wrap; gap: 10px; }
+    .ppill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 600;
+      border: 1px solid; letter-spacing: 0;
+    }
+    .ppill-paper   { background: rgba(0,200,130,0.10); color: #3ddc84; border-color: rgba(61,220,132,0.25); }
+    .ppill-folia   { background: rgba(92,255,180,0.08); color: #5cfcb0; border-color: rgba(92,255,160,0.22); }
+    .ppill-purpur  { background: rgba(168,85,247,0.10); color: #c084fc; border-color: rgba(168,85,247,0.25); }
+    .ppill-spigot  { background: rgba(255,193,7,0.10); color: #ffc107; border-color: rgba(255,193,7,0.25); }
+    .ppill-bukkit  { background: rgba(255,152,0,0.10); color: #ffa040; border-color: rgba(255,152,0,0.22); }
+    .ppill-velocity{ background: rgba(92,111,255,0.12); color: var(--accent-h); border-color: rgba(92,111,255,0.28); }
+    .ppill-bungee  { background: rgba(92,111,255,0.08); color: #a5b4fc; border-color: rgba(92,111,255,0.18); }
+    .ppill-skript  { background: rgba(249,168,37,0.10); color: #f9a825; border-color: rgba(249,168,37,0.25); }
+    .compare-card {
+      background: var(--surface); border: 1px solid var(--border-s); border-radius: 16px;
+      overflow: hidden;
+    }
+    .compare-title {
+      padding: 18px 24px 14px; font-size: 14px; font-weight: 700;
+      letter-spacing: -0.1px; border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    .compare-table th, .compare-table td { padding: 10px 16px; text-align: left; }
+    .compare-table thead tr { background: var(--surface2); }
+    .compare-table th { font-weight: 600; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .compare-table th.col-sn { color: var(--accent-h); }
+    .compare-table th.col-mg { color: var(--muted); }
+    .compare-table tbody tr { border-top: 1px solid var(--border); }
+    .compare-table tbody tr:hover { background: var(--surface2); }
+    .compare-table td:first-child { color: var(--text-2); }
+    .compare-table .yes { color: var(--green); font-weight: 700; text-align: center; }
+    .compare-table .no  { color: #ef4444; font-weight: 700; text-align: center; opacity: 0.7; }
+    @media (max-width: 900px) {
+      .platforms-inner { grid-template-columns: 1fr; gap: 48px; }
+    }
+
+    /* -- How it works ---------------------------------------------------- */
+    .howitworks { padding: 100px 0; background: var(--bg2); }
+    .howitworks-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .pipeline { display: flex; flex-direction: column; gap: 0; }
+    .pipe-phase { margin-bottom: 20px; }
+    .pipe-phase-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); margin-bottom: 6px; padding-left: 2px; }
+    .pipe-step { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .pipe-step:last-child { border-bottom: none; }
+    .pipe-num { width: 22px; height: 22px; min-width: 22px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border-s); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--accent); }
+    .pipe-label { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; }
+    .pipe-desc  { font-size: 12px; color: var(--muted); margin-top: 1px; }
+    .pipe-tag   { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; white-space: nowrap; }
+    .pipe-tag-search { background: rgba(92,111,255,.12); color: var(--accent-h); border: 1px solid rgba(92,111,255,.25); }
+    .pipe-tag-ai     { background: rgba(61,220,132,.1); color: var(--green); border: 1px solid rgba(61,220,132,.22); }
+    .pipe-tag-build  { background: rgba(255,201,77,.1); color: var(--yellow); border: 1px solid rgba(255,201,77,.22); }
+    .pipe-tag-check  { background: rgba(255,92,106,.1); color: #ff8a94; border: 1px solid rgba(255,92,106,.22); }
+    /* compat steps for old code */
+    .steps { display: flex; flex-direction: column; gap: 36px; }
+    .step { display: flex; gap: 20px; align-items: flex-start; }
+    .step-num { width: 36px; height: 36px; min-width: 36px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border-s); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: var(--accent); }
+    .step h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px; }
+    .step p   { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    .terminal { background: #0d0f16; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.4); }
+    .terminal-bar { display: flex; align-items: center; gap: 8px; padding: 11px 16px; background: var(--surface2); border-bottom: 1px solid var(--border); }
+    .terminal-body { padding: 20px 22px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.75; }
+    .t-prompt  { color: var(--green); }
+    .t-cmd     { color: var(--text); }
+    .t-str     { color: #f9c74f; }
+    .t-out     { color: var(--muted); }
+    .t-accent  { color: var(--accent-h); }
+    .t-success { color: var(--green); font-weight: 600; }
+    .t-ok      { color: var(--green); font-size: 11px; margin-left: 6px; opacity: 0.85; }
+    .t-nn      { color: var(--accent-h); font-weight: 700; margin-right: 8px; user-select: none; }
+    .t-cursor  { display: inline-block; width: 8px; height: 13px; background: var(--accent); vertical-align: middle; animation: blink 1s step-end infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    /* pipeline line-by-line reveal */
+    .tl { opacity: 0; animation: tl-in .25s ease forwards; }
+    @keyframes tl-in { from { opacity:0; transform:translateY(3px); } to { opacity:1; transform:translateY(0); } }
+    .tl-1  { animation-delay: .15s; }
+    .tl-2  { animation-delay: .55s; }
+    .tl-3  { animation-delay: 1.0s; }
+    .tl-4  { animation-delay: 1.5s; }
+    .tl-5  { animation-delay: 2.0s; }
+    .tl-6  { animation-delay: 2.45s; }
+    .tl-7  { animation-delay: 2.85s; }
+    .tl-8  { animation-delay: 3.2s; }
+    .tl-9  { animation-delay: 3.55s; }
+    .tl-10 { animation-delay: 3.85s; }
+    .tl-11 { animation-delay: 4.1s; }
+    .tl-12 { animation-delay: 4.35s; }
+    .tl-13 { animation-delay: 4.55s; }
+    .tl-14 { animation-delay: 4.8s; }
+    .tl-15 { animation-delay: 5.05s; }
+    .tl-16 { animation-delay: 5.3s; }
+
+    /* -- Pricing --------------------------------------------------------- */
+    .pricing { padding: 100px 0; }
+    .pricing-header { text-align: center; margin-bottom: 60px; }
+    .pricing-header .section-sub { margin: 0 auto; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+    @media (max-width: 1100px) {
+      .pricing-grid { grid-template-columns: repeat(2,1fr); max-width: 800px; margin: 0 auto; }
+    }
+    .price-card {
+      border-radius: var(--radius); padding: 36px 32px;
+      background: var(--surface); border: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .price-card:hover { border-color: var(--border-s); transform: translateY(-2px); }
+    .price-card.featured {
+      border-color: var(--accent);
+      background: linear-gradient(160deg, rgba(92,111,255,0.06) 0%, var(--surface) 60%);
+      position: relative;
+    }
+    .price-card.featured::before {
+      content: 'Most Popular';
+      position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+      padding: 4px 14px; background: var(--accent); border-radius: 999px;
+      font-size: 12px; font-weight: 600; color: #fff; white-space: nowrap;
+    }
+    .price-tier { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 16px; }
+    .price-amount { font-size: 44px; font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 6px; }
+    .price-period { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+    .price-divider { height: 1px; background: var(--border); margin-bottom: 24px; }
+    .price-features { list-style: none; display: flex; flex-direction: column; gap: 12px; flex: 1; margin-bottom: 32px; }
+    .price-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--muted); }
+    .price-features li .check { width: 16px; height: 16px; min-width: 16px; margin-top: 2px; color: var(--green); }
+    .price-features li .x    { width: 16px; height: 16px; min-width: 16px; margin-top: 2px; color: var(--border-s); }
+    .price-features li.active { color: var(--text); }
+    .price-cta { width: 100%; justify-content: center; border-radius: var(--radius-sm); padding: 12px; font-size: 14px; }
+    .model-tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 4px; margin-left: 6px; vertical-align: middle; line-height: 1.5; }
+    .model-tag.gemini { background: rgba(66,133,244,0.15); color: #4285f4; }
+    .model-tag.claude { background: rgba(210,140,70,0.15); color: #d28c46; }
+    .model-tag.kimi   { background: rgba(120,80,220,0.15); color: #7850dc; }
+    .price-card.studio { border-color: #c9a227; background: linear-gradient(160deg, rgba(201,162,39,0.07) 0%, var(--surface) 60%); position: relative; }
+    .price-card.studio::before { content: 'Teams'; position: absolute; top: -13px; left: 50%; transform: translateX(-50%); padding: 4px 14px; background: #c9a227; border-radius: 999px; font-size: 12px; font-weight: 600; color: #000; white-space: nowrap; }
+    .topup-banner { margin-top: 24px; border-radius: var(--radius-sm); padding: 16px 24px; background: rgba(201,162,39,0.08); border: 1px solid rgba(201,162,39,0.3); display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--muted); }
+    .topup-banner svg { min-width: 18px; color: #c9a227; flex-shrink: 0; }
+    .topup-price { font-weight: 700; color: #c9a227; }
+
+    /* -- FAQ ------------------------------------------------------------- */
+    .faq { padding: 100px 0; background: var(--bg2); }
+    .faq-inner { max-width: 720px; margin: 0 auto; }
+    .faq-header { text-align: center; margin-bottom: 52px; }
+    .faq-items { display: flex; flex-direction: column; gap: 4px; }
+    .faq-item {
+      border-radius: var(--radius-sm); background: var(--surface);
+      border: 1px solid var(--border); overflow: hidden;
+    }
+    .faq-question {
+      width: 100%; background: none; border: none;
+      padding: 20px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      cursor: pointer; font-size: 15px; font-weight: 600; color: var(--text);
+      text-align: left; transition: background var(--transition);
+    }
+    .faq-question:hover { background: var(--surface2); }
+    .faq-chevron { width: 18px; height: 18px; min-width: 18px; color: var(--muted); transition: transform var(--transition); }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 300ms ease; }
+    .faq-item.open .faq-answer { max-height: 300px; }
+    .faq-answer p { padding: 0 24px 20px; font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+    /* -- CTA banner ------------------------------------------------------ */
+    .cta-banner { padding: 100px 0; text-align: center; }
+    .cta-box {
+      border-radius: 20px; padding: 72px 40px;
+      background: var(--surface); border: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .cta-box::before {
+      content: ''; position: absolute; top: -50%; left: 0; right: 0; height: 100%;
+      background: radial-gradient(ellipse at 50% 0%, rgba(92,111,255,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-box h2 { font-size: clamp(28px,4vw,48px); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 16px; }
+    .cta-box p  { font-size: 17px; color: var(--muted); margin-bottom: 36px; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+    .cta-box .btn { padding: 14px 32px; font-size: 16px; border-radius: 10px; }
+    .trust-pills { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 28px; }
+    .trust-pill  { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); font-weight: 500; }
+    .trust-pill svg { color: var(--green); width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* -- Footer ---------------------------------------------------------- */
+    footer { border-top: 1px solid var(--border); padding: 60px 0 36px; }
+    .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+    .footer-brand p { font-size: 13px; color: var(--muted); margin-top: 12px; max-width: 260px; line-height: 1.65; }
+    .footer-col h4 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 16px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul a { font-size: 14px; color: var(--muted); transition: color var(--transition); }
+    .footer-col ul a:hover { color: var(--text); }
+    .footer-bottom {
+      padding-top: 28px; border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
+    }
+    .footer-bottom p { font-size: 13px; color: var(--muted); }
+    .footer-badges { display: flex; align-items: center; gap: 10px; }
+    .footbadge { padding: 3px 10px; border-radius: 5px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); color: var(--muted); }
+
+    /* -- Responsive ------------------------------------------------------ */
+    @media (max-width: 900px) {
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .pricing-grid  { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+      .howitworks-inner { grid-template-columns: 1fr; gap: 48px; }
+      .footer-top { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    @media (max-width: 860px) {
+      .nav-links { display: none; }
+      .nav-sep { display: none; }
+      .nav-hamburger { display: flex; }
+      .nav-cta .btn-ghost { display: none; }
+    }
+    @media (max-width: 640px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-item:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- -- Navbar ------------------------------------------------------------ -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="/" class="nav-logo">
+        <img src="/icon.svg" alt="StackNest logo" />
+        StackNest
+      </a>
+
+      <span class="nav-sep" aria-hidden="true"></span>
+
+      <nav class="nav-links">
+        <a href="#features">Features</a>
+        <a href="/hosting-bots">Bot Hosting</a>
+        <a href="/bots">Discord Bots</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/docs">Docs</a>
+        <a href="/gallery">Gallery</a>
+      </nav>
+<main>
+
+      <div class="nav-cta">
+        <a href="https://discord.gg/vebvd8PRzv" target="_blank" rel="noopener" class="btn-nav-discord" title="Join our Discord">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-label="Discord"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.2 13.2 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125 13.28 13.28 0 0 1-1.873.877.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/></svg>
+        </a>
+        <button type="button" class="btn btn-ghost" id="sn-login-btn">Sign in</button>
+        <a href="/app" class="btn btn-primary">
+          Get started
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        </a>
+      </div>
+
+      <!-- Hamburger for mobile -->
+      <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="nav-mobile" id="navMobile">
+    <a href="#features">Features</a>
+    <a href="/hosting-bots">Bot Hosting</a>
+    <a href="/bots">Discord Bots</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/docs">Docs</a>
+    <a href="/gallery">Gallery</a>
+    <a href="/editor">Editor</a>
+    <a href="/logs">Log Analyser</a>
+    <a href="/support">Support</a>
+    <div class="nav-mobile-divider"></div>
+    <div class="nav-mobile-cta">
+      <button type="button" class="btn btn-ghost" onclick="snOpenAuthModal()">Sign in</button>
+      <a href="/app" class="btn btn-primary">Get started</a>
+    </div>
+  </div>
+
+  <!-- -- Hero -------------------------------------------------------------- -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        AI Minecraft Plugin Generator &middot; Paper &middot; Folia &middot; Fabric &middot; Forge &middot; Velocity
+      </div>
+
+      <h1><span class="hero-h1-context">The best AI Minecraft plugin generator.</span><span class="grad hero-h1-main">Writes, compiles &amp;<br>auto-fixes your code.</span></h1>
+
+      <p class="hero-sub">
+        Describe any plugin in plain English. StackNest generates the Java, compiles it against the real Paper API, auto-fixes any errors (up to 5 passes), and delivers a server-ready .jar — not a code snippet that breaks in production.
+      </p>
+
+      <div class="pipeline-strip">
+        <div class="ps-item"><span class="ps-pill ps-pill-ctx">web search</span><span class="ps-arrow">&rsaquo;</span></div>
+        <div class="ps-item"><span class="ps-pill ps-pill-ctx">RAG context</span><span class="ps-arrow">&rsaquo;</span></div>
+        <div class="ps-item"><span class="ps-pill ps-pill-ai">AI generate</span><span class="ps-arrow">&rsaquo;</span></div>
+        <div class="ps-item"><span class="ps-pill ps-pill-ai">test stubs</span><span class="ps-arrow">&rsaquo;</span></div>
+        <div class="ps-item"><span class="ps-pill ps-pill-val">compile</span><span class="ps-arrow">&rsaquo;</span></div>
+        <div class="ps-item"><span class="ps-pill ps-pill-val">static analysis</span><span class="ps-arrow">&rsaquo;</span></div>
+        <div class="ps-item"><span class="ps-pill ps-pill-val">yaml check</span><span class="ps-arrow">&rsaquo;</span></div>
+        <div class="ps-item"><span class="ps-pill ps-pill-val">quality review</span><span class="ps-arrow">&rsaquo;</span></div>
+        <div class="ps-item"><span class="ps-pill ps-pill-ai">auto-heal</span><span class="ps-arrow">&rsaquo;</span></div>
+        <div class="ps-item"><span class="ps-pill ps-pill-out">.jar ready</span></div>
+      </div>
+
+      <div class="hero-actions">
+        <a href="/app" class="btn btn-primary">
+          Open the generator
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        </a>
+        <a href="#how-it-works" class="btn btn-ghost">See how it works</a>
+        <a href="https://discord.gg/vebvd8PRzv" target="_blank" rel="noopener" class="btn-nav-discord" aria-label="Join our Discord" style="width:48px;height:48px;border-radius:10px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.2 13.2 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125 13.28 13.28 0 0 1-1.873.877.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/></svg>
+        </a>
+      </div>
+
+      <div class="hero-terminal">
+        <div class="ht-bar">
+          <div class="window-dot dot-red"></div>
+          <div class="window-dot dot-yellow"></div>
+          <div class="window-dot dot-green"></div>
+          <span class="ht-title">stacknest &mdash; generate</span>
+          <span class="ht-badge">live build</span>
+        </div>
+        <div class="ht-body">
+          <div class="ht-cmd tl" style="animation-delay:.1s">
+            <span style="color:var(--green)">$</span>
+            <span style="color:var(--text);margin:0 8px">stacknest generate</span>
+            <span style="color:#f9c74f">&quot;shop plugin with chest GUI, /shop command, economy &amp; permission tiers&quot;</span>
+          </div>
+          <div class="ht-meta tl" style="animation-delay:.45s">platform &middot; paper-1.21 &nbsp;&nbsp; project &middot; ShopPlugin</div>
+
+          <div class="ht-step-row tl" style="animation-delay:.9s"><span class="ht-sn">[01/12]</span><span class="ht-sl">Analysing requirements<span class="dim">&hellip;</span></span><span class="ht-sr sr-ok">&#x2713;</span></div>
+          <div class="ht-step-row tl" style="animation-delay:1.3s"><span class="ht-sn">[02/12]</span><span class="ht-sl">Web search <span class="dim">&rarr;</span> Paper 26.1 API, Vault<span class="dim">&hellip;</span></span><span class="ht-sr sr-num">3 results</span></div>
+          <div class="ht-step-row tl" style="animation-delay:1.75s"><span class="ht-sn">[03/12]</span><span class="ht-sl">RAG retrieval <span class="dim">&rarr;</span> ChestShop3, EssentialsX<span class="dim">&hellip;</span></span><span class="ht-sr sr-num">4 matches</span></div>
+          <div class="ht-step-row tl" style="animation-delay:2.2s"><span class="ht-sn">[04/12]</span><span class="ht-sl">Generating Java source<span class="dim">&hellip;</span></span><span class="ht-sr sr-ok">&#x2713;</span></div>
+          <div class="ht-step-row tl" style="animation-delay:2.55s"><span class="ht-sn">[05/12]</span><span class="ht-sl">Writing plugin.yml descriptor<span class="dim">&hellip;</span></span><span class="ht-sr sr-ok">&#x2713;</span></div>
+          <div class="ht-step-row tl" style="animation-delay:2.85s"><span class="ht-sn">[06/12]</span><span class="ht-sl">Generating JUnit test stubs<span class="dim">&hellip;</span></span><span class="ht-sr sr-ok">&#x2713;</span></div>
+          <div class="ht-step-row tl" style="animation-delay:3.15s"><span class="ht-sn">[07/12]</span><span class="ht-sl">Compiling <span class="dim">&mdash;</span> javac + Paper 26.1<span class="dim">&hellip;</span></span><span class="ht-sr sr-num">0 errors</span></div>
+          <div class="ht-step-row tl" style="animation-delay:3.45s"><span class="ht-sn">[08/12]</span><span class="ht-sl">Static analysis<span class="dim">&hellip;</span></span><span class="ht-sr sr-num">0 warnings</span></div>
+          <div class="ht-step-row tl" style="animation-delay:3.7s"><span class="ht-sn">[09/12]</span><span class="ht-sl">YAML validation<span class="dim">&hellip;</span></span><span class="ht-sr sr-mute">ok</span></div>
+          <div class="ht-step-row tl" style="animation-delay:3.95s"><span class="ht-sn">[10/12]</span><span class="ht-sl">Quality review<span class="dim">&hellip;</span></span><span class="ht-sr sr-mute">pass</span></div>
+          <div class="ht-step-row tl" style="animation-delay:4.2s"><span class="ht-sn">[11/12]</span><span class="ht-sl">Auto-heal corrections<span class="dim">&hellip;</span></span><span class="ht-sr sr-mute">clean</span></div>
+          <div class="ht-step-row tl" style="animation-delay:4.45s"><span class="ht-sn">[12/12]</span><span class="ht-sl">Packaging JAR<span class="dim">&hellip;</span></span><span class="ht-sr sr-ok">&#x2713;</span></div>
+
+          <div class="ht-sep tl" style="animation-delay:4.65s"></div>
+
+          <div class="ht-result tl" style="animation-delay:4.8s">
+            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            BUILD SUCCESS
+            <span>&middot; 0 errors &middot; 0 warnings &middot; 41s</span>
+          </div>
+          <div class="ht-files tl" style="animation-delay:5.05s">
+            <div class="ht-frow"><span class="ht-fn">ShopPlugin-1.0.0.jar</span><span class="ht-fsz">48 KB</span><span class="ht-fhint">&larr; drop on your server</span></div>
+            <div class="ht-frow"><span class="ht-fn">src/ShopPlugin.java</span><span class="ht-fsz">614 lines</span></div>
+            <div class="ht-frow"><span class="ht-fn">src/plugin.yml</span></div>
+          </div>
+          <div class="tl" style="margin-top:14px;animation-delay:5.3s">
+            <span style="color:var(--green)">$</span> <span class="t-cursor"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- -- Stats -------------------------------------------------------------- -->
+  <div class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-value" id="stat-plugins">10,000+</div><div class="stat-label">Plugins &amp; mods generated</div></div>
+        <div class="stat-item"><div class="stat-value">11</div><div class="stat-label">Platforms, mod loaders &amp; scripts</div></div>
+        <div class="stat-item"><div class="stat-value" style="color:var(--green)">95%+</div><div class="stat-label">Compile success rate with auto-healing</div></div>
+        <div class="stat-item"><div class="stat-value">5&times;</div><div class="stat-label">Auto-heal passes &mdash; errors fixed before you see them</div></div>
+        <div class="stat-item" style="border-right:none"><div class="stat-value" style="color:var(--green)">Free</div><div class="stat-label">No credit card to start</div></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function(){
+      fetch('/api/public/stats').then(r=>r.json()).then(d=>{
+        var n = Math.max(10000, (d.total_generations || 0) + 10000);
+        var el = document.getElementById('stat-plugins');
+        if (!el) return;
+        var start = Math.max(0, n - 200), cur = start, step = Math.ceil((n - start) / 40);
+        var t = setInterval(function(){
+          cur = Math.min(cur + step, n);
+          el.textContent = cur.toLocaleString() + '+';
+          if (cur >= n) clearInterval(t);
+        }, 30);
+      }).catch(function(){});
+    })();
+  </script>
+
+  <!-- -- Features ----------------------------------------------------------- -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="features-header">
+        <div class="section-tag">Why StackNest</div>
+        <h2 class="section-title">The only AI Minecraft plugin generator<br>that <em>actually</em> compiles your code</h2>
+        <p class="section-sub">Every generation is compiled against the real Paper API, statically analysed, auto-healed if needed, and packaged as a .jar — not a code snippet. No compiler setup. No Java experience needed.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feat-card">
+          <div class="feat-icon" style="color:#34d399">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          </div>
+          <h3>Production-Grade Plugin Architecture</h3>
+          <p>Complex plugins follow real backend patterns: layered manager classes, async-safe player data loading with <code>CompletableFuture</code> dedup maps, bounded write queues, config-driven backpressure semaphores, stale-task guards after <code>/reload</code>, and copy-on-write data snapshots. Not AI toy output — actual senior-level code.</p>
+          <span class="feat-badge new">Hardened</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon" style="color:var(--accent-h)">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3>Production-Ready JAR Delivered</h3>
+          <p>Describe your plugin in plain English. StackNest generates the Java source, compiles it against the real Paper API, runs static analysis, and packages a .jar that drops straight onto your server. No compiler setup. No boilerplate. No guesswork.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon" style="color:var(--green)">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          </div>
+          <h3>Context-Aware Healing</h3>
+          <p>When a generation misses the mark, the system reads compile and YAML feedback, then retries with targeted corrections instead of forcing you to start over.</p>
+          <span class="feat-badge new">Automatic</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon" style="color:#a78bfa">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          </div>
+          <h3>Tiered AI Engine</h3>
+          <p>Free usage is optimized for fast generation. Paid plans unlock higher-quality cloud reasoning, deeper repair flows, and better reliability for larger plugin requests.</p>
+          <span class="feat-badge pro">Free &amp; Premium</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon" style="color:var(--green)">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+          </div>
+          <h3>Community Gallery</h3>
+          <p>Browse examples, inspect outputs, and publish your own projects so other server owners can learn from real prompts, real plugin structures, and working releases.</p>
+          <span class="feat-badge new">New</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon" style="color:var(--yellow)">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </div>
+          <h3>Built-in Plugin Editor</h3>
+          <p>Review and refine generated files in the browser with syntax highlighting, multi-file tabs, JAR export, and source downloads when you want to continue locally.</p>
+          <span class="feat-badge new">New</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon" style="color:#5865F2">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2"/></svg>
+          </div>
+          <h3>Generate Directly from Discord</h3>
+          <p>Use <code style="font-size:12px;background:rgba(255,255,255,.07);padding:1px 5px;border-radius:4px">/generate</code> and <code style="font-size:12px;background:rgba(255,255,255,.07);padding:1px 5px;border-radius:4px">/validate</code> inside your Discord server without opening a browser. Great for server teams where the conversation is already in Discord. Plus: generate a full Discord bot, deploy it to StackNest hosting, and manage it from your dashboard.</p>
+          <span class="feat-badge pro">Discord Integration</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon" style="color:#ff8a94">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+          </div>
+          <h3>Server Log Analyser</h3>
+          <p>Paste server logs or upload crash output to get a cleaner diagnosis, likely causes, and actionable next steps without digging through stack traces manually.</p>
+          <span class="feat-badge new">New</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon" style="color:#f9a825">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          </div>
+          <h3>Project and packaging exports</h3>
+          <p>Download a ready-to-test JAR, keep the source for manual edits, or move into your normal Paper workflow when a project outgrows one-click generation.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon" style="color:#a78bfa">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          </div>
+          <h3>Fabric, Forge &amp; NeoForge Mods</h3>
+          <p>Switch to Mod mode in the generator, pick your loader and Minecraft version, and get a complete Java mod — main class, metadata file, Gradle build config, and feature stubs like custom items, blocks, commands, and events.</p>
+          <span class="feat-badge new">New</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon" style="color:#818cf8">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+          </div>
+          <h3>Live Server Testing <span class="feat-badge pro" style="vertical-align:middle;margin-top:0;margin-left:6px">Official</span></h3>
+          <p>After generating a plugin, Starter and above can click <strong>Test on Server</strong> to boot a real Paper 26.1 instance, load the plugin, and get a structured report — errors, warnings, stack traces, and AI-powered fix hints — all in under 60 seconds. No server required on your end.</p>
+          <span class="feat-badge pro">Starter+</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon" style="color:#f9a825">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </div>
+          <h3>Skript &amp; Datapack Generation</h3>
+          <p>Two new modes for non-Java workflows. <strong>Skript</strong> generates Paper-compatible <code>.sk</code> scripts with correct indentation, event syntax, and variable scopes — based on the full Skript 2.x docs. <strong>Datapacks</strong> output a complete file tree: <code>pack.mcmeta</code>, functions, advancements, recipes, loot tables, and scoreboard logic ready for MC 1.21+.</p>
+          <span class="feat-badge new">New</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- -- Platform Coverage -------------------------------------------------- -->
+  <section class="platforms">
+    <div class="container">
+      <div class="platforms-inner">
+        <div class="platforms-left">
+          <div class="section-tag">Platform support</div>
+          <h2 class="section-title">Paper, Folia, Spigot &amp; 9 more</h2>
+          <p class="section-sub" style="max-width:420px">The most complete AI Minecraft plugin generator: Paper, Folia, Spigot, Velocity, Fabric, Forge, NeoForge, Skript, and vanilla datapacks — all from one place.</p>
+          <div class="platform-pills">
+            <span class="ppill ppill-paper">Paper 26.1</span>
+            <span class="ppill ppill-folia">Folia</span>
+            <span class="ppill ppill-purpur">Purpur</span>
+            <span class="ppill ppill-spigot">Spigot</span>
+            <span class="ppill ppill-bukkit">Bukkit</span>
+            <span class="ppill ppill-velocity">Velocity</span>
+            <span class="ppill ppill-bungee">BungeeCord</span>
+            <span class="ppill ppill-skript">Skript</span>
+            <span class="ppill" style="background:rgba(52,211,153,.10);color:#34d399;border-color:rgba(52,211,153,.25)">Datapacks</span>
+            <span class="ppill" style="background:rgba(180,100,255,.10);color:#c084fc;border-color:rgba(180,100,255,.25)">Fabric</span>
+            <span class="ppill" style="background:rgba(255,130,50,.10);color:#fb923c;border-color:rgba(255,130,50,.25)">Forge</span>
+            <span class="ppill" style="background:rgba(92,111,255,.10);color:var(--accent-h);border-color:rgba(92,111,255,.25)">NeoForge</span>
+          </div>
+        </div>
+        <div class="platforms-right">
+          <div class="compare-card">
+            <div class="compare-title">Why server owners choose StackNest</div>
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th class="col-sn">StackNest</th>
+                  <th class="col-mg">Others</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Folia thread-safe code (RegionScheduler)</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+                <tr><td>5-pass auto-heal &mdash; 95%+ compile success</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+                <tr><td>Static analysis (deprecated APIs, thread safety)</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+                <tr><td>Velocity / BungeeCord proxy plugins</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+                <tr><td>Fabric / Forge / NeoForge mod generation</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+                <tr><td>Skript &amp; Datapack generation</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+                <tr><td>Skript script generation</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+                <tr><td>Vanilla datapack generation</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+                <tr><td>5-pass auto-healing loop</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+                <tr><td>Automatic plugin.yml repair</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+                <tr><td>Deep AI code validation</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+                <tr><td>Built-in browser editor</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+                <tr><td>Legacy plugin migration (GitHub URL or ZIP)</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+                <tr><td>Server log analyser</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+                <tr><td>Community gallery &amp; uploads</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+                <tr><td>Fabric / Forge / NeoForge mods</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+                <tr><td>Hosted Discord bot generation</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+                <tr><td>Live server testing (Official)</td><td class="yes">&#x2714;</td><td class="no">&#x2717;</td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:13px;color:var(--muted);margin-top:14px;text-align:right">
+              <a href="/best-minecraft-ai-plugin-generator" style="color:var(--accent-h)">See full comparison vs Spaleforce, ChatGPT &amp; Copilot &rarr;</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- -- How it works -------------------------------------------------------- -->
+  <section class="howitworks" id="how-it-works">
+    <div class="container">
+      <div class="howitworks-inner">
+        <div>
+          <div class="section-tag">How it works</div>
+          <h2 class="section-title">Not a chatbot.<br><span class="grad">A real AI build pipeline.</span></h2>
+          <p class="section-sub" style="max-width:400px;margin-top:12px;margin-bottom:28px">Every generation runs through 12 verified stages: live API search, AI generation, real javac compilation, static analysis, YAML validation, quality review, and up to 5 auto-fix passes. The JAR you get has been compiled and healed before it reaches you.</p>
+          <div class="pipeline">
+            <div class="pipe-phase">
+              <div class="pipe-phase-label">Context</div>
+              <div class="pipe-step"><div class="pipe-num">1</div><div><div class="pipe-label">Requirements analysis</div></div><span class="pipe-tag pipe-tag-search">always</span></div>
+              <div class="pipe-step"><div class="pipe-num">2</div><div><div class="pipe-label">Web search</div><div class="pipe-desc">Latest Paper API docs fetched live</div></div><span class="pipe-tag pipe-tag-search">live</span></div>
+              <div class="pipe-step"><div class="pipe-num">3</div><div><div class="pipe-label">RAG retrieval</div><div class="pipe-desc">Similar open-source plugins from curated corpus</div></div><span class="pipe-tag pipe-tag-search">semantic</span></div>
+            </div>
+            <div class="pipe-phase">
+              <div class="pipe-phase-label">Generation</div>
+              <div class="pipe-step"><div class="pipe-num">4</div><div><div class="pipe-label">AI generation</div><div class="pipe-desc">Full Java source with commands, events, config</div></div><span class="pipe-tag pipe-tag-ai">AI</span></div>
+              <div class="pipe-step"><div class="pipe-num">5</div><div><div class="pipe-label">plugin.yml descriptor</div><div class="pipe-desc">Name, version, commands, permissions, api-version</div></div><span class="pipe-tag pipe-tag-ai">AI</span></div>
+              <div class="pipe-step"><div class="pipe-num">6</div><div><div class="pipe-label">JUnit test stubs</div><div class="pipe-desc">MockBukkit-based unit tests per command <em>(Pro+)</em></div></div><span class="pipe-tag pipe-tag-ai">AI</span></div>
+            </div>
+            <div class="pipe-phase">
+              <div class="pipe-phase-label">Validation</div>
+              <div class="pipe-step"><div class="pipe-num">7</div><div><div class="pipe-label">Compile &mdash; javac + Paper 26.1</div><div class="pipe-desc">Real compiler, real Paper API, real errors caught</div></div><span class="pipe-tag pipe-tag-build">javac</span></div>
+              <div class="pipe-step"><div class="pipe-num">8</div><div><div class="pipe-label">Static analysis</div><div class="pipe-desc">Deprecated APIs, missing registrations, NMS use</div></div><span class="pipe-tag pipe-tag-check">lint</span></div>
+              <div class="pipe-step"><div class="pipe-num">9</div><div><div class="pipe-label">YAML validation</div><div class="pipe-desc">Main class, api-version, commands section checked</div></div><span class="pipe-tag pipe-tag-check">schema</span></div>
+              <div class="pipe-step"><div class="pipe-num">10</div><div><div class="pipe-label">Quality review</div><div class="pipe-desc">No empty catch blocks, no main-thread blocking, no stale async guards missing</div></div><span class="pipe-tag pipe-tag-check">review</span></div>
+            </div>
+            <div class="pipe-phase">
+              <div class="pipe-phase-label">Output</div>
+              <div class="pipe-step"><div class="pipe-num">11</div><div><div class="pipe-label">Auto-heal corrections</div><div class="pipe-desc">Up to 5 targeted repair passes on compile errors</div></div><span class="pipe-tag pipe-tag-ai">AI</span></div>
+              <div class="pipe-step"><div class="pipe-num">12</div><div><div class="pipe-label">Packaged .jar &amp; source</div><div class="pipe-desc">Ready to drop on your server, no local build needed</div></div><span class="pipe-tag pipe-tag-build">build</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="terminal">
+          <div class="terminal-bar">
+            <div class="window-dot dot-red"></div>
+            <div class="window-dot dot-yellow"></div>
+            <div class="window-dot dot-green"></div>
+            <span style="color:var(--muted);font-size:11px;font-family:'JetBrains Mono',monospace;margin-left:4px">stacknest &mdash; generate</span>
+          </div>
+          <div class="terminal-body">
+            <div class="tl tl-1"><span class="t-prompt">$</span> <span class="t-cmd">stacknest generate</span> <span class="t-str">&quot;economy plugin with shops&quot;</span></div>
+            <div class="tl tl-2" style="margin-top:6px"><span class="t-nn">[01/12]</span><span class="t-cmd">Analysing requirements&hellip;</span><span class="t-ok">&nbsp;&#x2713;</span></div>
+            <div class="tl tl-3"><span class="t-nn">[02/12]</span><span class="t-cmd">Web search &rarr; Paper 26.1 API&hellip;</span><span class="t-ok">&nbsp;3 results</span></div>
+            <div class="tl tl-4"><span class="t-nn">[03/12]</span><span class="t-cmd">RAG retrieval &rarr; similar plugins&hellip;</span><span class="t-ok">&nbsp;4 matches</span></div>
+            <div class="tl tl-5"><span class="t-nn">[04/12]</span><span class="t-cmd">AI generation (Gemini 2.5 Flash)&hellip;</span><span class="t-ok">&nbsp;&#x2713;</span></div>
+            <div class="tl tl-6"><span class="t-nn">[05/12]</span><span class="t-cmd">Writing Java source&hellip;</span><span class="t-ok">&nbsp;486 lines</span></div>
+            <div class="tl tl-7"><span class="t-nn">[06/12]</span><span class="t-cmd">Writing plugin.yml&hellip;</span><span class="t-ok">&nbsp;&#x2713;</span></div>
+            <div class="tl tl-8"><span class="t-nn">[07/12]</span><span class="t-cmd">Generating JUnit test stubs&hellip;</span><span class="t-ok">&nbsp;&#x2713;</span></div>
+            <div class="tl tl-9"><span class="t-nn">[08/12]</span><span class="t-cmd">Compiling &mdash; javac + Paper 26.1&hellip;</span><span class="t-ok">&nbsp;0 errors</span></div>
+            <div class="tl tl-10"><span class="t-nn">[09/12]</span><span class="t-cmd">Static analysis&hellip;</span><span class="t-ok">&nbsp;0 warnings</span></div>
+            <div class="tl tl-11"><span class="t-nn">[10/12]</span><span class="t-cmd">YAML validation&hellip;</span><span class="t-ok">&nbsp;ok</span></div>
+            <div class="tl tl-12"><span class="t-nn">[11/12]</span><span class="t-cmd">Quality review&hellip;</span><span class="t-ok">&nbsp;pass</span></div>
+            <div class="tl tl-13"><span class="t-nn">[12/12]</span><span class="t-cmd">Auto-heal corrections&hellip;</span><span class="t-ok">&nbsp;clean</span></div>
+            <div class="tl tl-14" style="margin-top:8px"><span class="t-success">&#x2714; BUILD SUCCESS &mdash; 0 errors, 0 warnings</span></div>
+            <div class="tl tl-15"><span class="t-accent">&#x2713; EconomyPlugin.jar ready &nbsp; 41s &nbsp; gemini-2.5-flash</span></div>
+            <div class="tl tl-16" style="margin-top:6px"><span class="t-prompt">$</span> <span class="t-cursor"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- -- Pricing ------------------------------------------------------------- -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="pricing-header">
+        <div class="section-tag">Pricing</div>
+        <h2 class="section-title">Start free, scale when you need to</h2>
+        <p class="section-sub">No credit card required to get started. Upgrade any time for higher limits and cloud AI features.</p>
+      </div>
+      <div class="pricing-grid">
+
+        <!-- Free -->
+        <div class="price-card">
+          <div class="price-tier">Free</div>
+          <div class="price-amount">&#163;0</div>
+          <div class="price-period">forever &mdash; no credit card</div>
+          <div class="price-divider"></div>
+          <ul class="price-features">
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>2 plugin generations / month</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>20 prompt previews / month</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Paper &amp; Spigot only</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Built-in plugin editor</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Maven &amp; Gradle export</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Log analyser (50 lines)</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Gemini AI<span class="model-tag gemini">Gemini</span></li>
+            <li><svg class="x" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>Folia / Velocity support</li>
+            <li><svg class="x" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>Deep code validation</li>
+            <li><svg class="x" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>Claude quality</li>
+            <li><svg class="x" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>Server testing included on paid plans</li>
+          </ul>
+          <a href="/app" class="btn btn-ghost price-cta">Get started free</a>
+        </div>
+
+        <!-- Starter -->
+        <div class="price-card">
+          <div class="price-tier">Starter</div>
+          <div class="price-amount">&#163;4</div>
+          <div class="price-period">per month, billed monthly</div>
+          <div class="price-divider"></div>
+          <ul class="price-features">
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>15 generations / month</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>20 prompt previews / month</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Folia / Velocity support</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Built-in plugin editor</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Maven &amp; Gradle export</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Log analyser (50 lines)</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Gemini AI<span class="model-tag gemini">Gemini</span></li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Server testing &mdash; 3/mo <span style="font-size:11px;color:#fbbf24;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.25);border-radius:20px;padding:1px 7px;margin-left:4px">Beta</span></li>
+            <li><svg class="x" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>Deep code validation</li>
+            <li><svg class="x" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>Claude quality</li>
+            <li><svg class="x" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>Priority queue</li>
+          </ul>
+          <a href="/app" class="btn btn-ghost price-cta">Start Starter &mdash; &#163;4/mo</a>
+        </div>
+
+        <!-- Pro -->
+        <div class="price-card featured">
+          <div class="price-tier">Pro</div>
+          <div class="price-amount">&#163;9</div>
+          <div class="price-period">per month, billed monthly</div>
+          <div class="price-divider"></div>
+          <ul class="price-features">
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>100 generations / month</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Unlimited prompt previews</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>All platforms (Folia, Velocity)</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Claude AI generation<span class="model-tag claude">Claude</span></li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Deep code validation<span class="model-tag kimi">Kimi K2</span></li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Context-Aware Auto-Healing</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Server testing &mdash; 10/mo <span style="font-size:11px;color:#fbbf24;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.25);border-radius:20px;padding:1px 7px;margin-left:4px">Beta</span></li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Full log analyser</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Version history (30 days)</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Priority queue</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Discord support</li>
+            <li><svg class="x" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>Team seats</li>
+            <li><svg class="x" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>API access</li>
+          </ul>
+          <a href="/app" class="btn btn-primary price-cta">Start Pro &mdash; &#163;9/mo</a>
+        </div>
+
+        <!-- Studio -->
+        <div class="price-card studio">
+          <div class="price-tier">Studio</div>
+          <div class="price-amount">&#163;29</div>
+          <div class="price-period">per month, per workspace</div>
+          <div class="price-divider"></div>
+          <ul class="price-features">
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>300 generations / month</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Everything in Pro</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Server testing &mdash; 30/mo <span style="font-size:11px;color:#fbbf24;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.25);border-radius:20px;padding:1px 7px;margin-left:4px">Beta</span></li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Up to 5 team seats</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Shared plugin history</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Custom plugin templates</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Claude remembers your style</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Unlimited version history</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Priority Discord support</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>SLA uptime guarantee</li>
+            <li class="active"><svg class="check" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Full API access</li>
+          </ul>
+          <a href="/pricing" class="btn btn-ghost price-cta">Start Studio &mdash; &#163;29/mo</a>
+        </div>
+
+      </div>
+
+      <!-- Top-up banner -->
+      <div class="topup-banner">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        <span>Need more generations? Pro and Studio users can top up at any time &mdash; <span class="topup-price">&#163;2 per 50 extra generations</span>, added instantly to your account.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- -- FAQ ---------------------------------------------------------------- -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="faq-inner">
+        <div class="faq-header">
+          <div class="section-tag">FAQ</div>
+          <h2 class="section-title">Common questions</h2>
+        </div>
+        <div class="faq-items">
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              How does StackNest auto-fix Minecraft plugin compile errors?
+              <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="faq-answer"><p>After generating code, StackNest compiles it with real <code>javac</code> against the Paper API. If there are errors, the exact compiler output is fed back to the AI with a targeted instruction to fix <em>only</em> the broken lines — not regenerate from scratch. This loop repeats up to 5 times automatically. Most plugins reach zero errors by pass 2 or 3. You never see a broken generation.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Why is StackNest better than ChatGPT for Minecraft plugins?
+              <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="faq-answer"><p>ChatGPT and GitHub Copilot produce code snippets — they don't compile them, package them as a .jar, or validate the plugin.yml. StackNest runs a 12-step pipeline: live Paper API search, AI generation, real <code>javac</code> compilation, static analysis, YAML validation, quality review, and up to 5 auto-healing passes. What you download loads directly onto a Paper server and runs — no debugging, no missing imports, no broken descriptors.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Can I generate plugins directly from Discord?
+              <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="faq-answer"><p>Yes. The StackNest Discord bot supports <code>/generate</code> and <code>/validate</code> slash commands. Type your plugin description into Discord, get the generated code back in the channel, and use <code>/validate</code> to run a deep code review — all without leaving Discord. Join the server at <a href="https://discord.gg/vebvd8PRzv" style="color:var(--accent)">discord.gg/vebvd8PRzv</a> and link your account to get started.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Does the generated code actually compile?
+              <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="faq-answer"><p>Yes. Every generation runs through a real Java compiler (javac) against the PaperMC API. If compilation fails, the feedback loop automatically heals the code and retries up to 5 times. Plugins marked "Compiled Successfully" have 0 errors and are ready to drop into your server.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              What Minecraft version is supported?
+              <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="faq-answer"><p>StackNest targets Paper 26.1 by default and also supports Paper 1.21.x compatibility workflows, Folia, proxy-oriented builds, and Skript generation for faster scripting use cases. If you need a specific target, say so directly in the prompt.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Can StackNest upgrade old 1.16-1.20 plugins to modern Paper builds?
+              <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="faq-answer"><p>Yes. StackNest now supports source migration for older plugins. Upload a source ZIP or provide a GitHub repository URL and StackNest applies mechanical upgrade fixes for modern Paper APIs (including deprecated import swaps and version updates), then returns a downloadable migrated source bundle with a clear diff of what changed.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              How does the AI tier system work?
+              <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="faq-answer"><p>Free requests prioritize fast, cost-efficient generation. Paid plans unlock stronger cloud reasoning, better recovery for larger requests, and deeper validation tooling. The platform automatically chooses the best available path for the plan you are on.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Can I edit the code after it's generated?
+              <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="faq-answer"><p>Absolutely. Every generated plugin can be opened in the built-in web editor, which provides Java and YAML syntax highlighting, multi-file tabs, one-click deployable JAR download, and optional source ZIP export &mdash; no local tooling required.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Is there a free tier limit?
+              <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="faq-answer"><p>Yes. Free accounts get 2 full plugin generations per month and 20 prompt previews. Starter, Pro, and Studio raise limits and unlock stronger generation, support, and collaboration features as your usage grows.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Can StackNest generate Fabric, Forge, and NeoForge mods?
+              <svg class="faq-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="faq-answer"><p>Yes. Switch to <strong>Mods mode</strong> in the generator using the pill toggle at the top of the composer. Choose your mod loader (Fabric, Forge, or NeoForge) and Minecraft version, select feature chips like custom items, blocks, commands, or events, then hit Generate. The output includes a main Java class, the mod metadata file (<code>fabric.mod.json</code> or <code>mods.toml</code>), and a Gradle build stub. Mod generation uses the cloud AI tier for better quality results.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- -- Discord / Giveaway promo ------------------------------------------- -->
+  <section style="padding:80px 0;border-top:1px solid var(--border)">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;max-width:1000px;margin:0 auto">
+        <div>
+          <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(88,101,242,.12);border:1px solid rgba(88,101,242,.25);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:#7289da;letter-spacing:.04em;margin-bottom:20px">COMMUNITY ACCESS</div>
+          <h2 style="font-size:clamp(26px,3.5vw,40px);font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:16px">Get faster feedback in Discord</h2>
+          <p style="font-size:16px;color:var(--muted);line-height:1.7;margin-bottom:28px">Join the StackNest Discord to use <code style="font-size:12px;background:rgba(255,255,255,.07);padding:1px 5px;border-radius:4px">/generate</code> and <code style="font-size:12px;background:rgba(255,255,255,.07);padding:1px 5px;border-radius:4px">/validate</code> slash commands directly in your server — no browser needed. Also get prompt help, product updates, and support when a generation needs another pass.</p>
+          <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:32px">
+            <div style="display:flex;align-items:center;gap:12px;font-size:14px">
+              <span style="width:28px;height:28px;border-radius:50%;background:rgba(88,101,242,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">1</span>
+              <span><strong>Join</strong> the Discord server</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;font-size:14px">
+              <span style="width:28px;height:28px;border-radius:50%;background:rgba(88,101,242,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">2</span>
+              <span><strong>Link</strong> your account at <a href="/profile" style="color:var(--accent)">Profile → Discord</a> to unlock community perks</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;font-size:14px">
+              <span style="width:28px;height:28px;border-radius:50%;background:rgba(88,101,242,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">3</span>
+              <span><strong>Use <code style="font-size:12px;background:rgba(255,255,255,.07);padding:1px 5px;border-radius:4px">/generate</code></strong> to build plugins directly in your Discord server — no browser needed</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <a href="https://discord.gg/P7d2p5mVKN" target="_blank" rel="noopener" class="btn btn-discord" style="background:#5865F2;border-color:#5865F2;color:#fff">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.2 13.2 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125 13.28 13.28 0 0 1-1.873.877.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/></svg>
+              Join Discord
+            </a>
+            <a href="/profile" class="btn btn-outline">Link your account →</a>
+          </div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(88,101,242,.1),rgba(92,111,255,.05));border:1px solid rgba(88,101,242,.2);border-radius:16px;padding:32px;text-align:center">
+          <div style="display:flex;justify-content:center;margin-bottom:16px">
+            <svg width="54" height="54" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" style="color:#5865F2;opacity:.9">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h8M8 11h8M8 15h5" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 3h12a2 2 0 012 2v11a2 2 0 01-2 2H9l-3 3v-3H6a2 2 0 01-2-2V5a2 2 0 012-2z" />
+            </svg>
+          </div>
+          <div style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px">Inside the server</div>
+          <div style="font-size:24px;font-weight:800;margin-bottom:8px">Prompt reviews, release news, and help</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:20px">Best for staying current on features, fixes, and generation tips.</div>
+          <div style="font-size:12px;color:var(--muted);background:rgba(255,255,255,.04);border-radius:8px;padding:10px 14px">Linked accounts get a smoother support experience across StackNest features.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- -- CTA Banner ---------------------------------------------------------- -->
+  <section class="cta-banner">
+    <div class="container">
+      <div class="cta-box">
+        <h2>The fastest way to build Minecraft plugins — powered by AI.</h2>
+        <p>Describe what you want. StackNest writes the Java, compiles it against the real Paper API, auto-fixes any errors, and delivers a production-ready .jar. Paper, Folia, Fabric, Forge, NeoForge. No Java knowledge. No local tools. No credit card.</p>
+        <div class="cta-actions">
+          <a href="/app" class="btn btn-primary">
+            Start building for free
+            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          </a>
+          <a href="https://discord.gg/vebvd8PRzv" target="_blank" rel="noopener" class="btn btn-discord">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.2 13.2 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125 13.28 13.28 0 0 1-1.873.877.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/></svg>
+            Join our Discord
+          </a>
+        </div>
+        <div class="trust-pills">
+          <span class="trust-pill"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Real Java compiler validation</span>
+          <span class="trust-pill"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>No credit card needed</span>
+          <span class="trust-pill"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>95%+ compile success rate</span>
+          <span class="trust-pill"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Cancel any time</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- -- SEO content block -------------------------------------------------- -->
+  <section style="padding:72px 0;border-top:1px solid var(--border);background:var(--bg2)">
+    <div class="container">
+      <div style="max-width:860px;margin:0 auto">
+        <h2 style="font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-0.8px;margin-bottom:20px">StackNest: the most capable AI Minecraft plugin generator</h2>
+        <p style="font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:16px">
+          StackNest is the only AI Minecraft plugin generator that runs a complete build pipeline end-to-end. Unlike pasting code out of ChatGPT, StackNest compiles every generation against the real <strong>Paper 26.1 API</strong>, runs static analysis for deprecated methods and missing registrations, validates the <code>plugin.yml</code> descriptor, and then auto-fixes any compile errors through up to five targeted AI repair passes &mdash; all before the JAR reaches your download button.
+        </p>
+        <p style="font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:16px">
+          Generation works across the full modern Minecraft ecosystem: <strong>Paper</strong> and <strong>Spigot</strong> plugins, <strong>Folia</strong> multi-threaded plugins, <strong>Velocity</strong> and BungeeCord proxy plugins, <strong>Fabric</strong> mods, <strong>Forge</strong> and <strong>NeoForge</strong> mods, <strong>Skript</strong> scripts, and vanilla datapacks. Whether you need a shop plugin, a custom levelling system, a Folia-safe minigame, or a complete economy suite &mdash; describe it in plain English and StackNest handles the rest.
+        </p>
+        <p style="font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:28px">
+          Server owners have generated over 10,000 plugins and mods with StackNest. The community <a href="/gallery" style="color:var(--accent-h)">gallery</a> lets you browse real examples, and the built-in <a href="/editor" style="color:var(--accent-h)">plugin editor</a> lets you refine any generated file in the browser. Need to migrate a legacy 1.16 plugin? Upload the ZIP and StackNest applies modern Paper API changes automatically.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;font-size:13px">
+          <a href="/best-minecraft-ai-plugin-generator" style="color:var(--accent-h);padding:5px 13px;border:1px solid rgba(92,111,255,.25);border-radius:20px;background:rgba(92,111,255,.06)">StackNest vs other generators &rarr;</a>
+          <a href="/paper-plugin-generator" style="color:var(--accent-h);padding:5px 13px;border:1px solid rgba(92,111,255,.25);border-radius:20px;background:rgba(92,111,255,.06)">Paper plugin generator &rarr;</a>
+          <a href="/minecraft-plugin-generator" style="color:var(--accent-h);padding:5px 13px;border:1px solid rgba(92,111,255,.25);border-radius:20px;background:rgba(92,111,255,.06)">Minecraft plugin generator &rarr;</a>
+          <a href="/how-to-make-minecraft-plugins" style="color:var(--accent-h);padding:5px 13px;border:1px solid rgba(92,111,255,.25);border-radius:20px;background:rgba(92,111,255,.06)">How to make plugins &rarr;</a>
+          <a href="/minecraft-mod-generator" style="color:var(--accent-h);padding:5px 13px;border:1px solid rgba(92,111,255,.25);border-radius:20px;background:rgba(92,111,255,.06)">Minecraft mod generator &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- -- Footer -------------------------------------------------------------- -->
+  </main>
+<footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="/" class="nav-logo" style="font-size:16px">
+            <div class="nav-logo-icon" style="width:24px;height:24px">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            StackNest
+          </a>
+          <p>AI-powered Minecraft plugin and mod generation. From idea to production-ready code &mdash; no Java experience needed.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="/app">Generator</a></li>
+            <li><a href="/editor">Plugin Editor</a></li>
+            <li><a href="/gallery">Community Gallery</a></li>
+            <li><a href="/logs">Log Analyser</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="/docs">Docs</a></li>
+            <li><a href="/support">Support</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="https://docs.papermc.io" target="_blank" rel="noopener">Paper Docs</a></li>
+            <li><a href="/ai-code-generators">AI Code Generators</a></li>
+            <li><a href="/best-ai-tools">Best AI Tools</a></li>
+            <li><a href="/ai-for-students">AI for Students</a></li>
+            <li><a href="/ai-for-programmers">AI for Developers</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Community</h4>
+          <ul>
+            <li>
+              <a href="https://discord.gg/vebvd8PRzv" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:7px;color:#5865F2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.2 13.2 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125 13.28 13.28 0 0 1-1.873.877.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/></svg>
+                Join Discord
+              </a>
+            </li>
+            <li><a href="/gallery">Community Gallery</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="/terms">Terms of Service</a></li>
+            <li><a href="/privacy">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 StackNest. All rights reserved.</p>
+        <div class="footer-badges">
+          <span class="footbadge">Paper 26.1</span>
+          <span class="footbadge">Folia</span>
+          <span class="footbadge">Java 21</span>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:8px;font-size:11px;color:#8891b4;text-align:center">StackNest is not affiliated with or endorsed by Mojang Studios, Microsoft, or Discord Inc. Minecraft is a trademark of Mojang Studios.</p>
+</footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+    // Hamburger toggle
+    const hamburger = document.getElementById('navHamburger');
+    const mobileMenu = document.getElementById('navMobile');
+    if (hamburger && mobileMenu) {
+      hamburger.addEventListener('click', () => {
+        const open = hamburger.classList.toggle('open');
+        mobileMenu.classList.toggle('open', open);
+        hamburger.setAttribute('aria-expanded', open);
+      });
+      mobileMenu.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          hamburger.classList.remove('open');
+          mobileMenu.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    // Active nav link on scroll
+    const _navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+    const _sections = [...document.querySelectorAll('section[id]')];
+    function _updateActive() {
+      const scrollY = window.scrollY + 100;
+      let current = '';
+      _sections.forEach(s => { if (s.offsetTop <= scrollY) current = s.id; });
+      _navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+    }
+    window.addEventListener('scroll', _updateActive, { passive: true });
+
+    function startStudioCheckout() {
+      window.location.href = '/pricing';
+    }
+
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', e => {
+        const id = anchor.getAttribute('href').slice(1);
+        const target = document.getElementById(id);
+        if (!target) return;
+        e.preventDefault();
+        const top = target.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top, behavior: 'smooth' });
+      });
+    });
+  </script>
+
+  <script src="/auth.js"></script>
+</body>
+</html>

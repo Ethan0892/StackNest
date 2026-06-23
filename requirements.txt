@@ -1,0 +1,43 @@
+# ============================================================
+# StackNest — Minecraft Plugin Generator AI
+# requirements.txt
+# Install: pip install -r requirements.txt
+# ============================================================
+
+# --- Core ML / Training (Colab / GPU machine) ---
+torch>=2.2.0
+transformers>=4.40.0
+peft>=0.10.0
+trl>=0.8.6
+bitsandbytes>=0.43.0
+accelerate>=0.29.0
+datasets>=2.18.0
+safetensors>=0.4.3
+
+# --- Tokenization / token counting ---
+tiktoken>=0.6.0
+sentencepiece>=0.2.0
+
+# --- RAG / Embeddings ---
+chromadb>=0.5.0
+sentence-transformers>=2.7.0
+
+# --- API server ---
+flask>=3.0.3
+flask-cors>=5.0.0
+flask-limiter>=3.7.0
+stripe>=10.0.0
+google-auth>=2.29.0
+
+# --- YAML parsing ---
+pyyaml>=6.0.1
+
+# --- Git / ingestion ---
+gitpython>=3.1.43
+requests>=2.31.0
+
+# --- Utilities ---
+tqdm>=4.66.4
+psutil>=5.9.0
+rich>=13.7.1
+python-dotenv>=1.0.1

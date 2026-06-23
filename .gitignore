@@ -1,0 +1,56 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+.env.*
+!.env.example
+!deploy/.env.production.example
+.venv/
+venv/
+
+# Training outputs
+train/output/
+train/checkpoints/
+*.safetensors
+*.bin
+
+# Models
+models/
+*.gguf
+
+# Raw cloned repos — large, do not commit
+data/raw/*
+# Track handcrafted reference plugin stubs (but not cloned repos)
+!data/raw/_ref_*.json
+
+# ChromaDB files
+data/embeddings/
+
+# Compiled Java
+*.class
+*.jar
+
+# Logs
+logs/
+*.log
+
+# User-generated data — never commit
+data/avatars/
+data/gallery_uploads/
+data/backups/
+data/processed/*.jsonl
+data/processed/*.jsonl.bak
+data/*.db
+*.db
+
+# Discord bot runtime state
+discord_bot/state.json
+
+# Internal planning / reports (not for public repo)
+STUDIO_UI_PLAN.md
+API_KEY_PLAN.md
+FEATURES.md
+REPORT_*.md
+TRUNCATION_FIX_REPORT.md
+CHANGELOG_*.md
+

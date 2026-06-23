@@ -1,0 +1,33 @@
+# =============================================================
+# deploy/requirements-api.txt — API server only (Hetzner VPS)
+# No training/ML deps — keeps the venv fast and small (~150 MB)
+#
+# Install:  pip install -r deploy/requirements-api.txt
+# =============================================================
+
+# ── API server ────────────────────────────────────────────────
+flask>=3.0.3
+flask-cors>=5.0.0
+flask-limiter>=3.7.0
+gunicorn>=22.0.0
+werkzeug>=3.0.0
+
+# ── Environment & config ──────────────────────────────────────
+python-dotenv>=1.0.1
+
+# ── External AI backends ──────────────────────────────────────
+requests>=2.31.0          # Kimi, Gemini (HTTP), llama.cpp server
+google-auth>=2.29.0       # Google OAuth verification
+
+# ── Payments ──────────────────────────────────────────────────
+stripe>=10.0.0
+
+# ── YAML (plugin.yml parsing/validation) ─────────────────────
+pyyaml>=6.0.1
+
+# ── Token counting (safety + char limits) ────────────────────
+tiktoken>=0.6.0
+
+# ── Utilities ─────────────────────────────────────────────────
+tqdm>=4.66.4
+psutil>=5.9.0            # system metrics for admin god-view

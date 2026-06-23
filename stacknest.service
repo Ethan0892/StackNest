@@ -1,0 +1,29 @@
+[Unit]
+Description=StackNest – Minecraft Plugin Generator API
+After=network.target
+
+[Service]
+Type=simple
+User=ethan
+WorkingDirectory=/home/ethan/stacknest
+EnvironmentFile=-/home/ethan/stacknest/.env
+ExecStart=/home/ethan/stacknest/.venv/bin/python3 api/app.py --port 5000
+Restart=on-failure
+RestartSec=5
+RestartPreventExitStatus=0
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+UMask=0027
+ReadWritePaths=/home/ethan/stacknest/data /home/ethan/stacknest/libs
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=stacknest
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Server Setup Assistant &mdash; StackNest for Paper 26.1, Folia &amp; Modpacks</title>
+  <meta name="description" content="Describe your Minecraft server and get a high-clarity AI setup plan with Paper 26.1 defaults, plugin stack recommendations, load order, sample configs, runtime test guidance, and conflict warnings." />
+  <meta name="keywords" content="minecraft server setup assistant, paper 26.1 setup, folia setup, plugin stack planner, minecraft modpack setup, server plugin load order, runtime testing checklist, minecraft server ai assistant, plugin conflict checker, stacknest setup" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://stacknests.com/setup" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* -- Reset & tokens ---------------------------------------------- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0c0f14;
+      --bg2:       #05070b;
+      --surface:   #1a1d26;
+      --surface2:  #222638;
+      --border:    #2e3350;
+      --border-s:  #3d4468;
+      --text:      #e8eaf6;
+      --muted:     #8891b4;
+      --accent:    #5c6fff;
+      --accent-h:  #7b8fff;
+      --accent-d:  #4352d9;
+      --green:     #3ddc84;
+      --yellow:    #ffd370;
+      --red:       #ff5c6a;
+      --radius:    12px;
+      --radius-sm: 8px;
+      --transition: 200ms ease;
+      --mono:      'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    main { flex: 1; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+    .grad {
+      background: linear-gradient(135deg, #fff 30%, var(--accent-h) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* -- Navbar ------------------------------------------------------ */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid transparent;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .navbar.scrolled {
+      background: rgba(15,17,23,0.92);
+      border-color: var(--border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .navbar .container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      margin-right: 16px;
+    }
+    .nav-logo img { width: 28px; height: 28px; }
+    .nav-logo span { color: var(--accent); }
+    .nav-sep {
+      width: 1px; height: 22px;
+      background: var(--border);
+      flex-shrink: 0;
+      margin-right: 16px;
+    }
+    .nav-page-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 2px;
+      margin-left: 16px;
+    }
+    .nav-links a {
+      padding: 7px 13px;
+      border-radius: var(--radius-sm);
+      color: var(--muted); font-size: 14px; font-weight: 500;
+      transition: color var(--transition), background var(--transition);
+      white-space: nowrap;
+    }
+    .nav-links a:hover { color: var(--text); background: var(--surface); }
+    .nav-links a.active { color: var(--accent-h); background: rgba(92,111,255,0.1); }
+    .nav-cta { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+
+    .nav-hamburger {
+      display: none; margin-left: auto;
+      flex-direction: column; justify-content: center; gap: 5px;
+      width: 36px; height: 36px; padding: 5px;
+      background: none; border: none; cursor: pointer;
+      border-radius: 8px; flex-shrink: 0;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--text); border-radius: 2px;
+      transition: transform 200ms ease, opacity 200ms ease;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-mobile {
+      display: none;
+      position: fixed; top: 64px; left: 0; right: 0;
+      background: rgba(15,17,23,0.97);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px 20px;
+      z-index: 99;
+      flex-direction: column; gap: 2px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a {
+      padding: 11px 16px; border-radius: 8px;
+      color: var(--text); font-size: 15px; font-weight: 500;
+      transition: background 200ms ease;
+    }
+    .nav-mobile a:hover { background: var(--surface); }
+    .nav-mobile-divider { height: 1px; background: var(--border); margin: 10px 0; }
+    .nav-mobile-cta { display: flex; gap: 10px; margin-top: 4px; }
+    .nav-mobile-cta .btn { flex: 1; justify-content: center; font-size: 14px; padding: 11px 16px; }
+
+    /* -- Buttons ----------------------------------------------------- */
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 600;
+      cursor: pointer; border: none;
+      transition: all var(--transition);
+      white-space: nowrap;
+      font-family: inherit;
+    }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .btn-ghost {
+      background: transparent; color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--border-s); color: var(--text); background: var(--surface); }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+      box-shadow: 0 0 24px rgba(92,111,255,0.3);
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent-h);
+      box-shadow: 0 0 32px rgba(92,111,255,0.45);
+      transform: translateY(-1px);
+    }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-surface {
+      background: var(--surface2); color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-surface:hover { border-color: var(--accent); background: var(--surface); }
+
+    /* -- Hero -------------------------------------------------------- */
+    .hero {
+      padding: 148px 0 90px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      left: 50%; top: -140px;
+      transform: translateX(-50%);
+      width: 1100px; height: 700px;
+      background: radial-gradient(ellipse at 50% 30%, rgba(92,111,255,0.18) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero .container { position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 16px;
+      background: rgba(92,111,255,0.1);
+      border: 1px solid rgba(92,111,255,0.25);
+      border-radius: 999px;
+      font-size: 13px; font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    .hero-badge-dot {
+      width: 7px; height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(61,220,132,0.4); }
+      50%       { box-shadow: 0 0 0 5px rgba(61,220,132,0); }
+    }
+    .hero h1 {
+      font-size: clamp(36px, 5.5vw, 64px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1.07;
+      margin-bottom: 22px;
+    }
+    .hero-sub {
+      color: var(--muted);
+      font-size: clamp(15px, 1.8vw, 18px);
+      line-height: 1.7;
+      max-width: 620px;
+      margin: 0 auto 36px;
+    }
+    .hero-actions {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap;
+      margin-bottom: 60px;
+    }
+
+    /* -- Section tag ------------------------------------------------ */
+    .section-tag {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--accent-h);
+      margin-bottom: 12px;
+    }
+    .section-tag::before {
+      content: '';
+      display: block;
+      width: 16px; height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* -- Main content area ------------------------------------------ */
+    .tool-wrapper {
+      flex: 1;
+      padding-bottom: 100px;
+    }
+    .tool-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* -- Tier badge strip ------------------------------------------- */
+    .tier-strip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      padding: 11px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+    }
+    .tier-strip .lbl { color: var(--muted); }
+    .tier-badge {
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .tier-badge.free    { background: rgba(136,145,180,.12); color: var(--muted);     border: 1px solid var(--border); }
+    .tier-badge.starter { background: rgba(61,220,132,.1);   color: var(--green);     border: 1px solid rgba(61,220,132,.3); }
+    .tier-badge.pro     { background: rgba(92,111,255,.12);  color: var(--accent-h);  border: 1px solid rgba(92,111,255,.4); }
+    .tier-badge.studio  { background: rgba(255,211,112,.1);  color: var(--yellow);    border: 1px solid rgba(255,211,112,.35); }
+    .tier-strip .desc { color: var(--muted); }
+    .tier-strip a { color: var(--accent-h); font-weight: 600; }
+
+    /* -- Input card ------------------------------------------------- */
+    .input-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .input-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-h));
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .input-card:focus-within { border-color: var(--border-s); }
+    .input-card:focus-within::after { opacity: 1; }
+
+    .input-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 12px;
+    }
+
+    /* -- Quick-fill chips ------------------------------------------- */
+    .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+    .quick-chip {
+      padding: 5px 12px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .14s;
+      font-family: inherit;
+    }
+    .quick-chip:hover { border-color: var(--accent); color: var(--text); background: rgba(92,111,255,.07); }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      resize: vertical;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      line-height: 1.6;
+      outline: none;
+      padding: 13px 15px;
+      transition: border-color .15s;
+    }
+    textarea:focus { border-color: var(--accent); }
+    textarea::placeholder { color: var(--muted); opacity: .65; }
+
+    .char-count {
+      text-align: right;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    .char-count.over { color: var(--red); }
+
+    .action-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+
+    /* -- Result card ------------------------------------------------ */
+    .result-card {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-top: 20px;
+      position: relative;
+      transition: border-color var(--transition);
+    }
+    .result-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--green));
+    }
+    .result-header {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .result-title { font-size: 13px; font-weight: 700; }
+    .result-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+    .result-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-size: 11px;
+      padding: 3px 10px;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .result-chip.pro    { border-color: rgba(92,111,255,.4);  color: var(--accent-h); }
+    .result-chip.studio { border-color: rgba(255,211,112,.35); color: var(--yellow); }
+    .result-chip.basic  { border-color: var(--border);         color: var(--muted); }
+
+    .result-body {
+      padding: 22px 24px;
+      line-height: 1.8;
+      font-size: 14px;
+      overflow: auto;
+      max-height: 72vh;
+    }
+    .result-body h2 {
+      margin: 22px 0 10px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid var(--border);
+      font-size: 15px;
+      color: var(--text);
+    }
+    .result-body h2:first-child { margin-top: 0; }
+    .result-body h3 {
+      margin: 16px 0 6px;
+      color: var(--accent-h);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .result-body h3 a { color: var(--accent-h); text-decoration: underline; text-underline-offset: 3px; }
+    .result-body h3 a:hover { color: #fff; }
+    .result-body p { color: var(--muted); margin: 0 0 9px; }
+    .result-body li { color: var(--muted); margin-bottom: 5px; }
+    .result-body ul, .result-body ol { padding-left: 20px; margin-bottom: 10px; }
+    .result-body strong { color: var(--text); }
+    .result-body a { color: var(--accent-h); text-underline-offset: 2px; }
+    .result-body a:hover { text-decoration: underline; }
+    .result-body pre {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 9px 0 14px;
+      overflow: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      line-height: 1.6;
+    }
+    .result-body code {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      color: var(--yellow);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+    }
+    .result-body pre code { background: none; border: none; padding: 0; color: #cad0e8; }
+    .result-body hr { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+
+    /* -- Upgrade strip ---------------------------------------------- */
+    .upgrade-strip {
+      display: none;
+      margin-top: 18px;
+      padding: 16px 18px;
+      background: rgba(92,111,255,.07);
+      border: 1px solid rgba(92,111,255,.25);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .upgrade-strip strong { color: var(--text); }
+    .upgrade-strip a { color: var(--accent-h); font-weight: 600; }
+
+    /* -- Spinner ----------------------------------------------------- */
+    .spinner {
+      width: 14px; height: 14px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* -- Footer ----------------------------------------------------- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+      margin-top: auto;
+    }
+    .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .footer-logo {
+      font-size: 15px; font-weight: 700;
+      color: var(--text);
+      display: flex; align-items: center; gap: 7px;
+    }
+    .footer-logo span { color: var(--accent); }
+    .footer-links {
+      display: flex; gap: 24px; flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: var(--muted); font-size: 13px;
+      transition: color var(--transition);
+    }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { color: var(--muted); font-size: 12px; }
+
+    /* -- Responsive ------------------------------------------------- */
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      .hero { padding: 120px 0 60px; }
+      .hero h1 { letter-spacing: -1px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="/" class="nav-logo">
+        <img src="/icon.svg" alt="StackNest" />
+        Stack<span>Nest</span>
+      </a>
+      <div class="nav-sep"></div>
+      <span class="nav-page-label">Setup Assistant</span>
+      <div class="nav-links">
+        <a href="/app">Generator</a>
+        <a href="/editor">Editor</a>
+        <a href="/logs">Log Analyser</a>
+        <a href="/setup" class="active">Setup</a>
+        <a href="/gallery">Gallery</a>
+      </div>
+      <div class="nav-cta">
+        <button type="button" class="btn btn-ghost" id="sn-login-btn">Sign in</button>
+        <a href="/app" class="btn btn-primary">
+          Open app
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        </a>
+      </div>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+<main>
+
+  <!-- Mobile menu -->
+  <div class="nav-mobile" id="navMobile">
+    <a href="/app">Generator</a>
+    <a href="/editor">Editor</a>
+    <a href="/logs">Log Analyser</a>
+    <a href="/setup">Setup Assistant</a>
+    <a href="/gallery">Gallery</a>
+    <div class="nav-mobile-divider"></div>
+    <div class="nav-mobile-cta">
+      <button type="button" class="btn btn-ghost" id="sn-login-btn-m">Sign in</button>
+      <a href="/app" class="btn btn-primary">Get started</a>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Paper &middot; Spigot &middot; Velocity &middot; BungeeCord &middot; Folia
+      </div>
+      <h1>Build Your <span class="grad">Perfect Server Stack</span></h1>
+      <p class="hero-sub">
+        Describe the Minecraft server you want &mdash; game-mode, features, style &mdash; and get a full recommended plugin list, download links, sample configs, load order, and known conflicts. No more hours of Googling.
+      </p>
+      <div class="hero-actions">
+        <a href="#tool-section" class="btn btn-primary" onclick="document.getElementById('description').focus();return false;">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Generate my stack
+        </a>
+        <a href="/pricing" class="btn btn-ghost">View plans</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tool section -->
+  <div class="tool-wrapper" id="tool-section">
+    <div class="tool-inner">
+
+      <!-- Tier strip -->
+      <div class="tier-strip" id="tier-strip">
+        <span class="lbl">Your plan:</span>
+        <span class="tier-badge free" id="plan-badge">Free</span>
+        <span class="desc" id="plan-desc">Basic plugin list (1/day) &mdash; <a href="/pricing">Upgrade for full configs &rarr;</a></span>
+      </div>
+
+      <!-- Input card -->
+      <div class="input-card">
+        <div class="input-label">Describe your server</div>
+        <div class="chips" id="quick-chips">
+          <button class="quick-chip" onclick="fillExample('Survival server with economy, land claiming, jobs, and a player-run shop system')">Survival + Economy</button>
+          <button class="quick-chip" onclick="fillExample('Private SMP with custom enchants, player warps, homes, and friendly PvP zones')">Private SMP</button>
+          <button class="quick-chip" onclick="fillExample('Factions PvP server with raiding, cannoning, crates, and a custom scoreboard')">Factions PvP</button>
+          <button class="quick-chip" onclick="fillExample('Creative server with plot worlds, WorldEdit access, schematic sharing, and staff tools')">Creative + Plots</button>
+          <button class="quick-chip" onclick="fillExample('Mini-games hub with BungeeCord, lobby, SkyWars, BedWars, and cross-server stats')">Mini-Games Hub</button>
+          <button class="quick-chip" onclick="fillExample('Hardcore survival server with permadeath, seasonal resets, whitelist, and quality-of-life plugins')">Hardcore Survival</button>
+          <button class="quick-chip" onclick="fillExample('Prison server with mines, prestige ranks, a token shop, gang system, and anti-cheat')">Prison</button>
+          <button class="quick-chip" onclick="fillExample('Skyblock server with island levelling, challenges, a resource world, and an auction house')">Skyblock</button>
+        </div>
+        <textarea id="description" maxlength="2000"
+          placeholder="e.g. &quot;Survival server with economy, land claiming, and a player shop. Targeting 20–50 concurrent players, Paper 26.1.&quot;"
+          oninput="updateChar()"></textarea>
+        <div class="char-count" id="char-count">0 / 2000</div>
+        <div class="action-row">
+          <button class="btn btn-primary" id="generate-btn" onclick="generate()" style="flex:1;justify-content:center;">
+            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Generate Setup Plan
+          </button>
+          <button class="btn btn-surface" onclick="clearAll()">Clear</button>
+        </div>
+      </div>
+
+      <!-- Upgrade nudge (free tier only, shown after result) -->
+      <div class="upgrade-strip" id="upgrade-strip">
+        <strong>Want more?</strong> Upgrade to <a href="/pricing">Pro</a> for a full setup guide including sample config files for each plugin, a detailed load order, and a known-conflicts checklist &mdash; or <a href="/pricing">Studio</a> for multi-server network designs.
+      </div>
+
+      <!-- Result -->
+      <div class="result-card" id="result-card">
+        <div class="result-header">
+          <span class="result-title">Your Server Setup Plan</span>
+          <div class="result-meta">
+            <span class="result-chip" id="mode-chip">Basic</span>
+            <button class="btn btn-surface" style="padding:5px 12px;font-size:12px;" onclick="copyResult()">Copy</button>
+          </div>
+        </div>
+        <div class="result-body" id="result-body"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  </main>
+<footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="/icon.svg" alt="StackNest" width="20" height="20" style="border-radius:4px;" />
+        Stack<span>Nest</span>
+      </div>
+      <div class="footer-links">
+        <a href="/app">Generator</a>
+        <a href="/editor">Editor</a>
+        <a href="/logs">Log Analyser</a>
+        <a href="/gallery">Gallery</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/docs">Docs</a>
+        <a href="/terms">Terms</a>
+        <a href="/privacy">Privacy</a>
+      </div>
+      <div class="footer-copy">&copy; 2026 StackNest</div>
+    </div>
+    <p style="margin-top:8px;font-size:11px;color:#8891b4;text-align:center">StackNest is not affiliated with or endorsed by Mojang Studios, Microsoft, or Discord Inc. Minecraft is a trademark of Mojang Studios.</p>
+</footer>
+
+  <script src="/auth.js"></script>
+  <script>
+    // ── Navbar scroll effect ─────────────────────────────────────────────────
+    (function(){
+      const nb = document.getElementById('navbar');
+      function onScroll() {
+        nb.classList.toggle('scrolled', window.scrollY > 10);
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+
+    // ── Mobile hamburger ─────────────────────────────────────────────────────
+    (function(){
+      const btn = document.getElementById('navHamburger');
+      const menu = document.getElementById('navMobile');
+      if (!btn || !menu) return;
+      btn.addEventListener('click', () => {
+        const open = menu.classList.toggle('open');
+        btn.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', String(open));
+      });
+    })();
+
+    // ── Auth state ───────────────────────────────────────────────────────────
+    let _currentUser = null;
+    let _currentPlan = 'free';
+
+    window.snOnAuthReady = function(user) {
+      _currentUser = user || null;
+      _currentPlan = (user && user.plan) ? user.plan.toLowerCase().trim() : 'free';
+      if (!['free','starter','pro','studio'].includes(_currentPlan)) _currentPlan = 'free';
+      updateTierStrip();
+    };
+
+    const PLAN_DESCS = {
+      free:    'Basic plugin list (1/day) &mdash; <a href="/pricing">Upgrade for full configs &rarr;</a>',
+      starter: 'Full setup guide (5/day) &mdash; <a href="/pricing">Upgrade to Pro for more &rarr;</a>',
+      pro:     'Full guide with sample configs &amp; load order (20/day)',
+      studio:  'Multi-server network design (50/day)',
+    };
+    const PLAN_LABELS = { free: 'Free', starter: 'Starter', pro: 'Pro', studio: 'Studio' };
+
+    function updateTierStrip() {
+      const badge = document.getElementById('plan-badge');
+      const desc  = document.getElementById('plan-desc');
+      badge.textContent = PLAN_LABELS[_currentPlan] || 'Free';
+      badge.className = 'tier-badge ' + _currentPlan;
+      desc.innerHTML  = PLAN_DESCS[_currentPlan] || PLAN_DESCS.free;
+    }
+
+    // ── Char counter ─────────────────────────────────────────────────────────
+    function updateChar() {
+      const val = document.getElementById('description').value;
+      const el  = document.getElementById('char-count');
+      el.textContent = val.length + ' / 2000';
+      el.className = val.length > 1900 ? 'char-count over' : 'char-count';
+    }
+
+    // ── Quick-fill ───────────────────────────────────────────────────────────
+    function fillExample(text) {
+      document.getElementById('description').value = text;
+      updateChar();
+      document.getElementById('description').focus();
+    }
+
+    // ── Clear ────────────────────────────────────────────────────────────────
+    function clearAll() {
+      document.getElementById('description').value = '';
+      updateChar();
+      document.getElementById('result-card').style.display = 'none';
+      document.getElementById('upgrade-strip').style.display = 'none';
+    }
+
+    // ── Copy ─────────────────────────────────────────────────────────────────
+    let _lastMarkdown = '';
+    function copyResult() {
+      if (!_lastMarkdown) return;
+      navigator.clipboard.writeText(_lastMarkdown)
+        .then(() => {
+          const btn = event.currentTarget;
+          const was = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = was; }, 1500);
+        })
+        .catch(() => alert('Copy failed — try selecting and copying manually.'));
+    }
+
+    // ── Generate ──────────────────────────────────────────────────────────────
+    async function generate() {
+      const desc = (document.getElementById('description').value || '').trim();
+      if (desc.length < 10) {
+        document.getElementById('description').focus();
+        return;
+      }
+
+      const btn = document.getElementById('generate-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Generating\u2026';
+
+      const resultCard = document.getElementById('result-card');
+      const resultBody = document.getElementById('result-body');
+      resultCard.style.display = 'block';
+      resultBody.innerHTML = '<p style="color:var(--muted)">Building your server setup plan\u2026</p>';
+      document.getElementById('upgrade-strip').style.display = 'none';
+      resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      try {
+        const headers = { 'Content-Type': 'application/json' };
+        if (typeof window.snGetToken === 'function') {
+          const tok = await window.snGetToken();
+          if (tok) headers['Authorization'] = 'Bearer ' + tok;
+        }
+
+        const res  = await fetch('/api/setup-assistant', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ description: desc }),
+        });
+        const data = await res.json();
+
+        if (!res.ok || data.error) {
+          const isLimit = res.status === 429;
+          resultBody.innerHTML =
+            '<p style="color:var(--red);font-weight:600;">' + escHtml(data.error || 'Request failed') + '</p>' +
+            (isLimit && data.upgrade_url ? '<p style="margin-top:8px;"><a href="' + escHtml(data.upgrade_url) + '" style="color:var(--accent-h);font-weight:600;">View upgrade options &rarr;</a></p>' : '');
+          return;
+        }
+
+        _lastMarkdown = data.plan || '';
+        resultBody.innerHTML = renderMarkdown(_lastMarkdown);
+
+        const mode = data.mode || 'basic';
+        const modeChip = document.getElementById('mode-chip');
+        modeChip.textContent = mode === 'multi' ? 'Studio \u2014 Multi-server' : mode === 'full' ? 'Pro \u2014 Full Guide' : 'Free \u2014 Basic';
+        modeChip.className = 'result-chip ' + (mode === 'multi' ? 'studio' : mode === 'full' ? 'pro' : 'basic');
+
+        if (mode === 'basic') {
+          document.getElementById('upgrade-strip').style.display = 'block';
+        }
+
+      } catch (err) {
+        resultBody.innerHTML = '<p style="color:var(--red)">Request failed: ' + escHtml(String(err)) + '</p>';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Generate Setup Plan';
+      }
+    }
+
+    // ── Markdown renderer ─────────────────────────────────────────────────────
+    function escHtml(text) {
+      return String(text || '')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function renderMarkdown(md) {
+      // 1. Protect and replace links BEFORE escaping so URLs don't get mangled
+      //    Handle both [text](url) and [text][url] (Kimi sometimes outputs reference-style)
+      const linkTokens = [];
+      function storeLink(text, url) {
+        const safeUrl = url.replace(/"/g, '%22');
+        const html = '<a href="' + safeUrl + '" target="_blank" rel="noopener noreferrer">' + escHtml(text) + '</a>';
+        const idx = linkTokens.push(html) - 1;
+        return '\x01LINK' + idx + '\x01';
+      }
+      // Reference-style: [text][https://url]
+      md = md.replace(/\[([^\]]+)\]\[(https?:\/\/[^\]]+)\]/g, (_, t, u) => storeLink(t, u));
+      // Inline-style: [text](url) — also matches truncated links missing closing paren at end of string
+      md = md.replace(/\[([^\]]+)\]\((https?:\/\/[^)\n]+?)\)?(?=[\n\r]|$|\s*[-*#])/g, (_, t, u) => storeLink(t, u));
+      md = md.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, (_, t, u) => storeLink(t, u));
+      // Auto-link bare https:// URLs (models often output "Download: https://..." without markdown link)
+      md = md.replace(/(https?:\/\/[^\s\])"<\n]+)/g, (_, url) => {
+        const clean = url.replace(/[.,;!?)]+$/, '');
+        return storeLink(clean, clean) + url.slice(clean.length);
+      });
+
+      // 2. Protect code blocks from escaping
+      const codeBlocks = [];
+      md = md.replace(/```([\w]*)\n([\s\S]*?)```/g, (_, lang, code) => {
+        const idx = codeBlocks.push('<pre><code>' + escHtml(code.trimEnd()) + '</code></pre>') - 1;
+        return '\x00CODE' + idx + '\x00';
+      });
+      md = md.replace(/`([^`\n]+)`/g, (_, code) => {
+        const idx = codeBlocks.push('<code>' + escHtml(code) + '</code>') - 1;
+        return '\x00CODE' + idx + '\x00';
+      });
+
+      // 3. Escape remaining HTML
+      md = escHtml(md);
+
+      // 4. Restore tokens
+      md = md.replace(/\x00CODE(\d+)\x00/g, (_, i) => codeBlocks[Number(i)]);
+      md = md.replace(/\x01LINK(\d+)\x01/g, (_, i) => linkTokens[Number(i)]);
+
+      // 5. Headings
+      md = md.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+      md = md.replace(/^## (.+)$/gm,  '<h2>$1</h2>');
+      md = md.replace(/^# (.+)$/gm,   '<h2>$1</h2>');
+
+      // 6. Bold
+      md = md.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+      // 7. Horizontal rule
+      md = md.replace(/^---+$/gm, '<hr/>');
+
+      // 8. Lists
+      md = md.replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>');
+      md = md.replace(/^[\-\*] (.+)$/gm, '<li>$1</li>');
+      // Wrap consecutive <li> lines in a single <ul> (line-by-line to avoid broken nesting)
+      {
+        const _ll = md.split('\n');
+        const _lo = [];
+        let _inL = false;
+        for (const _ln of _ll) {
+          if (/^<li>/.test(_ln)) {
+            if (!_inL) { _lo.push('<ul>'); _inL = true; }
+            _lo.push(_ln);
+          } else {
+            if (_inL) { _lo.push('</ul>'); _inL = false; }
+            _lo.push(_ln);
+          }
+        }
+        if (_inL) _lo.push('</ul>');
+        md = _lo.join('\n');
+      }
+
+      // 9. Paragraphs
+      const lines = md.split('\n');
+      const out = [];
+      let inP = false;
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) {
+          if (inP) { out.push('</p>'); inP = false; }
+        } else if (/^<\/?(?:h[23]|ul|ol|li|pre|hr)/.test(trimmed)) {
+          if (inP) { out.push('</p>'); inP = false; }
+          out.push(trimmed);
+        } else {
+          if (!inP) { out.push('<p>'); inP = true; }
+          out.push(trimmed);
+        }
+      }
+      if (inP) out.push('</p>');
+      return out.join('\n');
+    }
+  </script>
+</body>
+</html>

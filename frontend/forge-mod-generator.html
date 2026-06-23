@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forge Mod Generator — AI-Powered, Compiles Instantly | StackNest</title>
+  <meta name="description" content="Generate Forge mods with AI in 2026. Describe your mod idea in plain English — StackNest writes the Java, compiles it against MinecraftForge and NeoForge APIs, and delivers a working .jar. Supports custom items, blocks, entities, recipes, and more." />
+  <meta name="keywords" content="forge mod generator, AI forge mod generator, forge mod creator, forge mod ai, generate forge mod, minecraftforge mod generator, neoforge mod generator, ai forge mod, forge mod maker, create forge mod, minecraft forge ai, forge mod creator 2026, neoforge mod creator ai, Paper Spigot Folia AI, auto-fixing compile errors, minecraft mod compiler, AI plugin builder, no code forge mod, free forge mod generator, compile forge mod online, AI code auto-fix, minecraft coding assistant, AI java code generator, best forge mod generator 2026" />
+  <link rel="canonical" href="https://stacknests.com/forge-mod-generator" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="Forge Mod Generator — AI-Powered | StackNest" />
+  <meta property="og:description" content="Describe your Forge or NeoForge mod in plain English and get a compiled JAR in under a minute. Custom items, blocks, entities, recipes, and more." />
+  <meta property="og:url" content="https://stacknests.com/forge-mod-generator" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://stacknests.com/og-image.png" />
+  <meta property="og:site_name" content="StackNest" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Forge Mod Generator — AI-Powered | StackNest" />
+  <meta name="twitter:description" content="Describe your Forge mod. StackNest writes, compiles, and delivers the JAR. Free tier available." />
+  <meta name="twitter:image" content="https://stacknests.com/og-image.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "StackNest Forge Mod Generator",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web",
+    "description": "AI-powered Forge and NeoForge mod generator. Describe your mod in plain English and receive a compiled .jar — with custom items, blocks, entities, recipes, and automatic error fixing.",
+    "url": "https://stacknests.com/forge-mod-generator",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP", "description": "Free tier: 3 mods/month" },
+    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.7", "bestRating": "5", "worstRating": "1", "ratingCount": "268" },
+    "publisher": { "@type": "Organization", "name": "StackNest", "url": "https://stacknests.com" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a Forge mod generator?",
+        "acceptedAnswer": { "@type": "Answer", "text": "A Forge mod generator is a tool that creates custom mods for MinecraftForge or NeoForge. AI-powered generators like StackNest let you describe what you want in plain English, then automatically write the Java source using the Forge/NeoForge API, compile it, and package it as a .jar file." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does StackNest support both Forge and NeoForge?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Mention which modloader you want in your prompt. StackNest will use MinecraftForge for older versions and NeoForge for 1.20.1+ where NeoForge has become the community standard. Both use the same core API with minor differences that StackNest handles automatically." }
+      },
+      {
+        "@type": "Question",
+        "name": "Can it add custom items, blocks, and entities?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. StackNest uses DeferredRegister for items, blocks, entities, and other registry objects — the modern Forge pattern. It generates model JSON, lang file entries, and correct @Mod.EventBusSubscriber and @SubscribeEvent setup." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does StackNest generate Forge config files?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. StackNest uses ForgeConfigSpec to generate type-safe TOML config files with correct builder patterns, default values, and reload handling." }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to set up a Forge development environment?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. StackNest compiles the mod on its own servers using Gradle ForgeGradle. You just download the finished .jar and drop it into your mods/ folder alongside MinecraftForge or NeoForge." }
+      }
+    ]
+  }
+  </script>
+  <style>
+    :root{--bg:#0a0c12;--surface:#111420;--surface2:#181c2a;--border:#1e2235;--text:#e2e6f3;--muted:#8891aa;--accent:#5c6fff;--accent-h:#7b8fff;--green:#34d47a;--yellow:#c9a227;--red:#e05252}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:16px;line-height:1.7}
+    a{color:var(--accent-h);text-decoration:none}a:hover{text-decoration:underline}
+    .container{max-width:1080px;margin:0 auto;padding:0 24px}.container-narrow{max-width:760px;margin:0 auto;padding:0 24px}
+    nav{position:sticky;top:0;z-index:100;background:rgba(10,12,18,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-inner{max-width:1080px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+    .nav-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;color:var(--text)}
+    .nav-logo-icon{width:28px;height:28px;border-radius:7px;background:var(--accent);display:flex;align-items:center;justify-content:center}
+    .nav-links{display:flex;gap:28px;font-size:14px}.nav-links a{color:var(--muted);font-weight:500}.nav-links a:hover{color:var(--text);text-decoration:none}
+    .btn-primary{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;font-weight:600;font-size:14px;padding:9px 20px;border-radius:8px}.btn-primary:hover{background:var(--accent-h);text-decoration:none}
+    .btn-secondary{display:inline-flex;align-items:center;gap:6px;background:transparent;color:var(--text);font-weight:500;font-size:15px;padding:10px 22px;border-radius:8px;border:1px solid var(--border)}.btn-secondary:hover{border-color:var(--accent);color:var(--accent-h);text-decoration:none}
+    .hero{padding:80px 0 64px;text-align:center}
+    .hero-label{display:inline-flex;align-items:center;gap:6px;background:rgba(92,111,255,0.12);border:1px solid rgba(92,111,255,0.25);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:var(--accent-h);letter-spacing:.04em;text-transform:uppercase;margin-bottom:22px}
+    .hero h1{font-size:clamp(32px,5vw,56px);font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin-bottom:20px}.hero h1 span{color:var(--accent-h)}
+    .hero p{font-size:18px;color:var(--muted);max-width:580px;margin:0 auto 32px}
+    .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.hero-note{font-size:13px;color:var(--muted);margin-top:16px}
+    .demo-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;margin:32px 0 0}
+    .demo-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px}
+    .demo-prompt{font-size:14px;color:var(--text);font-style:italic;line-height:1.6;padding:14px 18px;background:var(--surface2);border-radius:10px;margin-bottom:20px;border-left:3px solid var(--accent)}
+    .demo-output{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .demo-file{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--text)}
+    .demo-file.jar{border-color:var(--green);color:var(--green);font-weight:600}.demo-arrow{color:var(--muted);font-size:18px}
+    .section{padding:72px 0}
+    .section-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--accent-h);margin-bottom:12px}
+    .section h2{font-size:clamp(24px,3.5vw,36px);font-weight:800;line-height:1.2;margin-bottom:16px}
+    .section .lead{font-size:17px;color:var(--muted);max-width:640px;margin-bottom:48px}
+    .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .feature-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px}
+    .feature-icon{width:40px;height:40px;border-radius:10px;background:rgba(92,111,255,0.12);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+    .feature-card h3{font-size:16px;font-weight:700;margin-bottom:8px}.feature-card p{font-size:14px;color:var(--muted);margin:0;line-height:1.6}
+    .steps{display:flex;flex-direction:column;gap:0}
+    .step{display:flex;gap:24px;padding:28px 0;border-bottom:1px solid var(--border)}.step:last-child{border-bottom:none}
+    .step-num{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0;margin-top:2px}
+    .step-body h3{font-size:18px;font-weight:700;margin-bottom:8px}.step-body p{color:var(--muted);font-size:15px;margin:0}
+    .tags{display:flex;flex-wrap:wrap;gap:10px}.tag{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 16px;font-size:14px;font-weight:600}
+    .examples-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .example-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px}
+    .example-card .prompt{font-size:13.5px;color:var(--text);font-style:italic;margin-bottom:10px;line-height:1.5}
+    .example-card .result{font-size:12px;color:var(--muted)}.example-card .result strong{color:var(--green)}
+    .faq{display:flex;flex-direction:column;gap:16px}
+    .faq-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px}
+    .faq-item h3{font-size:16px;font-weight:700;margin-bottom:8px}.faq-item p{color:var(--muted);font-size:15px;margin:0}
+    .cta-section{padding:80px 0;text-align:center}
+    .cta-box{background:linear-gradient(135deg,rgba(92,111,255,0.12) 0%,rgba(92,111,255,0.05) 100%);border:1px solid rgba(92,111,255,0.25);border-radius:20px;padding:56px 40px}
+    .cta-box h2{font-size:clamp(24px,3.5vw,36px);font-weight:800;margin-bottom:14px}.cta-box p{font-size:17px;color:var(--muted);margin-bottom:28px}
+    .related{border-top:1px solid var(--border);padding:48px 0 72px}
+    .related-heading{font-size:12px;font-weight:600;margin-bottom:20px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+    .related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .related-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+    .related-card a{color:var(--text);font-weight:600;font-size:15px}.related-card p{font-size:13px;color:var(--muted);margin-top:6px;margin-bottom:0}
+    @media(max-width:768px){.features-grid{grid-template-columns:1fr}.examples-grid{grid-template-columns:1fr}.related-grid{grid-template-columns:1fr}}
+    @media(max-width:600px){.nav-links{display:none}}
+    footer{border-top:1px solid var(--border);padding:28px 0;text-align:center;font-size:13px;color:var(--muted)}
+    footer a{color:var(--muted)}footer a:hover{color:var(--text)}
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      StackNest
+    </a>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/gallery">Gallery</a>
+      <a href="/docs">Docs</a>
+    </nav>
+    <a href="/app" class="btn-primary">Try free <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-label">
+      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      Forge &amp; NeoForge Mod Generator
+    </div>
+    <h1>Generate Forge mods<br><span>without writing Java</span></h1>
+    <p>Describe your mod in plain English. StackNest writes full Forge/NeoForge code, compiles it server-side, and hands you a working <strong>.jar</strong> — ready for MinecraftForge or NeoForge.</p>
+    <div class="hero-actions">
+      <a href="/app" class="btn-primary">Generate a Forge mod free &rarr;</a>
+      <a href="/gallery" class="btn-secondary">Browse examples</a>
+    </div>
+    <p class="hero-note">Free tier · No credit card · MinecraftForge &amp; NeoForge · 1.20 – 1.21</p>
+  </div>
+</section>
+
+<div class="container-narrow">
+  <div class="demo-box">
+    <div class="demo-label">You type:</div>
+    <div class="demo-prompt">"A NeoForge 1.21 mod that adds a custom pickaxe 'Obsidian Breaker' with 2000 durability and +4 mining speed. Crafted with 2 obsidian and a stick in an H shape. Has a custom texture slot (placeholder texture). Registered with DeferredRegister."</div>
+    <div class="demo-label">StackNest delivers:</div>
+    <div class="demo-output">
+      <span class="demo-file">ObsidianBreaker.java</span>
+      <span class="demo-file">ModItems.java</span>
+      <span class="demo-file">ObsidianBreakerMaterial.java</span>
+      <span class="demo-file">recipes/</span>
+      <span class="demo-file">lang/en_us.json</span>
+      <span class="demo-file">build.gradle</span>
+      <span class="demo-arrow">→</span>
+      <span class="demo-file jar">obsidian-breaker-1.0.jar ✓</span>
+    </div>
+  </div>
+</div>
+
+<section class="section" style="border-top:1px solid var(--border)">
+  <div class="container-narrow">
+    <div class="section-title">How it works</div>
+    <h2>From plain English to a compiled<br>Forge mod in under a minute</h2>
+    <p class="lead">StackNest knows modern Forge patterns — DeferredRegister, event buses, ForgeConfigSpec, and ForgeGradle.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Describe your Forge mod</h3>
+          <p>Write what you want in plain English. Mention custom items, blocks, entities, recipes, world gen, config values, or any Forge API feature. Specify Forge or NeoForge and the target Minecraft version.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>AI generates Forge/NeoForge source</h3>
+          <p>A specialised model generates all Java classes using DeferredRegister, <code style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent-h)">mods.toml</code>, <code style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent-h)">build.gradle</code>, resource JSON files, and recipe data — correctly structured for the requested modloader.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Compiles with ForgeGradle, auto-healed</h3>
+          <p>StackNest builds the mod using Gradle ForgeGradle server-side. On compile errors, it runs up to 5 automatic fix passes — reading the compiler output and patching broken sections until the build succeeds.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>Drop into mods/ and launch</h3>
+          <p>Download the finished .jar and drop it into your mods/ folder alongside MinecraftForge or NeoForge. No local toolchain needed.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="section-title">What StackNest handles</div>
+    <h2>Full Forge API coverage</h2>
+    <p class="lead">Modern Forge patterns — DeferredRegister, event buses, config specs, and more — handled automatically.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="var(--accent-h)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 10V7"/></svg></div>
+        <h3>Custom Items &amp; Blocks</h3>
+        <p>DeferredRegister&lt;Item&gt; and DeferredRegister&lt;Block&gt; setup, model JSON, blockstate files, lang entries, and correct @Mod.EventBusSubscriber registration.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="var(--accent-h)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+        <h3>Custom Entities</h3>
+        <p>Entity class, EntityType DeferredRegister, renderer stub, spawn egg item, and correct entity data serialiser setup for multiplayer sync.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="var(--accent-h)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
+        <h3>Commands (Brigadier)</h3>
+        <p>RegisterCommandsEvent listener, Brigadier command tree, argument types, permission level checks, and server-side execution logic.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="var(--accent-h)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
+        <h3>Recipes</h3>
+        <p>Shaped, shapeless, and smelting recipe JSON files — correctly placed in the data pack structure and automatically included in the mod jar.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="var(--accent-h)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <h3>ForgeConfigSpec</h3>
+        <p>TOML config files using ForgeConfigSpec.Builder with typed values, comments, range validation, and reload support — server and client configs.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="var(--accent-h)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064"/></svg></div>
+        <h3>World Generation</h3>
+        <p>Ore generation, custom biome modifiers, structure features — using the Forge BiomeModifier JSON system and correct DeferredRegister setup.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container-narrow">
+    <div class="section-title">Example prompts</div>
+    <h2>What people are building</h2>
+    <p class="lead">Real mod descriptions that StackNest can build for you instantly.</p>
+    <div class="examples-grid">
+      <div class="example-card">
+        <div class="prompt">"A NeoForge 1.21 mod adding a custom ore 'Titanium Ore' that generates at Y -40 to -60, drops Titanium Ingots, has a hardness of 5.0, and requires at least iron pickaxe tier to mine."</div>
+        <div class="result"><strong>✓ Compiled</strong> · titanium-mod-1.0.jar · 9 files</div>
+      </div>
+      <div class="example-card">
+        <div class="prompt">"A Forge 1.20.1 mod that adds a /heal command using Brigadier. Heals the command sender to full health and hunger. Requires permission level 2. Shows a green title message."</div>
+        <div class="result"><strong>✓ Compiled</strong> · heal-command-mod.jar · 3 files</div>
+      </div>
+      <div class="example-card">
+        <div class="prompt">"A NeoForge mod that cancels all fall damage when the player is holding a Feather. Uses @SubscribeEvent on LivingFallEvent. Configurable via ForgeConfigSpec whether the feather is consumed on use."</div>
+        <div class="result"><strong>✓ Compiled</strong> · feather-fall-mod.jar · 4 files</div>
+      </div>
+      <div class="example-card">
+        <div class="prompt">"A Forge mod that adds a Magic Wand item. Right-clicking shoots a fireball from the player's position in their look direction. 5-second cooldown shown in the action bar. Crafted with 3 blaze rods."</div>
+        <div class="result"><strong>✓ Compiled</strong> · magic-wand-mod.jar · 5 files</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container-narrow">
+    <div class="section-title">Supported</div>
+    <h2>Forge and NeoForge versions</h2>
+    <p class="lead">StackNest targets both major Forge modloaders and the most popular Minecraft versions.</p>
+    <div class="tags">
+      <span class="tag">NeoForge 1.21.4</span>
+      <span class="tag">NeoForge 1.21.1</span>
+      <span class="tag">NeoForge 1.20.1</span>
+      <span class="tag">MinecraftForge 1.20.1</span>
+      <span class="tag">ForgeGradle</span>
+      <span class="tag">DeferredRegister</span>
+      <span class="tag">ForgeConfigSpec</span>
+      <span class="tag">Brigadier Commands</span>
+      <span class="tag">BiomeModifiers</span>
+      <span class="tag">Custom Recipes</span>
+      <span class="tag">JEI Integration</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container-narrow">
+    <div class="section-title">FAQ</div>
+    <h2>Common questions</h2>
+    <div class="faq">
+      <div class="faq-item">
+        <h3>What is a Forge mod generator?</h3>
+        <p>A Forge mod generator creates custom mods for MinecraftForge or NeoForge. AI-powered tools like StackNest handle writing the Java source with the Forge API, compiling it with Gradle ForgeGradle, and packaging it as a ready-to-use .jar — no Java or Gradle knowledge needed.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Does StackNest support both Forge and NeoForge?</h3>
+        <p>Yes. Mention which modloader you want in your prompt. StackNest will use MinecraftForge for older versions and NeoForge for 1.20.1+ where NeoForge has become the modern community standard. The core patterns (DeferredRegister, event buses) are almost identical and StackNest handles the differences automatically.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can it add custom items, blocks, and entities?</h3>
+        <p>Yes. StackNest uses DeferredRegister for all registry objects — the modern Forge pattern. It generates model JSON, blockstate files, lang entries, and correct @Mod.EventBusSubscriber and @SubscribeEvent setup so everything is registered properly.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Does StackNest generate ForgeConfigSpec configs?</h3>
+        <p>Yes. StackNest uses ForgeConfigSpec to generate type-safe TOML config files with correct builder patterns, default values, range validation, and reload handling — for both client and server configs.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Do I need a local Forge development environment?</h3>
+        <p>No. StackNest compiles the mod on its own servers using Gradle ForgeGradle. You download the finished .jar and drop it into your mods/ folder alongside MinecraftForge or NeoForge. No local toolchain required.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container-narrow">
+    <div class="cta-box">
+      <h2>Ready to generate your Forge mod?</h2>
+      <p>Free to start. No credit card. Your first mod in under a minute.</p>
+      <a href="/app" class="btn-primary" style="font-size:16px;padding:13px 32px">Generate a Forge mod free &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="related">
+    <div class="related-heading">Related generators</div>
+    <div class="related-grid">
+      <div class="related-card">
+        <a href="/fabric-mod-generator">Fabric Mod Generator</a>
+        <p>AI-generated Fabric mods with Mixin support, custom items, blocks, and events.</p>
+      </div>
+      <div class="related-card">
+        <a href="/minecraft-mod-generator">Minecraft Mod Generator</a>
+        <p>All modloaders in one place — Fabric, Forge, and NeoForge.</p>
+      </div>
+      <div class="related-card">
+        <a href="/paper-plugin-generator">Paper Plugin Generator</a>
+        <p>AI-generated Paper plugins for PaperMC 1.21+ servers with Folia support.</p>
+      </div>
+      <div class="related-card">
+        <a href="/spigot-plugin-generator">Spigot Plugin Generator</a>
+        <p>AI-generated Spigot plugins compatible with Paper and CraftBukkit.</p>
+      </div>
+      <div class="related-card">
+        <a href="/minecraft-plugin-generator">Minecraft Plugin Generator</a>
+        <p>The general-purpose AI plugin generator for all server platforms.</p>
+      </div>
+      <div class="related-card">
+        <a href="/how-to-make-minecraft-plugins">How to make Minecraft plugins</a>
+        <p>A beginner's guide to Minecraft development and AI-assisted coding.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2026 StackNest &nbsp;&middot;&nbsp; <a href="/privacy">Privacy</a> &nbsp;&middot;&nbsp; <a href="/terms">Terms</a> &nbsp;&middot;&nbsp; <a href="/docs">Docs</a> &nbsp;&middot;&nbsp; <a href="/pricing">Pricing</a></p>
+  </div>
+</footer>
+</body>
+</html>

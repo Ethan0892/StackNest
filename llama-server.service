@@ -1,0 +1,33 @@
+[Unit]
+Description=llama.cpp inference server (StackNest)
+After=network.target
+
+[Service]
+Type=simple
+User=ethan
+WorkingDirectory=/home/ethan/stacknest
+ExecStart=/home/ethan/stacknest/libs/llama-server \
+    -m /home/ethan/stacknest/models/minecraft-coder-q4km.gguf \
+    --port 8080 \
+    --ctx-size 4096 \
+    -ngl 0 \
+    --log-disable
+Restart=on-failure
+RestartSec=10
+RestartPreventExitStatus=0
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+UMask=0027
+ReadWritePaths=/home/ethan/stacknest/models /home/ethan/stacknest/libs
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=llama-server
+
+[Install]
+WantedBy=multi-user.target

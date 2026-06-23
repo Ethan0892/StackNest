@@ -1,0 +1,2118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <title>Minecraft Plugin Web Editor &mdash; StackNest</title>
+  <meta name="description" content="Edit StackNest-generated plugins or import external Paper, Spigot, Bukkit, Folia and Skript source code in the StackNest web editor. Validate, auto-heal, export JARs and scale workspace size with tiered plans." />
+  <meta name="keywords" content="minecraft plugin editor, paper plugin editor, spigot plugin editor, folia plugin IDE, bukkit plugin web editor, skript editor, plugin source zip editor, AI minecraft plugin generator, Paper Spigot Folia AI, auto-fixing compile errors, minecraft plugin compiler online, AI code auto-fix, java plugin editor online, minecraft coding assistant" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://stacknests.com/editor" />
+  <meta property="og:title" content="Minecraft Plugin Web Editor &mdash; StackNest" />
+  <meta property="og:description" content="Bring your own plugin source, edit it in the browser, validate it against Paper APIs, and unlock larger workspaces with StackNest tiers." />
+  <meta property="og:image" content="https://stacknests.com/og-image.png" />
+  <meta property="og:site_name" content="StackNest" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Minecraft Plugin Web Editor &mdash; StackNest" />
+  <meta name="twitter:description" content="Browser-based IDE for StackNest and external Minecraft plugin source workspaces." />
+  <meta name="twitter:image" content="https://stacknests.com/og-image.png" />
+  <link rel="canonical" href="https://stacknests.com/editor" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "StackNest Plugin Editor",
+    "url": "https://stacknests.com/editor",
+    "description": "A browser-based editor for Minecraft plugin source code. Import StackNest output or external plugin workspaces, validate them, auto-heal issues, and export source or build-ready artifacts.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web",
+    "creator": {
+      "@type": "Organization",
+      "name": "StackNest",
+      "url": "https://stacknests.com"
+    }
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #0f1117;
+      --surface:   #1a1d26;
+      --surface2:  #222638;
+      --border:    #2e3350;
+      --accent:    #5c6fff;
+      --accent-h:  #7b8fff;
+      --green:     #3ddc84;
+      --red:       #ff5c5c;
+      --yellow:    #ffc94d;
+      --text:      #e2e4f0;
+      --subtext:   #7f85a3;
+      --mono:      'JetBrains Mono', monospace;
+      --sans:      'Inter', sans-serif;
+      --radius:    10px;
+      --header-h:  56px;
+      --tab-h:     38px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── Header ── */
+    header {
+      height: var(--header-h);
+      padding: 0 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+      z-index: 100;
+    }
+    .logo { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.3px; text-decoration: none; color: var(--text); }
+    .logo span { color: var(--accent); }
+    .header-sep { width: 1px; height: 24px; background: var(--border); }
+    .page-title { font-size: 0.88rem; color: var(--subtext); font-weight: 500; }
+    .header-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+
+    .btn {
+      padding: 7px 16px;
+      border-radius: 7px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text);
+      transition: all 0.15s;
+      font-family: var(--sans);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .btn:hover { border-color: var(--accent); background: var(--surface); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn.primary   { background: var(--accent);  border-color: var(--accent);  color: #fff; }
+    .btn.primary:hover { background: var(--accent-h); border-color: var(--accent-h); }
+    .btn.success   { background: #3ddc8422; border-color: var(--green);  color: var(--green); }
+    .btn.danger    { background: #ff5c5c22; border-color: var(--red);    color: var(--red); }
+    .btn.heal      { background: #fbbf2422; border-color: var(--yellow); color: var(--yellow); }
+
+    /* ── Main layout ── */
+    body > main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .workspace {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── File sidebar ── */
+    .sidebar {
+      width: 180px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .sidebar-title {
+      padding: 10px 14px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--subtext);
+      border-bottom: 1px solid var(--border);
+    }
+    .file-item {
+      padding: 9px 14px;
+      font-size: 0.8rem;
+      font-family: var(--mono);
+      color: var(--subtext);
+      cursor: pointer;
+      border-bottom: 1px solid #1a1d2640;
+      transition: all 0.12s;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .file-item:hover { background: var(--surface2); color: var(--text); }
+    .file-item.active { background: var(--surface2); color: var(--accent); border-left: 2px solid var(--accent); }
+    .file-icon { font-size: 0.75rem; }
+
+    .sidebar-paste {
+      padding: 12px;
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+    .sidebar-paste textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      padding: 8px;
+      resize: none;
+      height: 70px;
+      outline: none;
+    }
+    .sidebar-paste textarea:focus { border-color: var(--accent); }
+    .paste-hint { font-size: 0.68rem; color: var(--subtext); margin-bottom: 6px; }
+
+    /* ── Editor pane ── */
+    .editor-pane {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .editor-tabs {
+      display: flex;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      overflow-x: auto;
+    }
+    .editor-tab {
+      padding: 10px 18px;
+      font-size: 0.8rem;
+      font-family: var(--mono);
+      color: var(--subtext);
+      cursor: pointer;
+      border-right: 1px solid var(--border);
+      white-space: nowrap;
+      transition: all 0.12s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .editor-tab:hover { color: var(--text); background: var(--surface2); }
+    .editor-tab.active { color: var(--text); background: var(--bg); border-bottom: 2px solid var(--accent); }
+    .editor-tab .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--yellow); display: none; }
+    .editor-tab.dirty .dot { display: block; }
+
+    .cm-host {
+      flex: 1;
+      overflow: hidden;
+      display: none;
+    }
+    .cm-host.active { display: flex; flex-direction: column; }
+
+    /* ── Bottom panel ── */
+    .bottom-panel {
+      height: 200px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      transition: height 0.2s;
+    }
+    .bottom-panel.collapsed { height: 36px; }
+
+    .panel-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .panel-tab {
+      padding: 9px 16px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--subtext);
+      cursor: pointer;
+      border-right: 1px solid var(--border);
+      transition: color 0.12s;
+    }
+    .panel-tab:hover { color: var(--text); }
+    .panel-tab.active { color: var(--accent); }
+
+    .panel-toggle {
+      margin-left: auto;
+      padding: 9px 14px;
+      font-size: 0.75rem;
+      color: var(--subtext);
+      cursor: pointer;
+    }
+    .panel-toggle:hover { color: var(--text); }
+
+    .panel-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 16px;
+      font-size: 0.8rem;
+      font-family: var(--mono);
+    }
+    .bottom-panel.collapsed .panel-body { display: none; }
+
+    .issue-row {
+      display: flex;
+      gap: 10px;
+      padding: 5px 0;
+      border-bottom: 1px solid #2e335033;
+      align-items: flex-start;
+    }
+    .issue-row:last-child { border-bottom: none; }
+    .issue-sev {
+      font-size: 0.68rem; font-weight: 700;
+      padding: 2px 6px; border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .issue-sev.error   { background: #ff5c5c22; color: var(--red); }
+    .issue-sev.warning { background: #ffc94d22; color: var(--yellow); }
+    .issue-sev.ok      { background: #3ddc8422; color: var(--green); }
+    .issue-msg { color: var(--text); flex: 1; line-height: 1.5; }
+
+    .status-bar {
+      padding: 4px 16px;
+      background: var(--surface2);
+      border-top: 1px solid var(--border);
+      font-size: 0.72rem;
+      color: var(--subtext);
+      display: flex;
+      gap: 20px;
+      flex-shrink: 0;
+    }
+    .status-bar span { display: flex; align-items: center; gap: 5px; }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .status-dot.ok  { background: var(--green); }
+    .status-dot.err { background: var(--red); }
+    .status-dot.spin { background: var(--yellow); animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    /* ── Load code modal ── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: #00000088;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200;
+    }
+    .modal-overlay.hidden { display: none; }
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      width: 520px;
+      max-width: 94vw;
+    }
+    .modal h3 { margin-bottom: 12px; font-size: 1rem; }
+    .modal p { color: var(--subtext); font-size: 0.85rem; margin-bottom: 16px; }
+    .modal textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      padding: 12px;
+      height: 180px;
+      resize: vertical;
+      outline: none;
+      margin-bottom: 16px;
+    }
+    .modal textarea:focus { border-color: var(--accent); }
+    .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+    .plan-pill,
+    .project-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--subtext);
+      white-space: nowrap;
+    }
+    .plan-pill strong,
+    .project-pill strong { color: var(--text); font-weight: 700; }
+
+    .sidebar-meta,
+    .sidebar-section-card {
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-section-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--subtext);
+      margin-bottom: 10px;
+    }
+    .summary-grid {
+      display: grid;
+      gap: 8px;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.75rem;
+      color: var(--subtext);
+    }
+    .summary-row strong {
+      color: var(--text);
+      text-align: right;
+      word-break: break-word;
+    }
+    .sidebar-actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .sidebar-actions-grid .btn {
+      justify-content: center;
+      padding: 8px 10px;
+      font-size: 0.74rem;
+    }
+    .tier-warning {
+      margin-top: 12px;
+      padding: 10px 11px;
+      border-radius: 8px;
+      border: 1px solid #ffc94d55;
+      background: #ffc94d14;
+      color: #ffd978;
+      font-size: 0.73rem;
+      line-height: 1.45;
+      display: none;
+    }
+    .tier-warning.visible { display: block; }
+
+    .saved-projects {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+    .saved-empty {
+      font-size: 0.74rem;
+      color: var(--subtext);
+      line-height: 1.5;
+    }
+    .saved-project-item {
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #161922;
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s, background 0.15s;
+    }
+    .saved-project-item:hover {
+      border-color: var(--accent);
+      background: #1b2030;
+      transform: translateY(-1px);
+    }
+    .saved-project-item strong {
+      display: block;
+      font-size: 0.76rem;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .saved-project-meta {
+      font-size: 0.7rem;
+      color: var(--subtext);
+    }
+
+    /* ── CodeMirror overrides ── */
+    .cm-editor {
+      flex: 1;
+      height: 100% !important;
+      font-family: var(--mono) !important;
+      font-size: 13.5px !important;
+    }
+    .cm-scroller { overflow: auto !important; }
+    .cm-focused { outline: none !important; }
+
+    /* ── Homepage-inspired editor refresh ── */
+    body {
+      background:
+        radial-gradient(circle at top center, rgba(92,111,255,0.16), transparent 28%),
+        radial-gradient(circle at 12% 12%, rgba(61,220,132,0.08), transparent 20%),
+        linear-gradient(180deg, #0f1117 0%, #080a0f 100%);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.55), transparent 70%);
+    }
+    header {
+      height: 68px;
+      padding: 0 24px;
+      background: rgba(15,17,23,0.82);
+      border-bottom: 1px solid rgba(61,68,104,0.75);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.32);
+    }
+    .logo { display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; }
+    .page-title {
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .header-actions {
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .btn {
+      border-radius: 10px;
+      padding: 8px 14px;
+      background: rgba(34,38,56,0.9);
+      border-color: rgba(61,68,104,0.9);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(0,0,0,0.22); }
+    .btn.primary { box-shadow: 0 0 24px rgba(92,111,255,0.3); }
+    .btn.primary:hover { box-shadow: 0 0 32px rgba(92,111,255,0.44); }
+    .plan-pill,
+    .project-pill,
+    .source-pill {
+      background: rgba(34,38,56,0.84);
+      border-color: rgba(61,68,104,0.85);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+    .source-pill strong { color: var(--text); }
+    .workspace {
+      gap: 18px;
+      padding: 18px;
+    }
+    .sidebar,
+    .editor-pane,
+    .bottom-panel {
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 20px 55px rgba(0,0,0,0.28);
+    }
+    .sidebar {
+      width: 320px;
+      background: linear-gradient(180deg, rgba(26,29,38,0.98) 0%, rgba(15,17,23,0.98) 100%);
+      border: 1px solid rgba(61,68,104,0.72);
+    }
+    .sidebar-meta,
+    .sidebar-section-card {
+      background: rgba(255,255,255,0.01);
+    }
+    .sidebar-section-label,
+    .sidebar-title {
+      color: #9aa5d6;
+      letter-spacing: 0.1em;
+    }
+    .summary-row {
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(61,68,104,0.22);
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .sidebar-actions-grid { grid-template-columns: 1fr 1fr; }
+    .import-stack,
+    .plan-feature-grid {
+      display: grid;
+      gap: 10px;
+    }
+    .import-card,
+    .plan-feature-card {
+      border: 1px solid rgba(61,68,104,0.8);
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(34,38,56,0.88), rgba(20,23,34,0.92));
+      padding: 12px 13px;
+    }
+    .import-card {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      cursor: pointer;
+      transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s;
+    }
+    .import-card:hover {
+      border-color: rgba(123,143,255,0.95);
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.22);
+    }
+    .import-card-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(92,111,255,0.16);
+      color: var(--accent-h);
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+    .import-card strong,
+    .plan-feature-card strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+    }
+    .import-card span,
+    .plan-feature-card span {
+      color: var(--subtext);
+      font-size: 0.73rem;
+      line-height: 1.45;
+    }
+    .plan-feature-card.enabled {
+      border-color: rgba(61,220,132,0.4);
+      background: linear-gradient(180deg, rgba(61,220,132,0.09), rgba(20,23,34,0.92));
+    }
+    .plan-feature-card.locked {
+      opacity: 0.7;
+    }
+    .plan-feature-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      margin-bottom: 8px;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #d7defd;
+      background: rgba(92,111,255,0.14);
+      border: 1px solid rgba(92,111,255,0.24);
+    }
+    .editor-pane {
+      min-width: 0;
+      background: linear-gradient(180deg, rgba(26,29,38,0.96), rgba(10,12,19,0.98));
+      border: 1px solid rgba(61,68,104,0.72);
+    }
+    .editor-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.9fr);
+      gap: 18px;
+      padding: 22px;
+      border-bottom: 1px solid rgba(61,68,104,0.5);
+      background:
+        radial-gradient(circle at right top, rgba(92,111,255,0.13), transparent 30%),
+        linear-gradient(180deg, rgba(34,38,56,0.68), rgba(18,20,29,0.68));
+    }
+    .editor-kicker {
+      color: #aeb8eb;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+    }
+    .editor-hero h1 {
+      font-size: clamp(1.55rem, 2.4vw, 2.15rem);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      margin-bottom: 10px;
+    }
+    .editor-hero p {
+      color: var(--subtext);
+      font-size: 0.92rem;
+      line-height: 1.65;
+      max-width: 760px;
+    }
+    .editor-hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .editor-hero-grid {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+    .hero-mini-card {
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(61,68,104,0.8);
+      background: rgba(10,12,19,0.5);
+    }
+    .hero-mini-card span {
+      display: block;
+      color: #9ea8d8;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 7px;
+    }
+    .hero-mini-card strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+    .editor-stage {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .editor-empty-state {
+      position: absolute;
+      inset: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .editor-empty-state.hidden { display: none; }
+    .empty-card {
+      max-width: 640px;
+      width: 100%;
+      border-radius: 18px;
+      border: 1px solid rgba(61,68,104,0.72);
+      background: linear-gradient(180deg, rgba(16,19,29,0.9), rgba(10,12,19,0.95));
+      box-shadow: 0 28px 60px rgba(0,0,0,0.28);
+      padding: 26px;
+      pointer-events: auto;
+    }
+    .empty-card h2 {
+      font-size: 1.45rem;
+      line-height: 1.12;
+      margin-bottom: 10px;
+    }
+    .empty-card p {
+      color: var(--subtext);
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+    .empty-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .empty-highlights {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .empty-highlight {
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(34,38,56,0.72);
+      border: 1px solid rgba(61,68,104,0.72);
+    }
+    .empty-highlight strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 4px;
+      font-size: 0.77rem;
+    }
+    .empty-highlight span {
+      color: var(--subtext);
+      font-size: 0.72rem;
+      line-height: 1.45;
+    }
+    #editors-container {
+      flex: 1;
+      min-height: 0;
+      position: relative;
+      z-index: 2;
+    }
+    .editor-tabs,
+    .panel-tabs,
+    .status-bar {
+      background: rgba(22,25,34,0.88);
+    }
+    .status-bar {
+      border-top-color: rgba(61,68,104,0.52);
+      color: #98a2d5;
+    }
+    .tier-warning.visible {
+      display: block;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.16);
+    }
+    @media (max-width: 1280px) {
+      .workspace { gap: 14px; padding: 14px; }
+      .sidebar { width: 290px; }
+      .editor-hero { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 980px) {
+      body { overflow: auto; }
+      .workspace { flex-direction: column; overflow: visible; }
+      .sidebar { width: 100%; }
+      .header-actions { justify-content: flex-start; margin-left: 0; }
+      .empty-highlights { grid-template-columns: 1fr; }
+    }
+
+    /* ── Sidebar inner scroll ── */
+    .sidebar-scroll {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(61,68,104,0.55) transparent;
+    }
+    .sidebar-scroll::-webkit-scrollbar { width: 5px; }
+    .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(61,68,104,0.55); border-radius: 3px; }
+
+    /* ── Hero dismiss ── */
+    .editor-hero { position: relative; }
+    .hero-dismiss-btn {
+      position: absolute;
+      top: 12px; right: 14px;
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      border: 1px solid rgba(61,68,104,0.55);
+      background: rgba(20,23,32,0.7);
+      color: var(--subtext);
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+      z-index: 5;
+      line-height: 1;
+    }
+    .hero-dismiss-btn:hover { background: rgba(61,68,104,0.7); color: var(--text); border-color: rgba(92,111,255,0.6); }
+    .editor-hero.dismissed { display: none; }
+    .show-hero-btn {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--subtext);
+      background: rgba(34,38,56,0.7);
+      border: 1px solid rgba(61,68,104,0.6);
+      border-radius: 999px;
+      padding: 4px 11px;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+      display: none;
+    }
+    .show-hero-btn:hover { color: var(--text); border-color: rgba(92,111,255,0.5); }
+    .show-hero-btn.visible { display: inline-flex; align-items: center; gap: 5px; }
+  </style>
+</head>
+<body>
+<main>
+
+<header>
+  <a href="/" class="logo">Stack<span>Nest</span></a>
+  <div class="header-sep"></div>
+  <span class="page-title">Developer Plugin Editor</span>
+  <div class="header-actions">
+    <button class="show-hero-btn" id="show-hero-btn" onclick="showHero()">&#9432; Guide</button>
+    <span class="plan-pill" id="plan-pill">Plan <strong>Free</strong></span>
+    <span class="project-pill" id="project-pill">Project <strong>Untitled</strong></span>
+    <button class="btn" id="validate-btn" onclick="runValidate()">Validate</button>
+    <button class="btn heal" id="kimi-validate-btn" onclick="runKimiValidate()" title="Deep Check with Kimi K2.5">Deep Check</button>
+    <button class="btn heal" id="heal-btn" onclick="runHeal()" style="display:none">Auto-Heal</button>
+    <button class="btn success" id="save-project-btn" onclick="saveSnapshot()">Save</button>
+    <button class="btn primary" onclick="downloadJar()">Download .jar</button>
+    <button class="btn" onclick="downloadZip()">Source .zip</button>
+  </div>
+</header>
+
+<div class="workspace">
+  <!-- Sidebar: file explorer -->
+  <aside class="sidebar">
+  <div class="sidebar-scroll">
+    <div class="sidebar-meta">
+      <div class="sidebar-section-label">Workspace</div>
+      <div class="summary-grid">
+        <div class="summary-row"><span>Name</span><strong id="summary-name">Untitled Plugin</strong></div>
+        <div class="summary-row"><span>Source</span><strong id="summary-source">Local draft</strong></div>
+        <div class="summary-row"><span>Files</span><strong id="summary-files">0</strong></div>
+        <div class="summary-row"><span>Characters</span><strong id="summary-chars">0</strong></div>
+        <div class="summary-row"><span>Plan limit</span><strong id="summary-limit">8 files / 35k chars</strong></div>
+      </div>
+      <div class="sidebar-actions-grid">
+        <button class="btn" onclick="triggerImportFiles()">Add files</button>
+        <button class="btn" onclick="triggerImportFolder()">Folder</button>
+        <button class="btn" onclick="triggerImportArchive()">Open ZIP</button>
+        <button class="btn" onclick="createNewFile()">New file</button>
+        <button class="btn" onclick="openLoadModal()">Paste</button>
+        <button class="btn" onclick="saveSnapshot()">Save</button>
+      </div>
+      <div class="tier-warning" id="tier-warning"></div>
+    </div>
+    <div class="sidebar-section-card">
+      <div class="sidebar-section-label">Bring your own plugin</div>
+      <div class="import-stack">
+        <div class="import-card" onclick="openLoadModal()">
+          <div class="import-card-icon">✨</div>
+          <div>
+            <strong>Paste StackNest output</strong>
+            <span>Open fenced markdown from the generator and keep every Java, YAML, or Skript block editable.</span>
+          </div>
+        </div>
+        <div class="import-card" onclick="triggerImportFolder()">
+          <div class="import-card-icon">📁</div>
+          <div>
+            <strong>Import external source folder</strong>
+            <span>Edit plugins not made by StackNest. Load Paper, Spigot, Bukkit, Folia, and Skript source trees directly from disk.</span>
+          </div>
+        </div>
+        <div class="import-card" onclick="triggerImportArchive()">
+          <div class="import-card-icon">🧩</div>
+          <div>
+            <strong>Open source ZIP / JAR</strong>
+            <span>Source archives load instantly. Larger external workspaces are tier-gated by file count and total character size.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-section-card">
+      <div class="sidebar-section-label">Tier unlocks</div>
+      <div class="plan-feature-grid" id="plan-feature-grid"></div>
+    </div>
+    <div class="sidebar-section-card">
+      <div class="sidebar-section-label">Saved projects</div>
+      <div class="saved-projects" id="saved-projects"></div>
+    </div>
+    <div class="sidebar-title">Files</div>
+    <div id="file-list"></div>
+  </div><!-- /sidebar-scroll -->
+  </aside>
+
+  <!-- Editor area -->
+  <div class="editor-pane">
+    <div class="editor-hero" id="editor-hero">
+      <button class="hero-dismiss-btn" onclick="dismissHero()" aria-label="Hide guide" title="Hide guide">✕</button>
+      <div>
+        <div class="editor-kicker">Developer-first browser IDE</div>
+        <h1>Edit StackNest builds or external plugin source without leaving the browser.</h1>
+        <p>Open generated plugins, rescue old Paper projects, tweak Skripts, validate APIs, run premium healing tools, and export clean workspaces fast. Free plans handle smaller plugins, while paid tiers unlock larger external codebases and premium repair flows.</p>
+        <div class="editor-hero-actions">
+          <button class="btn primary" onclick="triggerImportFolder()">Import external plugin</button>
+          <button class="btn" onclick="triggerImportArchive()">Open source ZIP</button>
+          <button class="btn" onclick="openLoadModal()">Paste StackNest output</button>
+        </div>
+      </div>
+      <div class="editor-hero-grid">
+        <div class="hero-mini-card">
+          <span>Supports</span>
+          <strong>Folders, ZIPs, markdown output, raw files, Java, YAML, JSON, XML, properties, and Skript.</strong>
+        </div>
+        <div class="hero-mini-card">
+          <span>Premium flow</span>
+          <strong>Starter unlocks Deep Check. Pro unlocks Auto-Heal. Studio scales to big plugin suites.</strong>
+        </div>
+        <div class="hero-mini-card">
+          <span>Best use cases</span>
+          <strong>Hotfixes, refactors, reverse-importing your old plugin source, and turning AI output into production-ready workspaces.</strong>
+        </div>
+      </div>
+    </div>
+    <div class="editor-tabs" id="editor-tabs"></div>
+    <div class="editor-stage">
+      <div class="editor-empty-state" id="editor-empty-state">
+        <div class="empty-card">
+          <h2>Your plugin workspace starts here.</h2>
+          <p>Import any editable Minecraft plugin source workspace, whether StackNest created it or not. Bring in a source folder, ZIP archive, or markdown output, then validate, refactor, heal, and export it like a lightweight cloud IDE.</p>
+          <div class="empty-actions">
+            <button class="btn primary" onclick="triggerImportFolder()">Import folder</button>
+            <button class="btn" onclick="triggerImportArchive()">Open ZIP / JAR</button>
+            <button class="btn" onclick="triggerImportFiles()">Import files</button>
+            <button class="btn" onclick="openLoadModal()">Paste StackNest output</button>
+          </div>
+          <div class="empty-highlights">
+            <div class="empty-highlight">
+              <strong>External plugin ready</strong>
+              <span>Edit non-StackNest projects in the browser. Workspace size scales with your plan.</span>
+            </div>
+            <div class="empty-highlight">
+              <strong>Validation built in</strong>
+              <span>Run compile-aware checks before exporting or handing work back to your server.</span>
+            </div>
+            <div class="empty-highlight">
+              <strong>Tiered power tools</strong>
+              <span>Unlock Deep Check on Starter and Auto-Heal on Pro for a faster rescue workflow.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="editors-container" style="flex:1;overflow:hidden;display:flex;flex-direction:column;"></div>
+    </div>
+
+    <!-- Bottom panel: issues / output -->
+    <div class="bottom-panel" id="bottom-panel">
+      <div class="panel-tabs">
+        <span class="panel-tab active" id="tab-issues" onclick="switchPanel('issues')">Issues</span>
+        <span class="panel-tab" id="tab-output" onclick="switchPanel('output')">Output</span>
+        <span class="panel-toggle" onclick="togglePanel()" id="panel-toggle">▾ Collapse</span>
+      </div>
+      <div class="panel-body" id="panel-issues"></div>
+      <div class="panel-body" id="panel-output" style="display:none"></div>
+    </div>
+
+    <div class="status-bar">
+      <span><span class="status-dot" id="status-dot"></span> <span id="status-text">Ready</span></span>
+      <span id="status-file">No file loaded</span>
+      <span id="status-pos">Ln 1, Col 1</span>
+    </div>
+  </div>
+</div>
+
+<!-- Load Code Modal -->
+<div class="modal-overlay hidden" id="load-modal">
+  <div class="modal">
+    <h3>Load Plugin Code</h3>
+    <p>Paste full StackNest markdown output here, or use the import buttons for external source files and ZIP archives.</p>
+    <textarea id="load-textarea" placeholder="Paste code from the generator here...&#10;&#10;```java&#10;// ...&#10;```&#10;&#10;```yaml&#10;# ...&#10;```"></textarea>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeLoadModal()">Cancel</button>
+      <button class="btn primary" onclick="loadCode()">Load</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="upgrade-modal">
+  <div class="modal">
+    <h3>Upgrade required for larger editor workspaces</h3>
+    <p id="upgrade-copy">This project is larger than your current editor tier allows.</p>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeUpgradeModal()">Close</button>
+      <a class="btn primary" href="/pricing" style="text-decoration:none">View plans</a>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="file-import-input" multiple accept=".java,.yml,.yaml,.sk,.json,.txt,.md,.properties,.xml,.toml" hidden />
+<input type="file" id="folder-import-input" multiple webkitdirectory directory hidden />
+<input type="file" id="archive-import-input" accept=".zip,.jar" hidden />
+
+<script type="module">
+      import { EditorView, keymap, lineNumbers, highlightActiveLine, drawSelection }
+        from "https://esm.sh/@codemirror/view@6";
+      import { EditorState }
+        from "https://esm.sh/@codemirror/state@6";
+      import { history, defaultKeymap, historyKeymap }
+        from "https://esm.sh/@codemirror/commands@6";
+      import { java }
+        from "https://esm.sh/@codemirror/lang-java@6";
+      import { yaml }
+        from "https://esm.sh/@codemirror/lang-yaml@6";
+      import { oneDark }
+        from "https://esm.sh/@codemirror/theme-one-dark@6";
+      import { syntaxHighlighting, defaultHighlightStyle, bracketMatching, foldGutter }
+        from "https://esm.sh/@codemirror/language@6";
+      import { closeBrackets, autocompletion }
+        from "https://esm.sh/@codemirror/autocomplete@6";
+      import { lintGutter }
+        from "https://esm.sh/@codemirror/lint@6";
+
+      const TOKEN_KEY = "stacknest_auth_token";
+      const PLAN_LIMITS = {
+        free: { maxFiles: 8, maxChars: 35000 },
+        starter: { maxFiles: 20, maxChars: 120000 },
+        pro: { maxFiles: 60, maxChars: 400000 },
+        studio: { maxFiles: 120, maxChars: 900000 },
+      };
+      const PLAN_ORDER = ["free", "starter", "pro", "studio"];
+      const IMPORTABLE_EXTS = [".java", ".yml", ".yaml", ".sk", ".json", ".txt", ".md", ".properties", ".xml", ".toml"];
+      const PLAN_FEATURES = [
+        {
+          plan: "free",
+          title: "Free",
+          summary: "Perfect for StackNest output and smaller external plugin workspaces.",
+        },
+        {
+          plan: "starter",
+          title: "Starter+",
+          summary: "Unlock bigger external imports and the premium Deep Check review flow.",
+        },
+        {
+          plan: "pro",
+          title: "Pro+",
+          summary: "Unlock Auto-Heal plus much larger workspaces for active plugin maintenance.",
+        },
+        {
+          plan: "studio",
+          title: "Studio",
+          summary: "Best for giant multi-module plugin suites and long-term browser editing sessions.",
+        },
+      ];
+
+      const files = {};
+      let activeFile = null;
+      let currentErrors = [];
+      let currentUser = null;
+      let currentProjectId = null;
+      let currentProjectName = "Untitled Plugin";
+      let savedProjects = [];
+      let workspaceSource = "local";
+
+      // ── Hero dismiss/restore ────────────────────────────────────────────
+      const HERO_KEY = "sn_hero_dismissed";
+      function dismissHero() {
+        document.getElementById("editor-hero").classList.add("dismissed");
+        document.getElementById("show-hero-btn").classList.add("visible");
+        try { localStorage.setItem(HERO_KEY, "1"); } catch(e) {}
+      }
+      function showHero() {
+        document.getElementById("editor-hero").classList.remove("dismissed");
+        document.getElementById("show-hero-btn").classList.remove("visible");
+        try { localStorage.removeItem(HERO_KEY); } catch(e) {}
+      }
+      // Apply saved dismiss state on load
+      if (localStorage.getItem(HERO_KEY) === "1") {
+        const heroEl = document.getElementById("editor-hero");
+        const guideBtn = document.getElementById("show-hero-btn");
+        if (heroEl) heroEl.classList.add("dismissed");
+        if (guideBtn) guideBtn.classList.add("visible");
+      }
+
+      const BASE_EXTS = [
+        lineNumbers(),
+        highlightActiveLine(),
+        drawSelection(),
+        bracketMatching(),
+        closeBrackets(),
+        autocompletion(),
+        foldGutter(),
+        lintGutter(),
+        history(),
+        keymap.of([...defaultKeymap, ...historyKeymap]),
+        oneDark,
+        syntaxHighlighting(defaultHighlightStyle),
+      ];
+
+      function escHtml(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\"/g, "&quot;");
+      }
+
+      function getToken() {
+        return localStorage.getItem(TOKEN_KEY) || "";
+      }
+
+      function normalizePlan(plan) {
+        const raw = String(plan || "free").toLowerCase();
+        return PLAN_LIMITS[raw] ? raw : (raw === "premium" ? "pro" : "free");
+      }
+
+      function getEffectivePlan() {
+        return normalizePlan(currentUser?.plan || "free");
+      }
+
+      function getPlanLimits(plan = getEffectivePlan()) {
+        return PLAN_LIMITS[normalizePlan(plan)] || PLAN_LIMITS.free;
+      }
+
+      function planRank(plan) {
+        const idx = PLAN_ORDER.indexOf(normalizePlan(plan));
+        return idx === -1 ? 0 : idx;
+      }
+
+      function planSupports(requiredPlan, currentPlan = getEffectivePlan()) {
+        return planRank(currentPlan) >= planRank(requiredPlan);
+      }
+
+      function workspaceSourceLabel(source = workspaceSource) {
+        const raw = String(source || "local").toLowerCase();
+        if (raw.includes("saved")) return "Saved snapshot";
+        if (raw.includes("last generation")) return "StackNest output";
+        if (raw.includes("markdown")) return "StackNest markdown";
+        if (raw.includes("kimi")) return "AI repair pass";
+        if (raw.includes("auto-heal")) return "Auto-Heal result";
+        if (raw.includes("archive") || raw.includes("external") || raw.includes("folder")) return "External plugin";
+        return "Local draft";
+      }
+
+      function formatNumber(value) {
+        return Number(value || 0).toLocaleString();
+      }
+
+      function basename(path) {
+        return String(path || "").split("/").pop() || path;
+      }
+
+      function extname(path) {
+        const m = basename(path).match(/(\.[^.]+)$/);
+        return m ? m[1].toLowerCase() : "";
+      }
+
+      function isJavaFile(path) { return extname(path) === ".java"; }
+      function isYamlFile(path) { return [".yml", ".yaml"].includes(extname(path)); }
+      function isSkriptFile(path) { return extname(path) === ".sk"; }
+      function isTestFile(path) { return /Test\.java$/i.test(path); }
+
+      function detectCodeLang(path) {
+        if (isYamlFile(path)) return "yaml";
+        if (isJavaFile(path)) return "java";
+        if (isSkriptFile(path)) return "skript";
+        return "text";
+      }
+
+      function editorExtensionsFor(path) {
+        const lang = detectCodeLang(path);
+        if (lang === "yaml") return [...BASE_EXTS, yaml()];
+        if (lang === "java") return [...BASE_EXTS, java()];
+        return [...BASE_EXTS];
+      }
+
+      function sanitizePath(path) {
+        return String(path || "")
+          .replace(/\\/g, "/")
+          .replace(/^\/+/, "")
+          .replace(/^\.\//, "")
+          .replace(/^src\/main\/java\//, "")
+          .replace(/^src\/test\/java\//, "")
+          .replace(/^src\/main\/resources\//, "")
+          .replace(/^resources\//, "")
+          .replace(/\/+/g, "/");
+      }
+
+      function sortFileNames(list) {
+        return [...list].sort((a, b) => {
+          const pa = a === "plugin.yml" ? -10 : isYamlFile(a) ? -5 : isTestFile(a) ? 5 : 0;
+          const pb = b === "plugin.yml" ? -10 : isYamlFile(b) ? -5 : isTestFile(b) ? 5 : 0;
+          if (pa !== pb) return pa - pb;
+          return a.localeCompare(b);
+        });
+      }
+
+      function getProjectMetrics() {
+        const names = Object.keys(files);
+        return {
+          fileCount: names.length,
+          totalChars: names.reduce((sum, name) => sum + getContent(name).length, 0),
+        };
+      }
+
+      function requiredPlanForMetrics(metrics) {
+        for (const plan of PLAN_ORDER) {
+          const limits = PLAN_LIMITS[plan];
+          if (metrics.fileCount <= limits.maxFiles && metrics.totalChars <= limits.maxChars) {
+            return plan;
+          }
+        }
+        return "studio";
+      }
+
+      function getTierGateState() {
+        const metrics = getProjectMetrics();
+        const currentPlan = getEffectivePlan();
+        const limits = getPlanLimits(currentPlan);
+        const over = metrics.fileCount > limits.maxFiles || metrics.totalChars > limits.maxChars;
+        return {
+          metrics,
+          currentPlan,
+          limits,
+          over,
+          requiredPlan: requiredPlanForMetrics(metrics),
+        };
+      }
+
+      function showUpgradeModal(actionLabel, gate = getTierGateState(), opts = {}) {
+        const copy = opts.copy || (
+          `This workspace has ${formatNumber(gate.metrics.fileCount)} files and ${formatNumber(gate.metrics.totalChars)} characters. ` +
+          `${gate.currentPlan.toUpperCase()} supports up to ${formatNumber(gate.limits.maxFiles)} files and ${formatNumber(gate.limits.maxChars)} characters. ` +
+          `Upgrade to ${gate.requiredPlan.toUpperCase()} to continue ${actionLabel}.`
+        );
+        document.getElementById("upgrade-copy").textContent = copy;
+        document.getElementById("upgrade-modal").classList.remove("hidden");
+      }
+
+      function closeUpgradeModal() {
+        document.getElementById("upgrade-modal").classList.add("hidden");
+      }
+      window.closeUpgradeModal = closeUpgradeModal;
+
+      function ensureTierAllows(actionLabel) {
+        if (Object.keys(files).length === 0) return true;
+        const gate = getTierGateState();
+        if (!gate.over) return true;
+        showUpgradeModal(actionLabel, gate);
+        setStatus("err", "Upgrade required");
+        addIssue("warning", `Upgrade to ${gate.requiredPlan.toUpperCase()} to continue ${actionLabel} with this larger workspace.`);
+        return false;
+      }
+
+      function ensureFeaturePlan(requiredPlan, actionLabel) {
+        const currentPlan = getEffectivePlan();
+        if (planSupports(requiredPlan, currentPlan)) return true;
+        const copy = `${actionLabel} is available on ${requiredPlan.toUpperCase()} and above. You are currently on ${currentPlan.toUpperCase()}. Upgrade to unlock this editor feature.`;
+        showUpgradeModal(actionLabel, getTierGateState(), { copy });
+        setStatus("err", "Upgrade required");
+        addIssue("warning", copy);
+        return false;
+      }
+
+      function renderPlanFeatureGrid() {
+        const host = document.getElementById("plan-feature-grid");
+        if (!host) return;
+        const currentPlan = getEffectivePlan();
+        host.innerHTML = PLAN_FEATURES.map((feature) => {
+          const enabled = planSupports(feature.plan, currentPlan);
+          return `<div class="plan-feature-card ${enabled ? "enabled" : "locked"}">` +
+            `<div class="plan-feature-badge">${enabled ? "Unlocked" : `Requires ${feature.title}`}</div>` +
+            `<strong>${feature.title}</strong>` +
+            `<span>${escHtml(feature.summary)}</span>` +
+            `</div>`;
+        }).join("");
+      }
+
+      function syncEditorEmptyState() {
+        const empty = document.getElementById("editor-empty-state");
+        if (!empty) return;
+        empty.classList.toggle("hidden", Object.keys(files).length > 0);
+      }
+
+      function syncFeatureButtonHints() {
+        const kimiBtn = document.getElementById("kimi-validate-btn");
+        const healBtn = document.getElementById("heal-btn");
+        if (kimiBtn) kimiBtn.title = planSupports("starter") ? "Deep validation with Kimi K2.5" : "Starter+ feature: Deep validation with Kimi K2.5";
+        if (healBtn) healBtn.title = planSupports("pro") ? "Automatically fix tracked validation errors" : "Pro+ feature: Automatically heal tracked validation errors";
+      }
+
+      function updateWorkspaceMeta() {
+        const metrics = getProjectMetrics();
+        const plan = getEffectivePlan();
+        const limits = getPlanLimits(plan);
+        document.getElementById("summary-name").textContent = currentProjectName || "Untitled Plugin";
+        document.getElementById("summary-source").textContent = workspaceSourceLabel();
+        document.getElementById("summary-files").textContent = formatNumber(metrics.fileCount);
+        document.getElementById("summary-chars").textContent = formatNumber(metrics.totalChars);
+        document.getElementById("summary-limit").textContent = `${formatNumber(limits.maxFiles)} files / ${formatNumber(limits.maxChars)} chars`;
+        document.getElementById("plan-pill").innerHTML = `Plan <strong>${plan.toUpperCase()}</strong>`;
+        document.getElementById("project-pill").innerHTML = `Project <strong>${escHtml(currentProjectName || "Untitled")}</strong>`;
+        const sourcePill = document.getElementById("source-pill");
+        if (sourcePill) sourcePill.innerHTML = `Source <strong>${escHtml(workspaceSourceLabel())}</strong>`;
+
+        const gate = getTierGateState();
+        const warning = document.getElementById("tier-warning");
+        if (gate.over) {
+          warning.classList.add("visible");
+          const sourceHint = workspaceSourceLabel() === "External plugin" ? "This imported external plugin" : "This workspace";
+          warning.innerHTML = `${sourceHint} exceeds the <strong>${gate.currentPlan.toUpperCase()}</strong> editor size limit. Upgrade to <strong>${gate.requiredPlan.toUpperCase()}</strong> to validate, deep-check, heal, save, or build it.`;
+        } else {
+          warning.classList.remove("visible");
+          warning.innerHTML = "";
+        }
+        renderPlanFeatureGrid();
+        syncEditorEmptyState();
+        syncFeatureButtonHints();
+      }
+
+      function setStatus(state, text) {
+        const dot = document.getElementById("status-dot");
+        dot.className = "status-dot " + state;
+        document.getElementById("status-text").textContent = text;
+      }
+
+      function setBtn(id, disabled) {
+        const el = document.getElementById(id);
+        if (el) el.disabled = disabled;
+      }
+
+      function setOutput(text) {
+        document.getElementById("panel-output").innerHTML = `<div style="color:var(--subtext);line-height:1.7;white-space:pre-wrap">${escHtml(text)}</div>`;
+      }
+
+      function clearIssues() {
+        document.getElementById("panel-issues").innerHTML = "";
+        currentErrors = [];
+      }
+
+      function addIssue(sev, msg) {
+        const row = document.createElement("div");
+        row.className = "issue-row";
+        row.innerHTML = `<span class="issue-sev ${sev}">${sev.toUpperCase()}</span><span class="issue-msg">${escHtml(msg)}</span>`;
+        document.getElementById("panel-issues").appendChild(row);
+        switchPanel("issues");
+        document.getElementById("bottom-panel").classList.remove("collapsed");
+        document.getElementById("panel-toggle").textContent = "▾ Collapse";
+      }
+
+      function switchPanel(name) {
+        document.getElementById("panel-issues").style.display = name === "issues" ? "block" : "none";
+        document.getElementById("panel-output").style.display = name === "output" ? "block" : "none";
+        document.getElementById("tab-issues").classList.toggle("active", name === "issues");
+        document.getElementById("tab-output").classList.toggle("active", name === "output");
+      }
+      window.switchPanel = switchPanel;
+
+      function togglePanel() {
+        const panel = document.getElementById("bottom-panel");
+        panel.classList.toggle("collapsed");
+        document.getElementById("panel-toggle").textContent = panel.classList.contains("collapsed") ? "▸ Expand" : "▾ Collapse";
+      }
+      window.togglePanel = togglePanel;
+
+      function updatePos(view) {
+        const sel = view.state.selection.main;
+        const line = view.state.doc.lineAt(sel.head);
+        const col = sel.head - line.from + 1;
+        document.getElementById("status-pos").textContent = `Ln ${line.number}, Col ${col}`;
+      }
+
+      function createEditor(path, content = "") {
+        const host = document.createElement("div");
+        host.className = "cm-host";
+        document.getElementById("editors-container").appendChild(host);
+        const view = new EditorView({
+          state: EditorState.create({
+            doc: content,
+            extensions: [
+              ...editorExtensionsFor(path),
+              EditorView.updateListener.of((update) => {
+                if (update.docChanged && files[path]) {
+                  files[path].dirty = true;
+                  updateWorkspaceMeta();
+                  buildEditorTabs();
+                  buildFileSidebar();
+                  localStorage.setItem("stacknest_last_code", getAllCode());
+                }
+                if (update.selectionSet && activeFile === path) updatePos(update.view);
+              }),
+            ],
+          }),
+          parent: host,
+        });
+        view.dom.addEventListener("click", () => updatePos(view));
+        view.dom.addEventListener("keyup", () => updatePos(view));
+        files[path] = { host, view, dirty: false };
+      }
+
+      function getContent(path) {
+        return files[path] ? files[path].view.state.doc.toString() : "";
+      }
+
+      function destroyFile(path) {
+        if (!files[path]) return;
+        files[path].view.destroy();
+        files[path].host.remove();
+        delete files[path];
+      }
+
+      function clearWorkspace() {
+        Object.keys(files).forEach(destroyFile);
+        activeFile = null;
+        currentErrors = [];
+        currentProjectId = null;
+        workspaceSource = "local";
+        buildFileSidebar();
+        buildEditorTabs();
+        updateWorkspaceMeta();
+      }
+
+      function addOrReplaceFile(path, content = "") {
+        const cleanPath = sanitizePath(path);
+        if (!cleanPath) return;
+        if (files[cleanPath]) {
+          files[cleanPath].view.dispatch({
+            changes: { from: 0, to: files[cleanPath].view.state.doc.length, insert: content },
+          });
+          files[cleanPath].dirty = false;
+          return;
+        }
+        createEditor(cleanPath, content);
+      }
+
+      function switchFile(path) {
+        if (!files[path]) return;
+        Object.keys(files).forEach((name) => files[name].host.classList.remove("active"));
+        files[path].host.classList.add("active");
+        activeFile = path;
+        document.getElementById("status-file").textContent = path;
+        buildFileSidebar();
+        buildEditorTabs();
+        updatePos(files[path].view);
+      }
+
+      function buildFileSidebar() {
+        const list = document.getElementById("file-list");
+        list.innerHTML = "";
+        const names = sortFileNames(Object.keys(files));
+        if (!names.length) {
+          list.innerHTML = '<div class="saved-empty" style="padding:12px">No files loaded yet. Import a ZIP, paste markdown, or create a new file.</div>';
+          return;
+        }
+        names.forEach((name) => {
+          const div = document.createElement("div");
+          const icon = isYamlFile(name) ? "📄" : isSkriptFile(name) ? "📝" : isTestFile(name) ? "🧪" : "☕";
+          div.className = "file-item" + (name === activeFile ? " active" : "");
+          div.title = name;
+          const dirty = files[name]?.dirty ? " •" : "";
+          div.innerHTML = `<span class="file-icon">${icon}</span><span>${escHtml(basename(name))}${dirty}</span>`;
+          div.onclick = () => switchFile(name);
+          list.appendChild(div);
+        });
+      }
+
+      function buildEditorTabs() {
+        const bar = document.getElementById("editor-tabs");
+        bar.innerHTML = "";
+        sortFileNames(Object.keys(files)).forEach((name) => {
+          const tab = document.createElement("div");
+          tab.className = "editor-tab" + (name === activeFile ? " active" : "") + (files[name]?.dirty ? " dirty" : "");
+          tab.title = name;
+          tab.innerHTML = `<span>${escHtml(basename(name))}</span><span class="dot"></span>`;
+          tab.onclick = () => switchFile(name);
+          bar.appendChild(tab);
+        });
+      }
+
+      function fenceLangForPath(path) {
+        if (isYamlFile(path)) return "yaml";
+        if (isSkriptFile(path)) return "skript";
+        if (isJavaFile(path)) return "java";
+        return "text";
+      }
+
+      function getAllCode() {
+        return sortFileNames(Object.keys(files)).map((name) => `\`\`\`${fenceLangForPath(name)}\n${getContent(name)}\n\`\`\``).join("\n\n");
+      }
+
+      function suggestPathForJava(body, fallback = "MainPlugin.java") {
+        const hint = body.match(/^\s*\/\/\s*([^\n]+\.java)\s*$/m);
+        if (hint?.[1]) return sanitizePath(hint[1]);
+        const pkg = body.match(/^\s*package\s+([\w.]+)\s*;/m)?.[1];
+        const cls = body.match(/(?:public\s+)?(?:final\s+|abstract\s+)?(?:class|interface|enum|record)\s+(\w+)/)?.[1];
+        const file = cls ? `${cls}.java` : fallback;
+        return pkg ? `${pkg.replace(/\./g, "/")}/${file}` : file;
+      }
+
+      function parseMarkdownCode(markdown) {
+        const parsed = {};
+        const re = /```([^\n`]*)\n([\s\S]*?)```/g;
+        let idx = 0;
+        let match;
+        while ((match = re.exec(markdown)) !== null) {
+          const lang = (match[1] || "").toLowerCase();
+          const body = match[2].trimEnd();
+          if (lang.includes("java")) {
+            const fallback = /test/i.test(lang) ? `GeneratedTest${idx + 1}.java` : `GeneratedFile${idx + 1}.java`;
+            parsed[suggestPathForJava(body, fallback)] = body;
+            idx += 1;
+          } else if (lang.includes("yaml") || lang.includes("yml")) {
+            parsed[Object.keys(parsed).includes("plugin.yml") ? `config-${idx + 1}.yml` : "plugin.yml"] = body;
+            idx += 1;
+          } else if (lang.includes("skript")) {
+            parsed[`script-${idx + 1}.sk`] = body;
+            idx += 1;
+          }
+        }
+        return parsed;
+      }
+
+      function canLoadParsedFiles(parsed, sourceLabel) {
+        const metrics = {
+          fileCount: Object.keys(parsed).length,
+          totalChars: Object.values(parsed).reduce((sum, body) => sum + String(body || "").length, 0),
+        };
+        const currentPlan = getEffectivePlan();
+        const limits = getPlanLimits(currentPlan);
+        const over = metrics.fileCount > limits.maxFiles || metrics.totalChars > limits.maxChars;
+        if (!over) return true;
+        const gate = { metrics, currentPlan, limits, requiredPlan: requiredPlanForMetrics(metrics), over };
+        const sourceKind = String(sourceLabel || "workspace").toLowerCase().includes("external")
+          || String(sourceLabel || "workspace").toLowerCase().includes("archive")
+          || String(sourceLabel || "workspace").toLowerCase().includes("folder")
+          ? "external plugin workspace"
+          : sourceLabel;
+        showUpgradeModal(`loading this ${sourceLabel}`, gate, {
+          copy: `This ${sourceKind} has ${formatNumber(metrics.fileCount)} files and ${formatNumber(metrics.totalChars)} characters. ${currentPlan.toUpperCase()} supports up to ${formatNumber(limits.maxFiles)} files and ${formatNumber(limits.maxChars)} characters. Upgrade to ${gate.requiredPlan.toUpperCase()} to open larger projects in the editor.`,
+        });
+        setStatus("err", "Upgrade required");
+        return false;
+      }
+
+      function loadParsedFiles(parsed, opts = {}) {
+        const names = Object.keys(parsed || {});
+        if (!names.length) return;
+        if (!canLoadParsedFiles(parsed, opts.source || "workspace")) return;
+        clearWorkspace();
+        names.forEach((name) => addOrReplaceFile(name, parsed[name]));
+        currentProjectName = opts.projectName || derivePluginName() || "Untitled Plugin";
+        currentProjectId = opts.projectId || null;
+        workspaceSource = opts.source || "local";
+        const first = sortFileNames(Object.keys(files))[0];
+        if (first) switchFile(first);
+        clearIssues();
+        buildFileSidebar();
+        buildEditorTabs();
+        updateWorkspaceMeta();
+        localStorage.setItem("stacknest_last_code", getAllCode());
+        setStatus("ok", `Loaded ${names.length} file${names.length === 1 ? "" : "s"}`);
+      }
+
+      function authHeaders(extra = {}) {
+        const headers = { ...extra };
+        const token = getToken();
+        if (token) headers.Authorization = `Bearer ${token}`;
+        return headers;
+      }
+
+      async function hydrateCurrentUser() {
+        const token = getToken();
+        if (!token) {
+          currentUser = null;
+          updateWorkspaceMeta();
+          renderSavedProjects();
+          return;
+        }
+        try {
+          const res = await fetch("/api/auth/me", { headers: authHeaders() });
+          if (!res.ok) throw new Error("not logged in");
+          const data = await res.json();
+          currentUser = data.user || null;
+        } catch {
+          currentUser = null;
+        }
+        updateWorkspaceMeta();
+        await loadSavedProjects();
+      }
+
+      function renderSavedProjects() {
+        const el = document.getElementById("saved-projects");
+        if (!currentUser) {
+          el.innerHTML = '<div class="saved-empty">Sign in to save snapshots and reopen projects from any device.</div>';
+          document.getElementById("save-project-btn").textContent = "Sign in to save";
+          return;
+        }
+        document.getElementById("save-project-btn").textContent = "Save snapshot";
+        if (!savedProjects.length) {
+          el.innerHTML = '<div class="saved-empty">No saved snapshots yet. Save your current workspace to reopen it later.</div>';
+          return;
+        }
+        // Deduplicate by name — show only latest version of each project
+        const seen = new Map();
+        savedProjects.forEach(p => {
+          const key = (p.project_name || '').toLowerCase().trim();
+          if (!seen.has(key) || (Number(p.id) > Number(seen.get(key).id))) seen.set(key, p);
+        });
+        const deduped = Array.from(seen.values()).sort((a, b) => (b.updated_at || 0) - (a.updated_at || 0));
+        el.innerHTML = deduped.map((project) => {
+          const date = project.updated_at ? new Date(project.updated_at * 1000).toLocaleDateString() : "";
+          return `<div class="saved-project-item" data-project-id="${project.id}"><strong>${escHtml(project.project_name || 'Untitled Plugin')}</strong><div class="saved-project-meta">${escHtml(project.plugin_type || 'plugin')} • ${escHtml(project.target_api || '1.21')} • ${escHtml(date)}</div></div>`;
+        }).join("");
+        el.querySelectorAll('.saved-project-item').forEach((node) => {
+          node.addEventListener("click", () => openSavedProject(node.getAttribute("data-project-id")));
+        });
+      }
+
+      async function loadSavedProjects() {
+        if (!currentUser) {
+          savedProjects = [];
+          renderSavedProjects();
+          return;
+        }
+        try {
+          const res = await fetch("/api/projects?limit=15", { headers: authHeaders() });
+          const data = await res.json();
+          savedProjects = Array.isArray(data.projects) ? data.projects : [];
+        } catch {
+          savedProjects = [];
+        }
+        renderSavedProjects();
+      }
+
+      async function openSavedProject(projectId) {
+        if (!projectId) return;
+        if (!currentUser) {
+          addIssue("warning", "Sign in to open saved projects.");
+          window.snOpenAuthModal?.();
+          return;
+        }
+        try {
+          setStatus("spin", "Loading saved project…");
+          const res = await fetch(`/api/projects/${projectId}`, { headers: authHeaders() });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || "Could not load project");
+          const parsed = parseMarkdownCode(data.generated_code || "");
+          if (!Object.keys(parsed).length) throw new Error("Saved project does not contain editable code.");
+          loadParsedFiles(parsed, {
+            source: "saved project",
+            projectName: data.project_name || "Untitled Plugin",
+            projectId: data.id,
+          });
+        } catch (err) {
+          addIssue("error", `Could not open saved project: ${err.message}`);
+          setStatus("err", "Load failed");
+        }
+      }
+
+      function openLoadModal() {
+        const cached = localStorage.getItem("stacknest_last_code");
+        if (cached) document.getElementById("load-textarea").value = cached;
+        document.getElementById("load-modal").classList.remove("hidden");
+      }
+      function closeLoadModal() {
+        document.getElementById("load-modal").classList.add("hidden");
+      }
+      window.openLoadModal = openLoadModal;
+      window.closeLoadModal = closeLoadModal;
+
+      function loadCode() {
+        const raw = document.getElementById("load-textarea").value.trim();
+        if (!raw) return;
+        const parsed = parseMarkdownCode(raw);
+        if (!Object.keys(parsed).length) {
+          addIssue("error", "No Java, YAML, or Skript code blocks were found. Use fenced markdown blocks or import source files directly.");
+          closeLoadModal();
+          return;
+        }
+        loadParsedFiles(parsed, { source: "stacknest markdown", projectName: derivePluginName() });
+        closeLoadModal();
+      }
+      window.loadCode = loadCode;
+
+      window.triggerImportFiles = () => document.getElementById("file-import-input").click();
+      window.triggerImportFolder = () => document.getElementById("folder-import-input").click();
+      window.triggerImportArchive = () => document.getElementById("archive-import-input").click();
+
+      async function importExternalFiles(fileList) {
+        const parsed = {};
+        for (const file of Array.from(fileList || [])) {
+          const ext = extname(file.name);
+          if (!IMPORTABLE_EXTS.includes(ext)) continue;
+          parsed[sanitizePath(file.webkitRelativePath || file.name)] = await file.text();
+        }
+        if (!Object.keys(parsed).length) {
+          addIssue("warning", "No supported source files were selected. Import .java, .yml, .yaml, .sk, .json, .txt, .md, .properties, .xml, or .toml files.");
+          return;
+        }
+        loadParsedFiles(parsed, { source: "external plugin files", projectName: currentProjectName || "Imported Project" });
+      }
+
+      async function importArchive(file) {
+        if (!file) return;
+        const { default: JSZip } = await import("https://esm.sh/jszip@3.10.1");
+        const zip = await JSZip.loadAsync(file);
+        const parsed = {};
+        const entries = Object.values(zip.files).filter((entry) => !entry.dir);
+        for (const entry of entries) {
+          const clean = sanitizePath(entry.name);
+          const ext = extname(clean);
+          if (!IMPORTABLE_EXTS.includes(ext)) continue;
+          parsed[clean] = await entry.async("string");
+        }
+        if (!Object.keys(parsed).length) {
+          const kind = extname(file.name) === ".jar" ? "Compiled JARs are not directly editable in the browser. Import a source ZIP or raw source files instead." : "This archive did not contain any editable source files.";
+          addIssue("warning", kind);
+          setStatus("err", "Nothing importable found");
+          return;
+        }
+        loadParsedFiles(parsed, { source: "external plugin archive", projectName: basename(file.name).replace(/\.(zip|jar)$/i, "") || "Imported Project" });
+      }
+
+      document.getElementById("file-import-input").addEventListener("change", async (e) => {
+        await importExternalFiles(e.target.files);
+        e.target.value = "";
+      });
+      document.getElementById("folder-import-input").addEventListener("change", async (e) => {
+        await importExternalFiles(e.target.files);
+        e.target.value = "";
+      });
+      document.getElementById("archive-import-input").addEventListener("change", async (e) => {
+        const file = e.target.files?.[0];
+        if (file) await importArchive(file);
+        e.target.value = "";
+      });
+
+      function defaultTemplateFor(path) {
+        const name = basename(path);
+        if (isYamlFile(path)) return `name: ${derivePluginName()}\nversion: 1.0.0\nmain: com.example.${derivePluginName()}\napi-version: '1.21'\ndescription: Generated with StackNest\n`;
+        if (isSkriptFile(path)) return `command /example:\n  trigger:\n    send "&aHello from StackNest" to player\n`;
+        if (isJavaFile(path)) {
+          const raw = name.replace(/\.java$/i, "") || "NewClass";
+          const cls = raw.replace(/[^A-Za-z0-9_]/g, "") || "NewClass";
+          return `public final class ${cls} {\n\n}`;
+        }
+        return "";
+      }
+
+      window.createNewFile = () => {
+        const filename = prompt("New file path", "src/NewClass.java");
+        if (!filename) return;
+        const clean = sanitizePath(filename);
+        if (!clean) return;
+        if (files[clean]) {
+          switchFile(clean);
+          return;
+        }
+        addOrReplaceFile(clean, defaultTemplateFor(clean));
+        switchFile(clean);
+        buildFileSidebar();
+        buildEditorTabs();
+        updateWorkspaceMeta();
+        setStatus("ok", `Created ${basename(clean)}`);
+      };
+
+      window.promptRenameFile = () => {
+        if (!activeFile) return;
+        const next = prompt("Rename file", activeFile);
+        if (!next || next === activeFile) return;
+        const clean = sanitizePath(next);
+        if (!clean) return;
+        if (files[clean]) {
+          addIssue("warning", `A file named ${clean} already exists.`);
+          return;
+        }
+        const content = getContent(activeFile);
+        destroyFile(activeFile);
+        addOrReplaceFile(clean, content);
+        switchFile(clean);
+        buildFileSidebar();
+        buildEditorTabs();
+        updateWorkspaceMeta();
+      };
+
+      window.removeActiveFile = () => {
+        if (!activeFile) return;
+        if (!confirm(`Delete ${activeFile}?`)) return;
+        const names = sortFileNames(Object.keys(files));
+        const idx = names.indexOf(activeFile);
+        destroyFile(activeFile);
+        const next = names[idx + 1] || names[idx - 1] || sortFileNames(Object.keys(files))[0];
+        if (next && files[next]) switchFile(next);
+        else {
+          activeFile = null;
+          document.getElementById("status-file").textContent = "No file loaded";
+        }
+        buildFileSidebar();
+        buildEditorTabs();
+        updateWorkspaceMeta();
+        localStorage.setItem("stacknest_last_code", getAllCode());
+      };
+
+      function derivePluginName() {
+        const yamlFile = Object.keys(files).find((name) => basename(name) === "plugin.yml");
+        const yamlContent = yamlFile ? getContent(yamlFile) : "";
+        const yamlName = yamlContent.match(/^\s*name\s*:\s*['\"]?([^'\"\n#]+)['\"]?/mi)?.[1]?.trim();
+        if (yamlName) return yamlName.replace(/[^\w-]/g, "") || "StackNestPlugin";
+        const javaFile = sortFileNames(Object.keys(files)).find((name) => isJavaFile(name) && !isTestFile(name));
+        if (javaFile) return basename(javaFile).replace(/\.java$/i, "") || "StackNestPlugin";
+        const skript = sortFileNames(Object.keys(files)).find((name) => isSkriptFile(name));
+        if (skript) return basename(skript).replace(/\.sk$/i, "") || "StackNestScript";
+        return "StackNestPlugin";
+      }
+
+      function inferPluginType() {
+        if (Object.keys(files).some((name) => isSkriptFile(name))) return "skript";
+        return "full_plugin";
+      }
+
+      async function saveSnapshot() {
+        if (!currentUser) {
+          window.snOpenAuthModal?.();
+          addIssue("warning", "Sign in to save project snapshots.");
+          return;
+        }
+        if (!ensureTierAllows("saving this workspace")) return;
+        const nextName = prompt("Snapshot name", currentProjectName || derivePluginName());
+        if (!nextName) return;
+        currentProjectName = nextName.trim() || currentProjectName;
+        try {
+          setBtn("save-project-btn", true);
+          setStatus("spin", "Saving snapshot…");
+          const payload = {
+            project_name: currentProjectName,
+            plugin_type: inferPluginType(),
+            target_api: "1.21",
+            generated_code: getAllCode(),
+            success: null,
+            compile_ok: null,
+            metadata: {
+              source: workspaceSource,
+              editor_metrics: getProjectMetrics(),
+            },
+          };
+          const res = await fetch("/api/projects", {
+            method: "POST",
+            headers: authHeaders({ "Content-Type": "application/json" }),
+            body: JSON.stringify(payload),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || "Could not save snapshot.");
+          currentProjectId = data.project_id || null;
+          Object.keys(files).forEach((name) => { files[name].dirty = false; });
+          buildEditorTabs();
+          setStatus("ok", "Snapshot saved");
+          await loadSavedProjects();
+        } catch (err) {
+          addIssue("error", `Save failed: ${err.message}`);
+          setStatus("err", "Save failed");
+        } finally {
+          setBtn("save-project-btn", false);
+        }
+      }
+      window.saveSnapshot = saveSnapshot;
+
+      async function runJsonAction(url, body, actionLabel, buttonId, outputLabel = null) {
+        if (!ensureTierAllows(actionLabel)) return null;
+        setBtn(buttonId, true);
+        try {
+          const res = await fetch(url, {
+            method: "POST",
+            headers: authHeaders({ "Content-Type": "application/json" }),
+            body: JSON.stringify(body),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(data.error || `${actionLabel} failed.`);
+          return data;
+        } catch (err) {
+          if (outputLabel) setOutput(`❌ ${err.message}`);
+          addIssue("error", err.message);
+          setStatus("err", "Request failed");
+          return null;
+        } finally {
+          setBtn(buttonId, false);
+        }
+      }
+
+      window.runValidate = async () => {
+        const code = getAllCode();
+        if (!code) { addIssue("warning", "No code loaded."); return; }
+        clearIssues();
+        setStatus("spin", "Validating…");
+        const data = await runJsonAction("/api/validate", { code }, "validating this workspace", "validate-btn");
+        if (!data) return;
+        if (data.valid || !(data.errors || []).length) {
+          addIssue("ok", "No validation errors found.");
+          document.getElementById("heal-btn").style.display = "none";
+          setStatus("ok", "Valid");
+          return;
+        }
+        (data.errors || []).forEach((err) => addIssue("error", err));
+        (data.warnings || []).forEach((warn) => addIssue("warning", warn));
+        currentErrors = data.errors || [];
+        document.getElementById("heal-btn").style.display = currentErrors.length ? "flex" : "none";
+        setStatus("err", `${currentErrors.length} error(s)`);
+      };
+
+      window.runKimiValidate = async () => {
+        const code = getAllCode();
+        if (!code) { addIssue("warning", "No code loaded."); return; }
+        if (!ensureFeaturePlan("starter", "Deep Check")) return;
+        clearIssues();
+        switchPanel("output");
+        setOutput("🔍 Running deep validation…");
+        setStatus("spin", "Deep checking…");
+        const data = await runJsonAction("/api/kimi/validate", { code }, "running deep validation", "kimi-validate-btn", true);
+        if (!data) return;
+        switchPanel("issues");
+        if (data.valid) {
+          addIssue("ok", "Deep validation passed.");
+          document.getElementById("heal-btn").style.display = "none";
+          setStatus("ok", "Deep check passed");
+          return;
+        }
+        (data.issues || []).forEach((issue) => {
+          const sev = issue.startsWith("[ERROR]") ? "error" : "warning";
+          addIssue(sev, issue.replace(/^\[(ERROR|WARNING)\]\s*/, ""));
+        });
+        currentErrors = (data.issues || []).filter((i) => i.startsWith("[ERROR]")).map((i) => i.replace(/^\[ERROR\]\s*/, ""));
+        document.getElementById("heal-btn").style.display = currentErrors.length ? "flex" : "none";
+        setStatus("err", `${currentErrors.length} deep error(s)`);
+        if (data.fixed_code) {
+          const row = document.createElement("div");
+          row.className = "issue-row";
+          row.innerHTML = `<span class="issue-sev ok">FIX</span><span class="issue-msg">Kimi produced an auto-corrected version. <button class="btn primary" style="margin-left:8px;padding:4px 10px;font-size:0.74rem" onclick="applyKimiFixed()">Apply</button></span>`;
+          document.getElementById("panel-issues").prepend(row);
+          window._kimiFixed = data.fixed_code;
+        }
+      };
+
+      window.applyKimiFixed = () => {
+        if (!window._kimiFixed) return;
+        const parsed = parseMarkdownCode(window._kimiFixed);
+        if (!Object.keys(parsed).length) return;
+        loadParsedFiles(parsed, { source: "kimi fix", projectName: currentProjectName });
+        window._kimiFixed = null;
+      };
+
+      window.runHeal = async () => {
+        const code = getAllCode();
+        if (!code) return;
+        if (!ensureFeaturePlan("pro", "Auto-Heal")) return;
+        if (!currentErrors.length) {
+          addIssue("warning", "Run validate or deep check before auto-heal.");
+          return;
+        }
+        clearIssues();
+        switchPanel("output");
+        setOutput("⚡ Sending code and current errors for auto-healing…");
+        setStatus("spin", "Healing…");
+        const data = await runJsonAction("/api/heal", { code, errors: currentErrors }, "healing this workspace", "heal-btn", true);
+        if (!data) return;
+        if (data.code) {
+          const parsed = parseMarkdownCode(data.code);
+          if (Object.keys(parsed).length) loadParsedFiles(parsed, { source: "auto-heal", projectName: currentProjectName });
+        }
+        if (data.healed) {
+          addIssue("ok", "All tracked errors were healed.");
+          setStatus("ok", "Healed");
+          document.getElementById("heal-btn").style.display = "none";
+        } else {
+          (data.errors || []).forEach((err) => addIssue("error", err));
+          currentErrors = data.errors || [];
+          setStatus("err", `${currentErrors.length} error(s) remaining`);
+        }
+      };
+
+      window.downloadJar = async () => {
+        if (!Object.keys(files).length) {
+          addIssue("warning", "No files loaded.");
+          return;
+        }
+        if (!ensureTierAllows("building a JAR")) return;
+        try {
+          const pluginName = derivePluginName();
+          const res = await fetch("/api/jar", {
+            method: "POST",
+            headers: authHeaders({ "Content-Type": "application/json" }),
+            body: JSON.stringify({ code: getAllCode(), plugin_name: pluginName }),
+          });
+          const data = !res.ok ? await res.json().catch(() => ({})) : null;
+          if (!res.ok) throw new Error(data?.error || `JAR build failed (${res.status})`);
+          const blob = await res.blob();
+          const disposition = res.headers.get("Content-Disposition") || "";
+          const filename = disposition.match(/filename="?([^";]+)"?/i)?.[1] || `${pluginName}.jar`;
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = filename;
+          a.click();
+          URL.revokeObjectURL(url);
+          setStatus("ok", "JAR downloaded");
+        } catch (err) {
+          addIssue("error", `Download failed: ${err.message}`);
+          setStatus("err", "Download failed");
+        }
+      };
+
+      function zipPathForFile(path) {
+        if (basename(path) === "plugin.yml") return "src/main/resources/plugin.yml";
+        if (isYamlFile(path)) return `src/main/resources/${path}`;
+        if (isSkriptFile(path)) return path.startsWith("scripts/") ? path : `scripts/${basename(path)}`;
+        if (isTestFile(path)) return path.startsWith("src/test/java/") ? path : `src/test/java/${path}`;
+        if (isJavaFile(path)) return path.startsWith("src/main/java/") ? path : `src/main/java/${path}`;
+        return path;
+      }
+
+      window.downloadZip = async () => {
+        if (!Object.keys(files).length) {
+          addIssue("warning", "No files loaded.");
+          return;
+        }
+        if (!ensureTierAllows("exporting this larger source ZIP")) return;
+        try {
+          const { default: JSZip } = await import("https://esm.sh/jszip@3.10.1");
+          const zip = new JSZip();
+          sortFileNames(Object.keys(files)).forEach((name) => zip.file(zipPathForFile(name), getContent(name)));
+          const blob = await zip.generateAsync({ type: "blob" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `${derivePluginName()}-source.zip`;
+          a.click();
+          URL.revokeObjectURL(url);
+          setStatus("ok", "Source ZIP downloaded");
+        } catch (err) {
+          addIssue("error", `ZIP export failed: ${err.message || err}`);
+        }
+      };
+
+      async function bootFromInitialState() {
+        const params = new URLSearchParams(location.search);
+        const projectId = params.get("project");
+        await hydrateCurrentUser();
+        if (projectId && currentUser) {
+          await openSavedProject(projectId);
+          return;
+        }
+        const cached = localStorage.getItem("stacknest_last_code");
+        if (cached) {
+          const parsed = parseMarkdownCode(cached);
+          if (Object.keys(parsed).length) {
+            loadParsedFiles(parsed, { source: "last generation", projectName: derivePluginName() });
+            setStatus("ok", "Loaded from last generation");
+            return;
+          }
+        }
+        updateWorkspaceMeta();
+        renderSavedProjects();
+        setStatus("ok", "Ready — import an external plugin folder, source ZIP, StackNest output, or create a file to begin.");
+      }
+
+      // ── Hero guide dismiss / restore ──────────────────────────────────────
+      window.dismissHero = function() {
+        const hero = document.getElementById("editor-hero");
+        const btn  = document.getElementById("show-hero-btn");
+        if (hero) hero.classList.add("dismissed");
+        if (btn)  btn.classList.add("visible");
+        localStorage.setItem("sn_hero_dismissed", "1");
+      };
+      window.showHero = function() {
+        const hero = document.getElementById("editor-hero");
+        const btn  = document.getElementById("show-hero-btn");
+        if (hero) hero.classList.remove("dismissed");
+        if (btn)  btn.classList.remove("visible");
+        localStorage.removeItem("sn_hero_dismissed");
+      };
+      if (localStorage.getItem("sn_hero_dismissed")) {
+        const hero = document.getElementById("editor-hero");
+        const btn  = document.getElementById("show-hero-btn");
+        if (hero) hero.classList.add("dismissed");
+        if (btn)  btn.classList.add("visible");
+      }
+
+      let _lastAuthToken = getToken();
+      window.addEventListener("focus", () => { hydrateCurrentUser(); });
+      setInterval(() => {
+        const next = getToken();
+        if (next !== _lastAuthToken) {
+          _lastAuthToken = next;
+          hydrateCurrentUser();
+        }
+      }, 1200);
+
+      bootFromInitialState();
+</script>
+
+<div style="position:fixed;bottom:0;left:0;right:0;background:#080a0f;border-top:1px solid #1a1d26;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:3px 16px;font-size:10px;color:#3d4468;z-index:1000;pointer-events:none;line-height:1.4;text-align:center;">
+  <span>&copy; 2026 StackNest</span>
+  <span>Not affiliated with or endorsed by Mojang Studios, Microsoft, or Discord Inc. Minecraft is a trademark of Mojang Studios.</span>
+</div>
+<script src="/auth.js"></script>
+</main>
+</body>
+</html>

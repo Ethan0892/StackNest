@@ -1,0 +1,6 @@
+# Place Paper API stub JAR here for compilation checks:
+#   paper-api-1.21-stub.jar
+#
+# Download with:
+#   curl -L "https://repo.papermc.io/repository/maven-public/io/papermc/paper/paper-api/1.21-R0.1-SNAPSHOT/paper-api-1.21-R0.1-SNAPSHOT.jar" \
+#        -o libs/paper-api-1.21-stub.jar

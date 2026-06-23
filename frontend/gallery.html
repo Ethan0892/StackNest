@@ -1,0 +1,1175 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minecraft Plugin Gallery — AI-Generated Plugins | StackNest</title>
+  <meta name="description" content="Browse and download AI-generated Minecraft plugins. Real Paper, Spigot, and Folia plugins compiled and ready to drop into your server — for free." />
+  <meta name="keywords" content="minecraft plugin gallery, minecraft plugin download, paper plugin examples, AI generated minecraft plugin, free minecraft plugins, spigot plugin download, folia plugin, bukkit plugin, AI minecraft plugin generator, Paper Spigot Folia AI, auto-fixing compile errors, minecraft plugin showcase, community plugins, free paper plugins 2026, minecraft plugin library" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://stacknests.com/gallery" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://stacknests.com/gallery" />
+  <meta property="og:title" content="Minecraft Plugin Gallery — AI-Generated Plugins | StackNest" />
+  <meta property="og:description" content="Browse and download AI-generated Minecraft plugins. Real Paper, Spigot, and Folia plugins compiled and ready to drop in your server." />
+  <meta property="og:image" content="https://stacknests.com/og-image.png" />
+  <meta property="og:site_name" content="StackNest" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Minecraft Plugin Gallery — AI-Generated Plugins | StackNest" />
+  <meta name="twitter:description" content="Browse and download AI-generated Minecraft plugins. Real Paper, Spigot, and Folia plugins — compiled and ready to use." />
+  <meta name="twitter:image" content="https://stacknests.com/og-image.png" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Minecraft Plugin Gallery — StackNest",
+    "description": "A community gallery of AI-generated Minecraft plugins for Paper, Spigot, Folia, and Bukkit. Download compiled JARs instantly.",
+    "url": "https://stacknests.com/gallery",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "StackNest",
+      "url": "https://stacknests.com"
+    }
+  }
+  </script>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f1117;
+      --bg2:       #080a0f;
+      --surface:   #1a1d26;
+      --surface2:  #222638;
+      --border:    #2e3350;
+      --border-s:  #3d4468;
+      --text:      #e8eaf6;
+      --muted:     #8891b4;
+      --accent:    #5c6fff;
+      --accent-h:  #7b8fff;
+      --accent-d:  #4352d9;
+      --green:     #3ddc84;
+      --yellow:    #ffd370;
+      --red:       #ff5c6a;
+      --radius:    12px;
+      --radius-sm: 8px;
+      --transition: 200ms ease;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Navbar ── */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100; height: 64px;
+      display: flex; align-items: center;
+      background: rgba(8,10,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .navbar .container {
+      display: flex; align-items: center;
+      justify-content: space-between; width: 100%;
+    }
+    .nav-logo {
+      font-size: 1.15rem; font-weight: 700; letter-spacing: -0.3px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-logo img { width: 28px; height: 28px; }
+    .nav-links { display: flex; gap: 8px; align-items: center; }
+    .nav-links a {
+      padding: 6px 14px; border-radius: var(--radius-sm);
+      font-size: .875rem; font-weight: 500; color: var(--muted);
+      transition: color var(--transition), background var(--transition);
+    }
+    .nav-links a:hover { color: var(--text); background: var(--surface); }
+    .nav-links a.active { color: var(--text); background: var(--surface2); }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 18px; border-radius: var(--radius-sm);
+      font-weight: 600; font-size: .875rem; cursor: pointer;
+      transition: opacity var(--transition), transform var(--transition);
+      border: none; outline: none;
+    }
+    .btn:hover { opacity: .88; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-outline {
+      background: transparent; color: var(--accent);
+      border: 1.5px solid var(--accent);
+    }
+    .btn-sm { padding: 5px 12px; font-size: .8rem; }
+
+    /* ── Page header ── */
+    .page-header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 100px 0 22px; flex-wrap: wrap; gap: 12px;
+      border-bottom: 1px solid var(--border); margin-bottom: 24px;
+    }
+    .page-header-text h1 {
+      font-size: 1.6rem; font-weight: 800; letter-spacing: -.5px;
+      background: linear-gradient(135deg, #fff 30%, var(--accent-h) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .page-header-text p { font-size: .875rem; color: var(--muted); margin-top: 5px; }
+
+    /* ── Two-column gallery layout ── */
+    .gallery-layout {
+      display: flex; gap: 20px; align-items: flex-start; padding-bottom: 60px;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 220px; flex-shrink: 0;
+      position: sticky; top: 84px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .sidebar-section {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 12px 14px;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .sidebar-heading {
+      font-size: .68rem; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .6px; margin-bottom: 6px;
+    }
+    .filter-btn {
+      width: 100%; text-align: left; padding: 6px 10px; border-radius: 6px;
+      border: none; background: transparent; color: var(--muted);
+      font-size: .82rem; font-weight: 500; cursor: pointer;
+      transition: all var(--transition); font-family: inherit;
+    }
+    .filter-btn:hover { background: var(--surface2); color: var(--text); }
+    .filter-btn.active { background: rgba(92,111,255,.14); color: var(--accent-h); font-weight: 600; }
+    .tag-filter-btn {
+      width: 100%; text-align: left; padding: 6px 10px; border-radius: 6px;
+      border: none; background: transparent; color: var(--muted);
+      font-size: .82rem; cursor: pointer;
+      transition: all var(--transition); font-family: inherit;
+    }
+    .tag-filter-btn:hover { background: var(--surface2); color: var(--text); }
+    .tag-filter-btn.active { background: rgba(92,111,255,.14); color: var(--accent-h); font-weight: 600; }
+    .sort-select {
+      width: 100%; background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 7px 10px;
+      color: var(--text); font-family: inherit; font-size: .82rem;
+      outline: none; cursor: pointer; transition: border-color var(--transition);
+      -webkit-appearance: none; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238891b4' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center;
+      padding-right: 28px;
+    }
+    .sort-select:focus { border-color: var(--accent); }
+
+    /* ── Content area ── */
+    .content-area {
+      flex: 1; min-width: 0;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .content-top {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .search-box {
+      flex: 1; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 9px 14px;
+      color: var(--text); font-family: inherit; font-size: .875rem;
+      outline: none; transition: border-color var(--transition);
+    }
+    .search-box:focus { border-color: var(--accent); }
+    .search-box::placeholder { color: var(--muted); }
+    .results-info { font-size: .76rem; color: var(--muted); }
+    .results-info strong { color: var(--text); }
+
+    /* ── Gallery list ── */
+    .gallery-list { display: flex; flex-direction: column; gap: 8px; }
+
+    /* ── Plugin card (Modrinth row style) ── */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px 18px;
+      display: flex; gap: 16px; align-items: flex-start;
+      cursor: pointer;
+      transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
+    }
+    .card:hover {
+      border-color: var(--border-s); background: var(--surface2);
+      box-shadow: 0 4px 20px rgba(0,0,0,.28);
+    }
+    .card-icon {
+      width: 72px; height: 72px; flex-shrink: 0; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.35rem; font-weight: 800; color: #fff;
+      letter-spacing: -1px; user-select: none;
+    }
+    .card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+    .card-top-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .card-title-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; flex: 1; }
+    .card-name { font-weight: 700; font-size: .97rem; }
+    .card-author { font-size: .73rem; color: var(--muted); }
+    .tier-badge {
+      font-size: .68rem; font-weight: 600; padding: 2px 7px;
+      border-radius: 20px; text-transform: uppercase; letter-spacing: .5px; white-space: nowrap;
+    }
+    .tier-badge.free { background: rgba(61,220,132,.15); color: var(--green); }
+    .tier-badge.pro  { background: rgba(92,111,255,.2);  color: var(--accent-h); }
+    .card-btns { display: flex; gap: 6px; flex-shrink: 0; align-items: center; }
+    .card-description {
+      font-size: .82rem; color: var(--muted); line-height: 1.45;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      line-clamp: 2; overflow: hidden;
+    }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .card-meta {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      font-size: .72rem; color: var(--muted); margin-top: 1px;
+    }
+    .card-meta-item { display: inline-flex; align-items: center; gap: 3px; }
+    .like-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: transparent; border: 1.5px solid var(--border);
+      color: var(--muted); border-radius: 6px; padding: 4px 10px;
+      font-size: .8rem; cursor: pointer; font-family: inherit;
+      transition: all var(--transition);
+    }
+    .like-btn:hover, .like-btn.liked {
+      border-color: var(--red); color: var(--red);
+      background: rgba(255,92,106,.08);
+    }
+    .like-btn.liked .heart { animation: pop .2s ease; }
+    @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
+    .jar-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(92,111,255,.12); border: 1.5px solid rgba(92,111,255,.35);
+      color: var(--accent-h); border-radius: 6px; padding: 4px 10px;
+      font-size: .8rem; cursor: pointer; font-family: inherit;
+      transition: all var(--transition);
+    }
+    .jar-btn:hover { background: rgba(92,111,255,.22); border-color: var(--accent); }
+    .jar-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    /* ── Empty / loading states ── */
+    .state-msg {
+      text-align: center; padding: 60px 20px; color: var(--muted);
+      font-size: .95rem;
+    }
+    .state-msg svg { opacity: .25; margin: 0 auto 16px; display: block; }
+    .skeleton {
+      background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
+      background-size: 200% 100%; animation: shimmer 1.2s infinite; border-radius: 6px;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* ── Pagination ── */
+    .pagination { display: flex; justify-content: center; gap: 8px; padding: 20px 0 40px; }
+    .page-btn {
+      width: 36px; height: 36px; border-radius: 8px;
+      border: 1.5px solid var(--border); background: transparent;
+      color: var(--muted); cursor: pointer; font-family: inherit;
+      font-size: .85rem; transition: all var(--transition);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .page-btn:hover, .page-btn.active {
+      border-color: var(--accent); color: var(--accent-h); background: rgba(92,111,255,.08);
+    }
+    .page-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+    /* ── Submit modal ── */
+    .overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(8,10,15,.80); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .2s;
+    }
+    .overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      max-width: 560px; width: calc(100% - 32px);
+      display: flex; flex-direction: column; gap: 16px;
+      transform: translateY(12px); transition: transform .2s;
+    }
+    .overlay.open .modal { transform: translateY(0); }
+    .modal h2 { font-size: 1.2rem; font-weight: 700; }
+    .modal-close {
+      position: absolute; top: 16px; right: 20px;
+      background: none; border: none; color: var(--muted); font-size: 1.4rem;
+      cursor: pointer; line-height: 1;
+    }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: .82rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; }
+    .field input, .field textarea {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 10px 14px;
+      color: var(--text); font-family: inherit; font-size: .9rem;
+      outline: none; transition: border-color var(--transition);
+      resize: vertical;
+    }
+    .field input:focus, .field textarea:focus { border-color: var(--accent); }
+    .field textarea { min-height: 140px; font-family: 'JetBrains Mono', monospace; font-size: .8rem; }
+
+    .toggle-row {
+      display: flex; align-items: center; gap: 10px; font-size: .88rem;
+    }
+    .toggle-row input[type=checkbox] { accent-color: var(--accent); width: 16px; height: 16px; }
+    .free-notice { font-size: .78rem; color: var(--yellow); margin-top: 4px; }
+
+    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px; }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--surface2); border: 1px solid var(--border-s);
+      color: var(--text); padding: 10px 22px; border-radius: 8px;
+      font-size: .88rem; font-weight: 500;
+      transition: transform .3s ease, opacity .3s ease;
+      z-index: 999; opacity: 0;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast.success { border-color: var(--green); color: var(--green); }
+    .toast.error   { border-color: var(--red); color: var(--red); }
+
+    /* ── Detail drawer ── */
+    .drawer-overlay {
+      position: fixed; inset: 0; z-index: 150;
+      background: rgba(8,10,15,.7); backdrop-filter: blur(4px);
+      opacity: 0; pointer-events: none; transition: opacity .2s;
+    }
+    .drawer-overlay.open { opacity: 1; pointer-events: all; }
+    .drawer {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: min(560px, 100vw);
+      background: var(--surface); border-left: 1px solid var(--border);
+      z-index: 151; padding: 28px 24px;
+      overflow-y: auto;
+      transform: translateX(100%); transition: transform .25s ease;
+      display: flex; flex-direction: column; gap: 18px;
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-header { display: flex; justify-content: space-between; align-items: flex-start; }
+    .drawer-name { font-size: 1.25rem; font-weight: 700; }
+    .drawer-close {
+      background: none; border: none; color: var(--muted);
+      font-size: 1.5rem; cursor: pointer; line-height: 1;
+    }
+    .drawer-info { font-size: .82rem; color: var(--muted); line-height: 1.6; }
+    .drawer-code {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 14px;
+      font-family: 'JetBrains Mono', monospace; font-size: .78rem;
+      color: var(--text); white-space: pre-wrap; overflow-x: auto;
+      max-height: 400px; overflow-y: auto;
+    }
+    .drawer-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    /* ── Tag pills ── */
+    .card-tag {
+      padding: 2px 9px; border-radius: 20px; font-size: .69rem; font-weight: 600;
+      letter-spacing: .2px; text-transform: capitalize;
+    }
+    .card-tag.paper      { background: rgba(22,163,74,.15);  color: #4ade80; }
+    .card-tag.purpur     { background: rgba(168,85,247,.15); color: #c084fc; }
+    .card-tag.bukkit     { background: rgba(234,179,8,.15);  color: #fcd34d; }
+    .card-tag.folia      { background: rgba(34,211,238,.15); color: #67e8f9; }
+    .card-tag.spigot     { background: rgba(249,115,22,.15); color: #fb923c; }
+    .card-tag.velocity   { background: rgba(59,130,246,.15); color: #93c5fd; }
+    .card-tag.bungeecord { background: rgba(248,113,113,.15); color: #fca5a5; }
+    .card-tag.waterfall  { background: rgba(20,184,166,.15); color: #5eead4; }
+    /* ── Upload modal tag checks ── */
+    .tag-checks { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 2px; }
+    .tag-check { display: flex; align-items: center; gap: 5px; font-size: .85rem; cursor: pointer; }
+    .tag-check input { accent-color: var(--accent); width: 14px; height: 14px; }
+
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .gallery-layout { display: block; }
+    }
+    @media (max-width: 640px) {
+      .content-top { flex-wrap: wrap; }
+      .search-box { width: 100%; }
+      .card-btns { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navbar ─────────────────────────────────────────────────────────── -->
+<nav class="navbar">
+  <div class="container">
+    <a href="/" class="nav-logo">
+      <img src="/icon.svg" alt="StackNest logo" />
+      StackNest
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/app">Generator</a>
+      <a href="/bots">Discord Bots</a>
+      <a href="/gallery" class="active">Gallery</a>
+      <a href="/editor">Editor</a>
+      <button class="btn btn-outline btn-sm" id="openUpload" style="margin-right:4px">Upload</button>
+      <button class="btn btn-primary btn-sm" id="openSubmit">Share Plugin</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Main ──────────────────────────────────────────────────────────── -->
+<main>
+  <div class="container">
+    <div class="page-header-inner">
+      <div class="page-header-text">
+        <h1>Community Gallery</h1>
+        <p>Browse plugins &amp; Skript scripts built with StackNest — download in one click.</p>
+      </div>
+    </div>
+
+    <div class="gallery-layout">
+      <!-- ── Sidebar filters ── -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Sort by</div>
+          <select class="sort-select" id="sortSelect">
+            <option value="newest">Newest first</option>
+            <option value="likes">Most liked</option>
+            <option value="downloads">Most downloaded</option>
+          </select>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Tier</div>
+          <button class="filter-btn active" data-tier="">All tiers</button>
+          <button class="filter-btn" data-tier="free">Free</button>
+          <button class="filter-btn" data-tier="pro">Pro</button>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Type</div>
+          <button class="tag-filter-btn active" data-category="">All types</button>
+          <button class="tag-filter-btn" data-category="plugin">Plugin</button>
+          <button class="tag-filter-btn" data-category="skript">Skript</button>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Platform</div>
+          <button class="tag-filter-btn active" data-tag="">All platforms</button>
+          <button class="tag-filter-btn" data-tag="paper">Paper</button>
+          <button class="tag-filter-btn" data-tag="purpur">Purpur</button>
+          <button class="tag-filter-btn" data-tag="bukkit">Bukkit</button>
+          <button class="tag-filter-btn" data-tag="folia">Folia</button>
+          <button class="tag-filter-btn" data-tag="spigot">Spigot</button>
+          <button class="tag-filter-btn" data-tag="velocity">Velocity</button>
+          <button class="tag-filter-btn" data-tag="bungeecord">BungeeCord</button>
+        </div>
+      </aside>
+
+      <!-- ── Content ── -->
+      <div class="content-area">
+        <div class="content-top">
+          <input class="search-box" type="search" placeholder="Search plugins and scripts…" id="searchInput" />
+          <button class="btn btn-outline btn-sm" id="refreshBtn" title="Refresh">↺</button>
+        </div>
+        <div class="results-info" id="resultsInfo"></div>
+
+        <div class="gallery-list" id="galleryGrid">
+          <!-- Skeletons while loading -->
+          <div class="card">
+            <div class="card-icon skeleton" style="flex-shrink:0;width:72px;height:72px;border-radius:12px"></div>
+            <div class="card-body" style="gap:8px">
+              <div class="skeleton" style="height:17px;width:40%;border-radius:4px"></div>
+              <div class="skeleton" style="height:12px;width:85%;border-radius:4px"></div>
+              <div class="skeleton" style="height:12px;width:60%;border-radius:4px"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon skeleton" style="flex-shrink:0;width:72px;height:72px;border-radius:12px"></div>
+            <div class="card-body" style="gap:8px">
+              <div class="skeleton" style="height:17px;width:50%;border-radius:4px"></div>
+              <div class="skeleton" style="height:12px;width:75%;border-radius:4px"></div>
+              <div class="skeleton" style="height:12px;width:55%;border-radius:4px"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon skeleton" style="flex-shrink:0;width:72px;height:72px;border-radius:12px"></div>
+            <div class="card-body" style="gap:8px">
+              <div class="skeleton" style="height:17px;width:35%;border-radius:4px"></div>
+              <div class="skeleton" style="height:12px;width:90%;border-radius:4px"></div>
+              <div class="skeleton" style="height:12px;width:65%;border-radius:4px"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ── Detail drawer ────────────────────────────────────────────────── -->
+<div class="drawer-overlay" id="drawerOverlay">
+  <div class="drawer" id="drawer">
+    <div class="drawer-header">
+      <span class="drawer-name" id="drawerName">Plugin name</span>
+      <button class="drawer-close" id="drawerClose">&times;</button>
+    </div>
+    <div class="drawer-info" id="drawerInfo"></div>
+    <div class="drawer-code" id="drawerCode"></div>
+    <div class="drawer-actions">
+      <button class="btn btn-primary" id="drawerJarBtn">⬇ Download JAR</button>
+      <button class="like-btn" id="drawerLikeBtn"><span class="heart">♥</span> <span id="drawerLikeCount">0</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Submit modal ──────────────────────────────────────────────────── -->
+<div class="overlay" id="submitOverlay">
+  <div class="modal" style="position:relative">
+    <button class="modal-close" id="closeSubmit">&times;</button>
+    <h2>Share your plugin</h2>
+
+    <div class="field">
+      <label>Plugin Name</label>
+      <input type="text" id="sPluginName" placeholder="e.g. CoolAnnouncer" maxlength="80" />
+    </div>
+
+    <div class="field">
+      <label>Instruction you used</label>
+      <input type="text" id="sInstruction" placeholder="Create a plugin that…" maxlength="500" />
+    </div>
+
+    <div class="field">
+      <label>Generated Code</label>
+      <textarea id="sCode" placeholder="Paste the full generated code (```java ... ``` blocks) here"></textarea>
+    </div>
+
+    <div>
+      <div class="toggle-row" id="toggleRow">
+        <input type="checkbox" id="sPublic" checked />
+        <label for="sPublic">Make this entry public</label>
+      </div>
+      <div class="free-notice" id="freeNotice" style="display:none">
+        Free-tier submissions are always public.
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-outline" id="cancelSubmit">Cancel</button>
+      <button class="btn btn-primary" id="doSubmit">Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Community upload modal ───────────────────────────────────────── -->
+<div class="overlay" id="uploadOverlay">
+  <div class="modal" style="position:relative">
+    <button class="modal-close" id="closeUpload">&times;</button>
+    <h2>Upload a Plugin or Script</h2>
+    <p style="font-size:.82rem;color:var(--muted);margin-top:-8px">Share any Minecraft plugin or Skript script with the community.</p>
+
+    <div class="field">
+      <label>Type <span style="color:var(--red)">*</span></label>
+      <div class="tag-checks">
+        <label class="tag-check"><input type="radio" name="uCategory" value="plugin" checked> Plugin (.jar / .zip)</label>
+        <label class="tag-check"><input type="radio" name="uCategory" value="skript"> Skript (.sk)</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Plugin Name <span style="color:var(--red)">*</span></label>
+      <input type="text" id="uName" placeholder="e.g. SuperTeleport" maxlength="80" />
+    </div>
+
+    <div class="field">
+      <label>Short Description <span style="color:var(--red)">*</span></label>
+      <input type="text" id="uDescription" placeholder="What does this plugin do?" maxlength="500" />
+    </div>
+
+    <div class="field" id="uTagsField">
+      <label>Platform Tags <span style="color:var(--muted);font-weight:400">(select all that apply)</span></label>
+      <div class="tag-checks">
+        <label class="tag-check"><input type="checkbox" name="uTag" value="paper"> Paper</label>
+        <label class="tag-check"><input type="checkbox" name="uTag" value="purpur"> Purpur</label>
+        <label class="tag-check"><input type="checkbox" name="uTag" value="bukkit"> Bukkit</label>
+        <label class="tag-check"><input type="checkbox" name="uTag" value="folia"> Folia</label>
+        <label class="tag-check"><input type="checkbox" name="uTag" value="spigot"> Spigot</label>
+        <label class="tag-check"><input type="checkbox" name="uTag" value="velocity"> Velocity</label>
+        <label class="tag-check"><input type="checkbox" name="uTag" value="bungeecord"> BungeeCord</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>GitHub URL <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+      <input type="url" id="uGithub" placeholder="https://github.com/you/plugin" maxlength="200" />
+    </div>
+
+    <div class="field">
+      <label>File <span style="color:var(--red)">*</span> <span id="uFileHint" style="color:var(--muted);font-weight:400">(.jar or .zip, max 20 MB — must contain plugin.yml)</span></label>
+      <input type="file" id="uFile" accept=".jar,.zip"
+        style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;color:var(--text);font-family:inherit;font-size:.875rem;width:100%;cursor:pointer" />
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-outline" id="cancelUpload">Cancel</button>
+      <button class="btn btn-primary" id="doUpload">Upload</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toast ─────────────────────────────────────────────────────────── -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ── State ── */
+const PAGE_SIZE  = 18;
+let state = {
+  entries:     [],
+  total:       0,
+  page:        0,
+  tierFilter:  "",
+  tagFilter:   "",
+  categoryFilter: "",
+  searchQuery: "",
+  sortBy:      "newest",
+  loading:     false,
+};
+
+/* ── Helpers ── */
+function toast(msg, type = "") {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.className = "toast show" + (type ? " " + type : "");
+  clearTimeout(el._t);
+  el._t = setTimeout(() => { el.className = "toast"; }, 3000);
+}
+
+function fmtDate(ts) {
+  return new Date(ts * 1000).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+
+function pluginColor(name) {
+  const palette = ['#5563d8','#2bb572','#c2410c','#0891b2','#7c3aed','#be185d','#b45309','#0f766e'];
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = ((h * 31) + name.charCodeAt(i)) >>> 0;
+  return palette[h % palette.length];
+}
+
+/* ── Gallery fetch ── */
+async function loadGallery() {
+  if (state.loading) return;
+  state.loading = true;
+  const params = new URLSearchParams({
+    limit:  PAGE_SIZE,
+    offset: state.page * PAGE_SIZE,
+  });
+  if (state.tierFilter)     params.set("tier",     state.tierFilter);
+  if (state.tagFilter)      params.set("tag",      state.tagFilter);
+  if (state.categoryFilter) params.set("category", state.categoryFilter);
+  if (state.sortBy)         params.set("sort_by",  state.sortBy);
+  if (state.searchQuery)    params.set("search",   state.searchQuery);
+
+  try {
+    const res = await fetch(`/api/gallery?${params}`);
+    if (!res.ok) throw new Error("Server error " + res.status);
+    const data = await res.json();
+    state.entries = data.entries || [];
+    state.total   = data.total   || 0;
+    renderGrid();
+    renderPagination();
+  } catch (e) {
+    document.getElementById("galleryGrid").innerHTML =
+      `<div class="state-msg" style="grid-column:1/-1"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Could not load gallery. Is the API running?</div>`;
+  } finally {
+    state.loading = false;
+  }
+}
+
+/* ── Render grid ── */
+function renderGrid() {
+  const entries = state.entries;
+  const info = document.getElementById("resultsInfo");
+  if (info) {
+    const from = state.page * PAGE_SIZE + 1;
+    const to   = Math.min((state.page + 1) * PAGE_SIZE, state.total);
+    info.innerHTML = state.total
+      ? `Showing <strong>${from}\u2013${to}</strong> of <strong>${state.total}</strong> entr${state.total === 1 ? 'y' : 'ies'}`
+      : '';
+  }
+
+  const grid = document.getElementById("galleryGrid");
+  if (!entries.length) {
+    grid.innerHTML = `<div class="state-msg" style="grid-column:1/-1">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+      No plugins found yet. Be the first to share one!
+    </div>`;
+    return;
+  }
+
+  const iconColors = ['#5563d8','#2bb572','#c2410c','#0891b2','#7c3aed','#be185d','#b45309','#0f766e'];
+  grid.innerHTML = entries.map(e => {
+    const isSkript = e.plugin_category === 'skript';
+    const dlBtn = e.source === 'community' && e.jar_path
+      ? `<button class="jar-btn" data-action="dl-uploaded" data-jar="${esc(e.jar_path)}">\u2b07 ${isSkript ? '.SK' : 'JAR'}</button>`
+      : `<button class="jar-btn" data-action="dl-jar" data-name="${esc(e.plugin_name)}">\u2b07 JAR</button>`;
+    const badge = isSkript
+      ? '<span class="tier-badge" style="background:rgba(61,220,132,.12);color:#3ddc84">skript</span>'
+      : e.source === 'community'
+        ? '<span class="tier-badge" style="background:rgba(255,211,112,.12);color:#ffd370">community</span>'
+        : `<span class="tier-badge ${e.tier}">${e.tier}</span>`;
+    const iconBg = pluginColor(e.plugin_name);
+    const initials = e.plugin_name.replace(/[^A-Za-z0-9]/g,' ').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase() || e.plugin_name.slice(0,2).toUpperCase();
+    const tl = (e.tags||"").split(",").filter(t=>t.trim());
+    return `
+    <div class="card" data-id="${e.id}">
+      <div class="card-icon" style="background:${iconBg}">${esc(initials)}</div>
+      <div class="card-body">
+        <div class="card-top-row">
+          <div class="card-title-row">
+            <span class="card-name">${esc(e.plugin_name)}</span>
+            ${badge}
+            ${e.source === 'community' && e.author_name ? `<span class="card-author">by ${esc(e.author_name)}</span>` : ''}
+          </div>
+          <div class="card-btns">
+            <button class="like-btn" id="like-${e.id}" data-action="like"><span class="heart">&#9829;</span> <span class="like-count">${e.likes}</span></button>
+            ${dlBtn}
+          </div>
+        </div>
+        <div class="card-description">${esc(e.description || e.instruction)}</div>
+        ${tl.length ? `<div class="card-tags">${tl.map(t=>`<span class="card-tag ${t}">${t}</span>`).join("")}</div>` : ""}
+        <div class="card-meta">
+          <span class="card-meta-item">&#128197; ${fmtDate(e.ts)}</span>
+          ${e.downloads > 0 ? `<span class="card-meta-item">\u2b07 ${e.downloads.toLocaleString()} download${e.downloads===1?'':'s'}</span>` : ''}
+          <span class="card-meta-item">&#9829; ${e.likes}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+/* ── Pagination ── */
+function renderPagination() {
+  const totalPages = Math.ceil(state.total / PAGE_SIZE);
+  const pag = document.getElementById("pagination");
+  if (totalPages <= 1) { pag.innerHTML = ""; return; }
+
+  let html = `<button class="page-btn" ${state.page === 0 ? "disabled" : ""} data-page="${state.page - 1}">‹</button>`;
+  for (let i = 0; i < totalPages; i++) {
+    if (i === 0 || i === totalPages - 1 || Math.abs(i - state.page) <= 2) {
+      html += `<button class="page-btn ${i === state.page ? "active" : ""}" data-page="${i}">${i + 1}</button>`;
+    } else if (Math.abs(i - state.page) === 3) {
+      html += `<span style="color:var(--muted);align-self:center">…</span>`;
+    }
+  }
+  html += `<button class="page-btn" ${state.page >= totalPages - 1 ? "disabled" : ""} data-page="${state.page + 1}">›</button>`;
+  pag.innerHTML = html;
+}
+
+function goPage(p) {
+  state.page = p;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  loadGallery();
+}
+
+/* ── Drawer (detail view) ── */
+let _drawerEntry = null;
+
+async function openDrawer(id) {
+  try {
+    const res = await fetch(`/api/gallery/${id}`);
+    if (!res.ok) { toast("Could not load entry", "error"); return; }
+    _drawerEntry = await res.json();
+    const e = _drawerEntry;
+    document.getElementById("drawerName").textContent = e.plugin_name;
+
+    const isCommunity = e.source === 'community';
+    const isSkript    = e.plugin_category === 'skript';
+    let infoHtml = '';
+    if (isCommunity) {
+      if (e.author_name) infoHtml += `<strong>Author:</strong> ${esc(e.author_name)}<br/>`;
+      if (e.description) infoHtml += `<strong>Description:</strong> ${esc(e.description)}<br/>`;
+      if (e.github_url)  infoHtml += `<strong>GitHub:</strong> <a href="${esc(e.github_url)}" target="_blank" rel="noopener" style="color:var(--accent-h)">${esc(e.github_url)}</a><br/>`;
+    } else {
+      if (e.instruction) infoHtml += `<strong>Instruction:</strong> ${esc(e.instruction)}<br/>`;
+      infoHtml += `<strong>Tier:</strong> ${esc(e.tier || 'free')}&nbsp;|&nbsp;`;
+    }
+    if (e.tags) {
+      const tl = e.tags.split(',').filter(t => t.trim());
+      if (tl.length) infoHtml += tl.map(t => `<span class="card-tag ${t}" style="display:inline-block;margin:2px 2px 0 0">${t}</span>`).join('') + '<br/>';
+    }
+    infoHtml += `<strong>Submitted:</strong> ${fmtDate(e.ts)}&nbsp;|&nbsp;`;
+    infoHtml += `\u2665 ${e.likes}&nbsp;|&nbsp;\u2b07 ${e.downloads || 0} downloads`;
+    document.getElementById("drawerInfo").innerHTML = infoHtml;
+
+    const codeEl = document.getElementById("drawerCode");
+    if (!isCommunity && e.code) {
+      codeEl.textContent = e.code;
+      codeEl.style.display = '';
+    } else {
+      codeEl.style.display = 'none';
+    }
+
+    const jarBtn = document.getElementById("drawerJarBtn");
+    if (isCommunity && e.jar_path) {
+      jarBtn.textContent = isSkript ? '\u2b07 Download .SK' : '\u2b07 Download JAR';
+      jarBtn.onclick = () => {
+        const fn = e.jar_path.split(/[\\\/]/).pop();
+        const a = document.createElement('a');
+        a.href = `/api/gallery/uploads/${encodeURIComponent(fn)}`;
+        a.download = fn; a.click();
+      };
+    } else {
+      jarBtn.textContent = '\u2b07 Download JAR';
+      jarBtn.onclick = async () => { if (_drawerEntry) await downloadJarFromCode(_drawerEntry.code, _drawerEntry.plugin_name); };
+    }
+
+    document.getElementById("drawerLikeCount").textContent = e.likes;
+    document.getElementById("drawerOverlay").classList.add("open");
+    document.getElementById("drawer").classList.add("open");
+  } catch(e) {
+    toast("Failed to load plugin details", "error");
+  }
+}
+
+document.getElementById("drawerClose").onclick = closeDrawer;
+document.getElementById("drawerOverlay").onclick = e => { if (e.target.id === "drawerOverlay") closeDrawer(); };
+function closeDrawer() {
+  document.getElementById("drawerOverlay").classList.remove("open");
+  document.getElementById("drawer").classList.remove("open");
+  _drawerEntry = null;
+}
+
+// drawerJarBtn.onclick is set dynamically in openDrawer()
+document.getElementById("drawerLikeBtn").onclick = async () => {
+  if (!_drawerEntry) return;
+  const newCount = await doLike(_drawerEntry.id);
+  if (newCount !== null) {
+    _drawerEntry.likes = newCount;
+    document.getElementById("drawerLikeCount").textContent = newCount;
+  }
+};
+
+/* ── Like ── */
+async function likeEntry(event, id) {
+  event.stopPropagation();
+  const newCount = await doLike(id);
+  if (newCount !== null) {
+    const btn = document.getElementById("like-" + id);
+    if (btn) {
+      const countSpan = btn.querySelector(".like-count");
+      if (countSpan) countSpan.textContent = newCount;
+      btn.classList.add("liked");
+    }
+    // Update state
+    const entry = state.entries.find(e => e.id === id);
+    if (entry) entry.likes = newCount;
+  }
+}
+
+async function doLike(id) {
+  try {
+    const res = await fetch(`/api/gallery/${id}/like`, { method: "POST" });
+    if (!res.ok) throw new Error("Like failed");
+    const data = await res.json();
+    return data.likes;
+  } catch(e) {
+    toast("Could not record like", "error");
+    return null;
+  }
+}
+
+/* ── Community uploaded JAR download ── */
+function downloadUploaded(event, id, jarPath) {
+  event.stopPropagation();
+  if (!jarPath) { toast("No file attached to this entry", "error"); return; }
+  const filename = jarPath.split(/[\\/]/).pop();
+  const a = document.createElement("a");
+  a.href = `/api/gallery/uploads/${encodeURIComponent(filename)}`;
+  a.download = filename;
+  a.click();
+}
+
+/* ── JAR download ── */
+async function downloadJar(event, id, pluginName) {
+  event.stopPropagation();
+  const entry = await (async () => {
+    try {
+      const r = await fetch(`/api/gallery/${id}`);
+      return r.ok ? r.json() : null;
+    } catch { return null; }
+  })();
+  if (!entry) { toast("Could not fetch plugin code", "error"); return; }
+  await downloadJarFromCode(entry.code, pluginName);
+}
+
+async function downloadJarFromCode(code, pluginName) {
+  toast("Building JAR…");
+  try {
+    const res = await fetch("/api/jar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code, plugin_name: pluginName }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      toast(err.error || "JAR build failed", "error");
+      return;
+    }
+    const blob = await res.blob();
+    const safe = (pluginName || "StackNestPlugin").replace(/[^\w-]/g, "");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = safe + ".jar";
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast("JAR downloaded!", "success");
+  } catch(e) {
+    toast("Download failed: " + e.message, "error");
+  }
+}
+
+/* ── Submit modal ── */
+const submitOverlay = document.getElementById("submitOverlay");
+document.getElementById("openSubmit").onclick   = () => submitOverlay.classList.add("open");
+document.getElementById("closeSubmit").onclick  = () => submitOverlay.classList.remove("open");
+document.getElementById("cancelSubmit").onclick = () => submitOverlay.classList.remove("open");
+submitOverlay.onclick = e => { if (e.target === submitOverlay) submitOverlay.classList.remove("open"); };
+
+// Detect free tier to lock public toggle (best-effort — API key absent = free)
+const apiKey = localStorage.getItem("stacknest_api_key") || "";
+if (!apiKey) {
+  document.getElementById("sPublic").checked = true;
+  document.getElementById("sPublic").disabled = true;
+  document.getElementById("freeNotice").style.display = "block";
+}
+
+document.getElementById("doSubmit").onclick = async () => {
+  const name  = document.getElementById("sPluginName").value.trim();
+  const instr = document.getElementById("sInstruction").value.trim();
+  const code  = document.getElementById("sCode").value.trim();
+  const pub   = document.getElementById("sPublic").checked;
+
+  if (!instr) { toast("Instruction is required", "error"); return; }
+  if (!code)  { toast("Code is required", "error"); return; }
+
+  const headers = { "Content-Type": "application/json" };
+  if (apiKey) headers["X-API-Key"] = apiKey;
+
+  try {
+    const res = await fetch("/api/gallery/submit", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ plugin_name: name || "Unnamed Plugin", instruction: instr, code, public: pub }),
+    });
+    const data = await res.json();
+    if (!res.ok) { toast(data.error || "Submission failed", "error"); return; }
+    submitOverlay.classList.remove("open");
+    toast("Plugin shared.", "success");
+    // Clear form
+    ["sPluginName","sInstruction","sCode"].forEach(id => document.getElementById(id).value = "");
+    state.page = 0;
+    loadGallery();
+  } catch(e) {
+    toast("Submission failed: " + e.message, "error");
+  }
+};
+
+/* ── Event delegation for dynamically rendered cards and pagination ── */
+const grid = document.getElementById("galleryGrid");
+grid.addEventListener("click", e => {
+  // Like button
+  const likeBtn = e.target.closest('[data-action="like"]');
+  if (likeBtn) {
+    e.stopPropagation();
+    const card = likeBtn.closest('[data-id]');
+    if (card) likeEntry(e, parseInt(card.dataset.id));
+    return;
+  }
+  // Download uploaded JAR/SK
+  const dlUploaded = e.target.closest('[data-action="dl-uploaded"]');
+  if (dlUploaded) {
+    e.stopPropagation();
+    const card = dlUploaded.closest('[data-id]');
+    if (card) downloadUploaded(e, parseInt(card.dataset.id), dlUploaded.dataset.jar);
+    return;
+  }
+  // Download generated JAR
+  const dlJar = e.target.closest('[data-action="dl-jar"]');
+  if (dlJar) {
+    e.stopPropagation();
+    const card = dlJar.closest('[data-id]');
+    if (card) downloadJar(e, parseInt(card.dataset.id), dlJar.dataset.name);
+    return;
+  }
+  // Click anywhere else on card → open drawer
+  const card = e.target.closest('[data-id]');
+  if (card) openDrawer(parseInt(card.dataset.id));
+});
+
+// Pagination delegation
+const pag = document.getElementById("pagination");
+pag.addEventListener("click", e => {
+  const btn = e.target.closest('[data-page]');
+  if (btn && !btn.disabled) goPage(parseInt(btn.dataset.page));
+});
+
+/* ── Filter + search ── */
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    state.tierFilter = btn.dataset.tier;
+    state.page = 0;
+    loadGallery();
+  };
+});
+
+document.querySelectorAll('.tag-filter-btn').forEach(btn => {
+  btn.onclick = () => {
+    if (btn.dataset.tag !== undefined) {
+      document.querySelectorAll('.tag-filter-btn[data-tag]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.tagFilter = btn.dataset.tag;
+    } else if (btn.dataset.category !== undefined) {
+      document.querySelectorAll('.tag-filter-btn[data-category]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.categoryFilter = btn.dataset.category;
+    }
+    state.page = 0;
+    loadGallery();
+  };
+});
+
+let searchTimer;
+document.getElementById("searchInput").oninput = e => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    state.searchQuery = e.target.value.trim();
+    state.page = 0;
+    loadGallery();
+  }, 400);
+};
+
+document.getElementById("refreshBtn").onclick = () => loadGallery();
+document.getElementById("sortSelect").onchange = e => {
+  state.sortBy = e.target.value;
+  state.page = 0;
+  loadGallery();
+};
+
+/* ── Escape helper ── */
+function esc(s) {
+  return String(s || "")
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+/* ── Community Upload modal ── */
+const uploadOverlay   = document.getElementById("uploadOverlay");
+document.getElementById("openUpload").onclick = () => {
+  const token = localStorage.getItem("stacknest_auth_token") || "";
+  if (!token) {
+    toast("You need to be logged in to upload. Sign in via the Generator page.", "error");
+    return;
+  }
+  uploadOverlay.classList.add("open");
+};
+document.getElementById("closeUpload").onclick   = () => uploadOverlay.classList.remove("open");
+document.getElementById("cancelUpload").onclick  = () => uploadOverlay.classList.remove("open");
+uploadOverlay.onclick = e => { if (e.target === uploadOverlay) uploadOverlay.classList.remove("open"); };
+
+// Update file input when category changes
+document.querySelectorAll('input[name="uCategory"]').forEach(r => {
+  r.onchange = () => {
+    const isSkript = r.value === 'skript';
+    const fileInput = document.getElementById('uFile');
+    const hint = document.getElementById('uFileHint');
+    const tagsField = document.getElementById('uTagsField');
+    if (isSkript) {
+      fileInput.accept = '.sk';
+      hint.textContent = '(.sk file, max 20 MB)';
+      tagsField.style.display = 'none';
+    } else {
+      fileInput.accept = '.jar,.zip';
+      hint.textContent = '(.jar or .zip, max 20 MB \u2014 must contain plugin.yml)';
+      tagsField.style.display = '';
+    }
+    fileInput.value = '';
+  };
+});
+
+document.getElementById("doUpload").onclick = async () => {
+  const name     = document.getElementById("uName").value.trim();
+  const desc     = document.getElementById("uDescription").value.trim();
+  const github   = document.getElementById("uGithub").value.trim();
+  const file     = document.getElementById("uFile").files[0];
+  const category = document.querySelector('input[name="uCategory"]:checked')?.value || 'plugin';
+  const tags     = category === 'plugin'
+    ? [...document.querySelectorAll('input[name="uTag"]:checked')].map(c => c.value)
+    : [];
+  const token    = localStorage.getItem("stacknest_auth_token") || "";
+
+  if (!name)  { toast("Name is required", "error"); return; }
+  if (!desc)  { toast("Description is required", "error"); return; }
+  if (!file)  { toast(category === 'skript' ? "A .sk file is required" : "A plugin file (.jar or .zip) is required", "error"); return; }
+  if (!token) { toast("You must be logged in to upload", "error"); return; }
+
+  const fd = new FormData();
+  fd.append("name",            name);
+  fd.append("description",     desc);
+  fd.append("plugin_category", category);
+  fd.append("tags",            tags.join(","));
+  if (github) fd.append("github_url", github);
+  fd.append("jar_file", file);
+
+  const btn = document.getElementById("doUpload");
+  btn.disabled = true;
+  btn.textContent = "Uploading…";
+  try {
+    const res  = await fetch("/api/gallery/upload", {
+      method: "POST",
+      headers: { "Authorization": "Bearer " + token },
+      body: fd
+    });
+    const data = await res.json();
+    if (!res.ok) { toast(data.error || "Upload failed", "error"); return; }
+    uploadOverlay.classList.remove("open");
+    toast(category === 'skript' ? "Skript uploaded to gallery." : "Plugin uploaded to gallery.", "success");
+    ["uName","uDescription","uGithub"].forEach(id => document.getElementById(id).value = "");
+    document.querySelectorAll('input[name="uTag"]').forEach(c => c.checked = false);
+    document.getElementById("uFile").value = "";
+    state.page = 0;
+    loadGallery();
+  } catch(e) {
+    toast("Upload failed: " + e.message, "error");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Upload";
+  }
+};
+
+/* ── Boot ── */
+loadGallery();
+</script>
+
+<footer style="border-top:1px solid #2e3350;padding:18px 24px;text-align:center;font-size:12px;color:#8891b4;margin-top:40px">
+  &copy; 2026 StackNest
+<p style="margin-top:8px;font-size:11px;color:#8891b4;text-align:center">StackNest is not affiliated with or endorsed by Mojang Studios, Microsoft, or Discord Inc. Minecraft is a trademark of Mojang Studios.</p>
+</footer>
+<script src="/auth.js"></script>
+</body>
+</html>
