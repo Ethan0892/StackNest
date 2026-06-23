@@ -46,21 +46,21 @@ SITE    = "https://stacknests.com"
 # ── Credit-alert config ──────────────────────────────────────────────────────
 # When an AI model runs out of API credits / quota, the backend watchdog writes
 # an alert to this file.  The bot polls it and DMs the owner.
-OWNER_ID          = 573977900093669425
+OWNER_ID          = int(os.environ.get("DISCORD_OWNER_ID", "0"))
 CREDIT_ALERT_FILE = "/tmp/stacknest_credit_alerts.json"
 
 # ── Role-picker config ───────────────────────────────────────────────────────
-ROLE_PICKER_CHANNEL = 1481073130444292116
+ROLE_PICKER_CHANNEL = int(os.environ.get("DISCORD_ROLE_PICKER_CHANNEL", "0"))
 ROLES = {
-    "giveaway":      {"id": 1481073686281715943,  "emoji": "🎁", "label": "Giveaways",     "desc": "Get pinged for giveaways"},
-    "updates":       {"id": 1481074017090797669,  "emoji": "🔧", "label": "Updates",       "desc": "Plugin generator updates & changelogs"},
-    "announcements": {"id": 1481074450245091508,  "emoji": "📢", "label": "Announcements", "desc": "Important server announcements"},
+    "giveaway":      {"id": int(os.environ.get("DISCORD_ROLE_GIVEAWAY",       "0")),  "emoji": "🎁", "label": "Giveaways",     "desc": "Get pinged for giveaways"},
+    "updates":       {"id": int(os.environ.get("DISCORD_ROLE_UPDATES",        "0")),  "emoji": "🔧", "label": "Updates",       "desc": "Plugin generator updates & changelogs"},
+    "announcements": {"id": int(os.environ.get("DISCORD_ROLE_ANNOUNCEMENTS", "0")),  "emoji": "📢", "label": "Announcements", "desc": "Important server announcements"},
 }
 
 # ── Ticket config ───────────────────────────────────────────────────────────
-CH_TICKETS         = 1479938829136691353   # channel where the ticket panel embed lives
-CH_TICKET_CATEGORY = 1479944324962582699   # category where ticket channels are created
-ROLE_STAFF         = 1479933738287890515   # staff role — full ticket access
+CH_TICKETS         = int(os.environ.get("DISCORD_TICKETS_CHANNEL",  "0"))  # channel where the ticket panel embed lives
+CH_TICKET_CATEGORY = int(os.environ.get("DISCORD_TICKET_CATEGORY",  "0"))  # category where ticket channels are created
+ROLE_STAFF         = int(os.environ.get("DISCORD_STAFF_ROLE_ID",    "0"))  # staff role — full ticket access
 
 # ── Ticket state file ───────────────────────────────────────────────────────
 STATE_FILE = Path(__file__).resolve().parent / "state.json"
@@ -83,7 +83,7 @@ def _save_state(s: dict):
 # ── Giveaway config ─────────────────────────────────────────────────────────
 GIVEAWAY_CHANNEL        = int(os.environ.get("DISCORD_GIVEAWAY_CHANNEL", "0"))
 GIVEAWAY_ROLE_ID        = ROLES["giveaway"]["id"]
-DISCORD_LINKED_ROLE_ID  = 1479960075488723076  # assigned when user links StackNest account
+DISCORD_LINKED_ROLE_ID  = int(os.environ.get("DISCORD_LINKED_ROLE_ID", "0"))  # assigned when user links StackNest account
 GIVEAWAY_EMOJI          = "🎁"
 GIVEAWAY_STATE_FILE     = "/opt/stacknest/data/giveaway_state.json"
 GIVEAWAY_DURATION_HOURS = 48  # draw after 2 days
@@ -94,9 +94,9 @@ _PRIZES = [
 _prize_index = 0
 
 # ── Verification / welcome config ────────────────────────────────────────────
-CH_RULES      = int(os.environ.get("DISCORD_RULES_CHANNEL",    "1479638065696866377"))
-CH_WELCOME    = int(os.environ.get("DISCORD_WELCOME_CHANNEL",  "1479935311323861163"))
-ROLE_VERIFIED = int(os.environ.get("DISCORD_VERIFIED_ROLE_ID", "1479932463835775196"))
+CH_RULES      = int(os.environ.get("DISCORD_RULES_CHANNEL",    "0"))
+CH_WELCOME    = int(os.environ.get("DISCORD_WELCOME_CHANNEL",  "0"))
+ROLE_VERIFIED = int(os.environ.get("DISCORD_VERIFIED_ROLE_ID", "0"))
 RULES_EMOJI   = "✅"
 
 # ── Bot setup ────────────────────────────────────────────────────────────────

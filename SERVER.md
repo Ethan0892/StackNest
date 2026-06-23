@@ -4,20 +4,16 @@
 
 | Field    | Value                        |
 |----------|------------------------------|
-| Host     | `65.109.137.196`             |
+| Host     | `your-server-ip`             |
 | Port     | `2222` (not the default 22)  |
 | User     | `root`                       |
 | Auth     | SSH key (`~/.ssh/id_ed25519`) |
 
 ```bash
-ssh -p 2222 root@65.109.137.196
+ssh -p 2222 root@your-server-ip
 ```
 
-The public key for this machine is:
-```
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9/tWyoqJFBNXhxfeXW0nPVudjPa3HVEhlXLrd8IhwP ethani@stacknest
-```
-It must be present in `/root/.ssh/authorized_keys` on the server.
+Add your public key to `/root/.ssh/authorized_keys` on the server.
 
 ---
 
@@ -66,7 +62,7 @@ journalctl -u stacknest -n 100 --no-pager
 ## Deploying Latest Code
 
 ```bash
-ssh -p 2222 root@65.109.137.196
+ssh -p 2222 root@your-server-ip
 cd /opt/stacknest
 git pull --ff-only origin main
 systemctl restart stacknest
@@ -85,13 +81,13 @@ git stash show -p stash@{0}
 
 ## GitHub Repository
 
-**URL:** https://github.com/Ethan0892/StackNest (private)
+**URL:** https://github.com/your-username/StackNest
 
 The server pulls via SSH key (`/root/.ssh/id_ed25519`).  
 Your local machine pushes via HTTPS with GitHub credentials.
 
 Typical workflow:
-1. Edit locally in `/home/ethani/Documents/Stacknest`
+1. Edit locally in `/path/to/local/StackNest`
 2. `git add` / `git commit` / `git push`
 3. SSH to server → `git pull` → `systemctl restart stacknest`
 
@@ -102,8 +98,8 @@ Typical workflow:
 Accessible at `https://stacknest.app/admin`
 
 Access is restricted by IP — only IPs listed in `ADMIN_ALLOW_NETWORKS`
-in `/opt/stacknest/.env` can reach it. Your current IP (`95.148.144.33`)
-is already whitelisted.
+in `/opt/stacknest/.env` can reach it. Add your IP to that variable to
+gain access.
 
 The admin secret is set via `ADMIN_SECRET` in `.env`.
 

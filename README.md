@@ -36,7 +36,7 @@ Quick deploy after a local commit:
 
 ```bash
 git push
-ssh -p 2222 root@65.109.137.196 "cd /opt/stacknest && git pull && systemctl restart stacknest"
+ssh -p 2222 root@your-server-ip "cd /opt/stacknest && git pull && systemctl restart stacknest"
 ```
 
 ---
